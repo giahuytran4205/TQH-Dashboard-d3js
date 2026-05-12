@@ -13,16 +13,20 @@ Interactive dashboard scaffold for exploring Airbnb listing data with React, Vit
 
 ```text
 d3-dashboard/
-├── public/data/dataset.csv
-├── src/
-│   ├── components/
-│   ├── config/
-│   ├── hooks/
-│   ├── styles/
-│   └── utils/
-├── index.html
-├── package.json
-└── vite.config.js
+|-- data/
+|   |-- cleaned_listings.csv
+|   |-- cleaned_reviews.csv
+|   |-- cleaned_calendar.csv
+|   `-- neighbourhoods.geojson
+|-- src/
+|   |-- components/
+|   |-- config/
+|   |-- hooks/
+|   |-- styles/
+|   `-- utils/
+|-- index.html
+|-- package.json
+`-- vite.config.js
 ```
 
 ## Getting Started
@@ -45,19 +49,29 @@ Open the app at:
 http://127.0.0.1:5173/
 ```
 
-## Data
+## Data Model
 
-The dashboard loads CSV data from:
+The dashboard currently loads the primary listing table:
 
 ```text
-public/data/dataset.csv
+data/cleaned_listings.csv
 ```
 
-To use another dataset, replace that file or update `dataPath` in:
+Additional tables are kept in `data/` for future joins:
+
+- `cleaned_reviews.csv`: detail table joined by `listing_id -> listings.id`
+- `cleaned_calendar.csv`: detail table joined by `listing_id -> listings.id`
+- `neighbourhoods.geojson`: geometry joined by `properties.neighbourhood -> listings.neighbourhood_cleansed`
+
+For performance, large detail tables should be aggregated by `listing_id` before being joined into listing-level charts.
+
+Data paths and join metadata are defined in:
 
 ```text
 src/config/dashboardConfig.js
 ```
+
+Vite serves `data/` at `/data/...` during development and copies it to `dist/data/` during production builds.
 
 ## Build
 
@@ -77,4 +91,4 @@ npm run preview
 
 - Charts are built with D3.js only.
 - Dropdown filters, KPI cards, chart click selections, and scatter brushing are already wired.
-- Field names and chart settings are centralized in `src/config/dashboardConfig.js`.
+- Field names, data paths, and chart settings are centralized in `src/config/dashboardConfig.js`.

@@ -3,7 +3,39 @@ export const DASHBOARD_CONFIG = {
   eyebrow: "React + D3 interactive example",
   description:
     "CSV dashboard with dropdown filters, KPI cards, clickable D3 charts, scatter brush selection, and live insight updates.",
-  dataPath: "/data/dataset.csv",
+  dataPath: "/data/cleaned_listings.csv",
+  dataSources: {
+    listings: {
+      path: "/data/cleaned_listings.csv",
+      role: "primary",
+      primaryKey: "id",
+      description: "Main listing-level table used by the current dashboard.",
+    },
+    reviews: {
+      path: "/data/cleaned_reviews.csv",
+      role: "detail",
+      foreignKey: "listing_id",
+      joinsTo: "listings.id",
+      description:
+        "Review-level table. Aggregate by listing_id before joining into listings for chart-level metrics.",
+    },
+    calendar: {
+      path: "/data/cleaned_calendar.csv",
+      role: "detail",
+      foreignKey: "listing_id",
+      joinsTo: "listings.id",
+      description:
+        "Calendar-level table. Aggregate availability, booking, or price metrics by listing_id before joining.",
+    },
+    neighbourhoods: {
+      path: "/data/neighbourhoods.geojson",
+      role: "geo",
+      foreignKey: "properties.neighbourhood",
+      joinsTo: "listings.neighbourhood_cleansed",
+      description:
+        "GeoJSON neighbourhood boundaries for future D3 map views.",
+    },
+  },
   valueField: "price",
   dateField: "",
   numericFields: [
