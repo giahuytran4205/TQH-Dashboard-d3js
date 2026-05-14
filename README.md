@@ -31,13 +31,25 @@ d3-dashboard/
 
 ## Getting Started
 
-Install dependencies:
+### 1. Download Data
+
+This project requires datasets that are not included in the repository due to their size. They are automatically downloaded when you run `npm install`.
+
+If you need to download them manually later, run:
+
+```bash
+npm run download-data
+```
+
+The download links are maintained in `data/data-link.txt`.
+
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-Run the local development server:
+### 3. Run Development Server
 
 ```bash
 npm run dev
