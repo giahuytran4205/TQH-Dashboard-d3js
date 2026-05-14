@@ -16,29 +16,67 @@ const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1);
 const MIN_NIGHTS_GROUPS = ["Short <=3", "Medium 4-7", "Long >7"];
 
 const termRules = [
-  { term: "beautifully decorated", pattern: /\bbeautifully decorated\b/g },
-  { term: "immaculate", pattern: /\bimmaculate\b/g },
-  { term: "gorgeous", pattern: /\bgorgeous\b/g },
-  { term: "stocked kitchen", pattern: /\bstocked kitchen\b/g },
-  { term: "warm welcome", pattern: /\bwarm welcome\b/g },
-  { term: "clean", pattern: /\bclean\b/g },
-  { term: "comfortable", pattern: /\bcomfortable\b/g },
-  { term: "great location", pattern: /\bgreat location\b/g },
-  { term: "responsive", pattern: /\bresponsive\b/g },
-  { term: "helpful", pattern: /\bhelpful\b/g },
-  { term: "hidden fees", pattern: /\bhidden fees?\b/g },
-  { term: "security deposit", pattern: /\bsecurity deposit\b/g },
-  { term: "terrible experience", pattern: /\bterrible experience\b/g },
-  { term: "unresponsive", pattern: /\bunresponsive\b/g },
-  { term: "scam", pattern: /\bscam\b/g },
-  { term: "refused", pattern: /\brefused\b/g },
-  { term: "infestation", pattern: /\binfestation\b/g },
-  { term: "smelly", pattern: /\bsmelly\b/g },
-  { term: "cigarette", pattern: /\bcigarette\b/g },
-  { term: "dirty", pattern: /\bdirty\b/g },
-  { term: "noise", pattern: /\bnoise\b/g },
-  { term: "cancelled", pattern: /\bcancelled|canceled\b/g },
-];
+  "great",
+  "clean",
+  "comfortable",
+  "friendly",
+  "helpful",
+  "excellent",
+  "beautiful",
+  "lovely",
+  "wonderful",
+  "perfect",
+  "quiet",
+  "safe",
+  "convenient",
+  "location",
+  "recommend",
+  "responsive",
+  "spacious",
+  "nice",
+  "well located",
+  "great location",
+  "good location",
+  "propre",
+  "agreable",
+  "confortable",
+  "sympathique",
+  "spacieux",
+  "calme",
+  "bon emplacement",
+  "bien situe",
+  "tres bien situe",
+  "bad",
+  "dirty",
+  "noise",
+  "noisy",
+  "loud",
+  "small",
+  "tiny",
+  "smelly",
+  "problem",
+  "issue",
+  "broken",
+  "rude",
+  "unsafe",
+  "unresponsive",
+  "uncomfortable",
+  "cancelled",
+  "canceled",
+  "scam",
+  "refund",
+  "deposit",
+  "bruyant",
+  "sale",
+  "odeur",
+  "petit",
+  "probleme",
+  "defectueux",
+  "insalubre",
+].map((term) => ({
+  term,
+  pattern: makePattern(term),
+}));
 
 function parseNumber(value) {
   if (value === null || value === undefined || value === "") {
@@ -60,6 +98,27 @@ function parseBoolean(value) {
   }
 
   return null;
+}
+
+function readCsvText(filePath) {
+  return fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, "");
+}
+
+function normalizeText(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/<br\s*\/?>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/[^a-z0-9\s']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function makePattern(term) {
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+  return new RegExp(`\\b${escaped}\\b`, "g");
 }
 
 function minNightsGroup(value) {
@@ -102,7 +161,7 @@ function loadListings() {
     throw new Error(`Missing ${listingPath}`);
   }
 
-  const rows = csvParse(fs.readFileSync(listingPath, "utf8"));
+  const rows = csvParse(readCsvText(listingPath));
   const hostCounts = new Map();
   const listingById = new Map();
 
@@ -173,7 +232,7 @@ async function aggregateCalendar(listingById) {
   let header = null;
   for await (const line of rl) {
     if (!header) {
-      header = line.split(",");
+      header = line.replace(/^\uFEFF/, "").split(",");
       continue;
     }
 
@@ -256,7 +315,7 @@ function aggregateReviews(listingById) {
   let highReviews = 0;
   let lowReviews = 0;
 
-  csvParseRows(fs.readFileSync(reviewsPath, "utf8"), (row, index) => {
+  csvParseRows(readCsvText(reviewsPath), (row, index) => {
     if (index === 0) {
       return null;
     }
@@ -272,7 +331,7 @@ function aggregateReviews(listingById) {
       return null;
     }
 
-    const text = String(row[2] ?? "").toLowerCase();
+    const text = normalizeText(row[2]);
     if (!text) {
       return null;
     }

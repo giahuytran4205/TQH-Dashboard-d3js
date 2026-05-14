@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import * as d3 from "d3";
 import { createRowParser } from "../utils/data";
 
+function stripBom(text) {
+  return String(text ?? "").replace(/^\uFEFF/, "");
+}
+
 export function useCsvData(config) {
   const [state, setState] = useState({
     data: [],
@@ -23,7 +27,12 @@ export function useCsvData(config) {
       }));
 
       try {
-        const rows = await d3.csv(config.dataPath, rowParser);
+        const response = await fetch(config.dataPath);
+        if (!response.ok) {
+          throw new Error(`CSV request failed: ${response.status}`);
+        }
+
+        const rows = d3.csvParse(stripBom(await response.text()), rowParser);
         if (cancelled) {
           return;
         }

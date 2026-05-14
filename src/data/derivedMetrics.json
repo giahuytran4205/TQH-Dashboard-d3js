@@ -1,95 +1,447 @@
 {
-  "generatedAt": "2026-05-14T14:05:29.687Z",
+  "generatedAt": "2026-05-14T15:14:46.913Z",
   "sourceYear": 2026,
   "listingCount": 21415,
   "monthlyOccupancyByRegion": [
     {
       "year": 2026,
       "month": 1,
+      "region": "Bronx",
+      "totalDays": 25358,
+      "bookedDays": 3098,
+      "occupancyRate": 12.217051817966716
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "region": "Bronx",
+      "totalDays": 22904,
+      "bookedDays": 4011,
+      "occupancyRate": 17.512224938875306
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "region": "Bronx",
+      "totalDays": 25358,
+      "bookedDays": 3975,
+      "occupancyRate": 15.675526461077371
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "region": "Bronx",
+      "totalDays": 24540,
+      "bookedDays": 3527,
+      "occupancyRate": 14.372453137734311
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "region": "Bronx",
+      "totalDays": 25358,
+      "bookedDays": 5834,
+      "occupancyRate": 23.006546257591292
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "region": "Bronx",
+      "totalDays": 24540,
+      "bookedDays": 5461,
+      "occupancyRate": 22.253463732681336
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "region": "Bronx",
+      "totalDays": 25358,
+      "bookedDays": 5885,
+      "occupancyRate": 23.207666219733415
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "region": "Bronx",
+      "totalDays": 25358,
+      "bookedDays": 9056,
+      "occupancyRate": 35.712595630570235
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "region": "Bronx",
+      "totalDays": 24540,
+      "bookedDays": 8439,
+      "occupancyRate": 34.38875305623472
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "region": "Bronx",
+      "totalDays": 25358,
+      "bookedDays": 8747,
+      "occupancyRate": 34.494045271709126
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "region": "Bronx",
+      "totalDays": 818,
+      "bookedDays": 385,
+      "occupancyRate": 47.066014669926645
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "region": "Brooklyn",
+      "totalDays": 226703,
+      "bookedDays": 42514,
+      "occupancyRate": 18.75317044767824
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "region": "Brooklyn",
+      "totalDays": 204764,
+      "bookedDays": 43656,
+      "occupancyRate": 21.32015393330859
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "region": "Brooklyn",
+      "totalDays": 226703,
+      "bookedDays": 45274,
+      "occupancyRate": 19.970622356122327
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "region": "Brooklyn",
+      "totalDays": 219390,
+      "bookedDays": 44228,
+      "occupancyRate": 20.159533251287662
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "region": "Brooklyn",
+      "totalDays": 226703,
+      "bookedDays": 68024,
+      "occupancyRate": 30.005778485507474
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "region": "Brooklyn",
+      "totalDays": 219390,
+      "bookedDays": 62855,
+      "occupancyRate": 28.649892884816992
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "region": "Brooklyn",
+      "totalDays": 226703,
+      "bookedDays": 64515,
+      "occupancyRate": 28.457938359880547
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "region": "Brooklyn",
+      "totalDays": 226703,
+      "bookedDays": 93143,
+      "occupancyRate": 41.08591416964045
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "region": "Brooklyn",
+      "totalDays": 219390,
+      "bookedDays": 90217,
+      "occupancyRate": 41.12174666119696
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "region": "Brooklyn",
+      "totalDays": 226703,
+      "bookedDays": 92492,
+      "occupancyRate": 40.79875431732267
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "region": "Brooklyn",
+      "totalDays": 7338,
+      "bookedDays": 3092,
+      "occupancyRate": 42.13682202234941
+    },
+    {
+      "year": 2026,
+      "month": 1,
       "region": "Manhattan",
-      "totalDays": 663865,
-      "bookedDays": 136498,
-      "occupancyRate": 20.561108056607893
+      "totalDays": 296298,
+      "bookedDays": 67551,
+      "occupancyRate": 22.798331409594393
     },
     {
       "year": 2026,
       "month": 2,
       "region": "Manhattan",
-      "totalDays": 599620,
-      "bookedDays": 131727,
-      "occupancyRate": 21.968413328441347
+      "totalDays": 267624,
+      "bookedDays": 59473,
+      "occupancyRate": 22.22259588078797
     },
     {
       "year": 2026,
       "month": 3,
       "region": "Manhattan",
-      "totalDays": 663865,
-      "bookedDays": 139549,
-      "occupancyRate": 21.02068944740271
+      "totalDays": 296298,
+      "bookedDays": 63895,
+      "occupancyRate": 21.564438504478602
     },
     {
       "year": 2026,
       "month": 4,
       "region": "Manhattan",
-      "totalDays": 642450,
-      "bookedDays": 135571,
-      "occupancyRate": 21.102186940617948
+      "totalDays": 286740,
+      "bookedDays": 62845,
+      "occupancyRate": 21.91706772686057
     },
     {
       "year": 2026,
       "month": 5,
       "region": "Manhattan",
-      "totalDays": 663865,
-      "bookedDays": 192994,
-      "occupancyRate": 29.071272020666854
+      "totalDays": 296298,
+      "bookedDays": 82961,
+      "occupancyRate": 27.999176504735097
     },
     {
       "year": 2026,
       "month": 6,
       "region": "Manhattan",
-      "totalDays": 642450,
-      "bookedDays": 182525,
-      "occupancyRate": 28.4107712662464
+      "totalDays": 286740,
+      "bookedDays": 79681,
+      "occupancyRate": 27.78858896561345
     },
     {
       "year": 2026,
       "month": 7,
       "region": "Manhattan",
-      "totalDays": 663865,
-      "bookedDays": 185527,
-      "occupancyRate": 27.946495145850434
+      "totalDays": 296298,
+      "bookedDays": 79690,
+      "occupancyRate": 26.895220352482973
     },
     {
       "year": 2026,
       "month": 8,
       "region": "Manhattan",
-      "totalDays": 663865,
-      "bookedDays": 245474,
-      "occupancyRate": 36.9764937148366
+      "totalDays": 296298,
+      "bookedDays": 95682,
+      "occupancyRate": 32.29248931818642
     },
     {
       "year": 2026,
       "month": 9,
       "region": "Manhattan",
-      "totalDays": 642450,
-      "bookedDays": 239175,
-      "occupancyRate": 37.22857809946299
+      "totalDays": 286740,
+      "bookedDays": 94561,
+      "occupancyRate": 32.97795912673502
     },
     {
       "year": 2026,
       "month": 10,
       "region": "Manhattan",
-      "totalDays": 663865,
-      "bookedDays": 246560,
-      "occupancyRate": 37.14008119120604
+      "totalDays": 296298,
+      "bookedDays": 98294,
+      "occupancyRate": 33.17403424930306
     },
     {
       "year": 2026,
       "month": 11,
       "region": "Manhattan",
-      "totalDays": 21510,
-      "bookedDays": 8727,
-      "occupancyRate": 40.57182705718271
+      "totalDays": 9623,
+      "bookedDays": 3383,
+      "occupancyRate": 35.155356957289825
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "region": "Queens",
+      "totalDays": 105772,
+      "bookedDays": 22381,
+      "occupancyRate": 21.159664183337746
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "region": "Queens",
+      "totalDays": 95536,
+      "bookedDays": 23586,
+      "occupancyRate": 24.68807569921286
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "region": "Queens",
+      "totalDays": 105772,
+      "bookedDays": 25194,
+      "occupancyRate": 23.819158189312862
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "region": "Queens",
+      "totalDays": 102360,
+      "bookedDays": 23908,
+      "occupancyRate": 23.35677999218445
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "region": "Queens",
+      "totalDays": 105772,
+      "bookedDays": 34065,
+      "occupancyRate": 32.206065877547935
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "region": "Queens",
+      "totalDays": 102360,
+      "bookedDays": 32648,
+      "occupancyRate": 31.895271590465025
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "region": "Queens",
+      "totalDays": 105772,
+      "bookedDays": 33334,
+      "occupancyRate": 31.514956699315512
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "region": "Queens",
+      "totalDays": 105772,
+      "bookedDays": 43929,
+      "occupancyRate": 41.53178534961994
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "region": "Queens",
+      "totalDays": 102360,
+      "bookedDays": 42438,
+      "occupancyRate": 41.45955451348183
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "region": "Queens",
+      "totalDays": 105772,
+      "bookedDays": 43335,
+      "occupancyRate": 40.970200052944065
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "region": "Queens",
+      "totalDays": 3417,
+      "bookedDays": 1701,
+      "occupancyRate": 49.78050921861282
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "region": "Staten Island",
+      "totalDays": 9734,
+      "bookedDays": 954,
+      "occupancyRate": 9.800698582288884
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "region": "Staten Island",
+      "totalDays": 8792,
+      "bookedDays": 1001,
+      "occupancyRate": 11.385350318471337
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "region": "Staten Island",
+      "totalDays": 9734,
+      "bookedDays": 1211,
+      "occupancyRate": 12.440928703513459
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "region": "Staten Island",
+      "totalDays": 9420,
+      "bookedDays": 1063,
+      "occupancyRate": 11.284501061571126
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "region": "Staten Island",
+      "totalDays": 9734,
+      "bookedDays": 2110,
+      "occupancyRate": 21.676597493322376
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "region": "Staten Island",
+      "totalDays": 9420,
+      "bookedDays": 1880,
+      "occupancyRate": 19.957537154989385
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "region": "Staten Island",
+      "totalDays": 9734,
+      "bookedDays": 2103,
+      "occupancyRate": 21.60468461064311
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "region": "Staten Island",
+      "totalDays": 9734,
+      "bookedDays": 3664,
+      "occupancyRate": 37.641257448119994
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "region": "Staten Island",
+      "totalDays": 9420,
+      "bookedDays": 3520,
+      "occupancyRate": 37.367303609341825
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "region": "Staten Island",
+      "totalDays": 9734,
+      "bookedDays": 3692,
+      "occupancyRate": 37.928908978837065
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "region": "Staten Island",
+      "totalDays": 314,
+      "bookedDays": 166,
+      "occupancyRate": 52.86624203821656
     }
   ],
   "monthlyOccupancyOverall": [
@@ -470,16 +822,136 @@
   ],
   "hostPerformance": [
     {
+      "hostType": "Individual host",
+      "hostCount": 7990,
+      "listingCount": 7990,
+      "avgRating": 4.80857074569788,
+      "occupancyRate": 32.506454667960064
+    },
+    {
       "hostType": "Professional host",
-      "hostCount": 1,
-      "listingCount": 21415,
-      "avgRating": null,
-      "occupancyRate": 28.236683727132572
+      "hostCount": 2370,
+      "listingCount": 13425,
+      "avgRating": 4.664198762035742,
+      "occupancyRate": 25.695476611813294
     }
   ],
   "reviewGroupCounts": {
-    "highReviews": 0,
-    "lowReviews": 0
+    "highReviews": 451538,
+    "lowReviews": 57639
   },
-  "sentimentTerms": []
+  "sentimentTerms": [
+    {
+      "term": "defectueux",
+      "group": "Low-rating reviews",
+      "strength": -4.554649026464485,
+      "highCount": 0,
+      "lowCount": 2
+    },
+    {
+      "term": "unresponsive",
+      "group": "Low-rating reviews",
+      "strength": -4.42425238920881,
+      "highCount": 26,
+      "lowCount": 73
+    },
+    {
+      "term": "insalubre",
+      "group": "Low-rating reviews",
+      "strength": -4.291614620630691,
+      "highCount": 1,
+      "lowCount": 4
+    },
+    {
+      "term": "deposit",
+      "group": "Low-rating reviews",
+      "strength": -4.1324160257814375,
+      "highCount": 66,
+      "lowCount": 149
+    },
+    {
+      "term": "scam",
+      "group": "Low-rating reviews",
+      "strength": -4.028580214796897,
+      "highCount": 23,
+      "lowCount": 49
+    },
+    {
+      "term": "smelly",
+      "group": "Low-rating reviews",
+      "strength": -3.98717395247217,
+      "highCount": 40,
+      "lowCount": 82
+    },
+    {
+      "term": "rude",
+      "group": "Low-rating reviews",
+      "strength": -3.670973144431717,
+      "highCount": 130,
+      "lowCount": 212
+    },
+    {
+      "term": "dirty",
+      "group": "Low-rating reviews",
+      "strength": -3.5306285749593456,
+      "highCount": 645,
+      "lowCount": 952
+    },
+    {
+      "term": "calme",
+      "group": "High-rating reviews",
+      "strength": 0.8925380602447468,
+      "highCount": 2893,
+      "lowCount": 198
+    },
+    {
+      "term": "spacieux",
+      "group": "High-rating reviews",
+      "strength": 0.8998333762010786,
+      "highCount": 1066,
+      "lowCount": 72
+    },
+    {
+      "term": "quiet",
+      "group": "High-rating reviews",
+      "strength": 0.9816455625200707,
+      "highCount": 43777,
+      "lowCount": 2829
+    },
+    {
+      "term": "comfortable",
+      "group": "High-rating reviews",
+      "strength": 1.0103230307738627,
+      "highCount": 76973,
+      "lowCount": 4877
+    },
+    {
+      "term": "spacious",
+      "group": "High-rating reviews",
+      "strength": 1.1164241894910685,
+      "highCount": 30927,
+      "lowCount": 1820
+    },
+    {
+      "term": "wonderful",
+      "group": "High-rating reviews",
+      "strength": 1.6912559335715631,
+      "highCount": 36352,
+      "lowCount": 1436
+    },
+    {
+      "term": "lovely",
+      "group": "High-rating reviews",
+      "strength": 1.7954751209647422,
+      "highCount": 30156,
+      "lowCount": 1108
+    },
+    {
+      "term": "beautiful",
+      "group": "High-rating reviews",
+      "strength": 1.813864069054141,
+      "highCount": 36244,
+      "lowCount": 1315
+    }
+  ]
 }
