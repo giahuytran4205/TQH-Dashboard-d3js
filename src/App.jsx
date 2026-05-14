@@ -36,6 +36,13 @@ const EMPTY_SELECTION = Object.freeze({
   brush: null,
 });
 
+const STATIC_METRIC_CHART_KINDS = new Set([
+  "occupancyLines",
+  "policyHeatmap",
+  "hostPerformanceBars",
+  "experienceWordCloud",
+]);
+
 export default function App() {
   const { data, columns, loading, error } = useCsvData(DASHBOARD_CONFIG);
   const [filterValues, setFilterValues] = useState(() =>
@@ -111,44 +118,6 @@ export default function App() {
     [filteredData, selection]
   );
 
-  const scatterData = useMemo(
-    () =>
-      applyChartSelection(
-        filteredData,
-        {
-          region: selection.region,
-          roomType: selection.roomType,
-          brush: null,
-        },
-        DASHBOARD_CONFIG
-      ),
-    [filteredData, selection.region, selection.roomType]
-  );
-
-  const regionSelection = useMemo(
-    () =>
-      selection.region
-        ? {
-            region: selection.region,
-            roomType: null,
-            brush: null,
-          }
-        : EMPTY_SELECTION,
-    [selection.region]
-  );
-
-  const roomTypeSelection = useMemo(
-    () =>
-      selection.roomType
-        ? {
-            region: null,
-            roomType: selection.roomType,
-            brush: null,
-          }
-        : EMPTY_SELECTION,
-    [selection.roomType]
-  );
-
   const kpiItems = useMemo(() => {
     if (loading) {
       return DASHBOARD_CONFIG.kpis.map((item) => ({
@@ -216,29 +185,39 @@ export default function App() {
     };
   }, [data.length, error, geoError, loading]);
 
+  const dataChartCards = useMemo(
+    () =>
+      DASHBOARD_CONFIG.chartCards
+        .filter((chart) => !STATIC_METRIC_CHART_KINDS.has(chart.kind))
+        .map((chart) => ({
+          ...chart,
+          data: selectedData,
+          selection,
+        })),
+    [selection, selectedData]
+  );
+
+  const metricChartCards = useMemo(
+    () =>
+      DASHBOARD_CONFIG.chartCards
+        .filter((chart) => STATIC_METRIC_CHART_KINDS.has(chart.kind))
+        .map((chart) => ({
+          ...chart,
+          metrics: derivedMetrics,
+          selection: EMPTY_SELECTION,
+        })),
+    []
+  );
+
   const chartCards = useMemo(
     () =>
-      DASHBOARD_CONFIG.chartCards.map((chart) => {
-        switch (chart.kind) {
-          case "choropleth":
-          case "capacityHeatmap":
-          case "priceBoxplot":
-            return { ...chart, data: selectedData, selection: regionSelection };
-          case "occupancyLines":
-            return { ...chart, metrics: derivedMetrics, selection: regionSelection };
-          case "qualityScatter":
-          case "goodDealScatter":
-          case "costTrend":
-            return { ...chart, data: scatterData, selection: roomTypeSelection };
-          case "policyHeatmap":
-          case "hostPerformance":
-          case "sentimentBars":
-            return { ...chart, metrics: derivedMetrics, selection: EMPTY_SELECTION };
-          default:
-            return { ...chart, data: selectedData, selection: EMPTY_SELECTION };
-        }
-      }),
-    [regionSelection, roomTypeSelection, scatterData, selectedData]
+      DASHBOARD_CONFIG.chartCards.map(
+        (chart) =>
+          dataChartCards.find((item) => item.id === chart.id) ??
+          metricChartCards.find((item) => item.id === chart.id) ??
+          chart
+      ),
+    [dataChartCards, metricChartCards]
   );
 
   const updateSelection = useCallback(

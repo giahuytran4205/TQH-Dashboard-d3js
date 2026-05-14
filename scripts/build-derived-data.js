@@ -15,68 +15,161 @@ const DATA_YEAR = 2026;
 const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1);
 const MIN_NIGHTS_GROUPS = ["Short <=3", "Medium 4-7", "Long >7"];
 
-const termRules = [
-  "great",
+const positiveTerms = [
   "clean",
-  "comfortable",
-  "friendly",
-  "helpful",
-  "excellent",
-  "beautiful",
-  "lovely",
-  "wonderful",
-  "perfect",
-  "quiet",
-  "safe",
-  "convenient",
   "location",
+  "comfortable",
   "recommend",
+  "subway",
+  "easy",
+  "perfect",
+  "close",
+  "quiet",
+  "helpful",
+  "neighborhood",
+  "restaurants",
+  "amazing",
   "responsive",
+  "friendly",
+  "walk",
+  "wonderful",
+  "beautiful",
   "spacious",
-  "nice",
-  "well located",
+  "kitchen",
+  "safe",
+  "lovely",
+  "experience",
+  "bathroom",
+  "airbnb",
   "great location",
-  "good location",
-  "propre",
-  "agreable",
-  "confortable",
-  "sympathique",
-  "spacieux",
-  "calme",
-  "bon emplacement",
-  "bien situe",
-  "tres bien situe",
-  "bad",
+  "good communication",
+  "highly recommend",
+  "easy check in",
+  "close to subway",
+  "would stay again",
+  "perfect location",
+  "well located",
+  "clean apartment",
+  "responsive host",
+  "comfortable bed",
+  "quiet neighborhood",
+  "great host",
+  "best airbnb",
+  "beautifully decorated",
+  "immaculate",
+  "lovely clean",
+  "stocked kitchen",
+  "warm welcome",
+  "gorgeous",
+  "historic",
+  "attention detail",
+  "amazing stay",
+  "wonderful experience",
+  "safe neighborhood",
+  "super clean",
+  "excellent communication",
+];
+
+const negativeTerms = [
   "dirty",
-  "noise",
   "noisy",
-  "loud",
   "small",
-  "tiny",
-  "smelly",
-  "problem",
-  "issue",
   "broken",
   "rude",
-  "unsafe",
-  "unresponsive",
+  "smell",
+  "bug",
+  "issue",
+  "problem",
   "uncomfortable",
-  "cancelled",
-  "canceled",
-  "scam",
-  "refund",
-  "deposit",
-  "bruyant",
-  "sale",
-  "odeur",
-  "petit",
-  "probleme",
-  "defectueux",
-  "insalubre",
-].map((term) => ({
+  "unsafe",
+  "late check in",
+  "not clean",
+  "not as described",
+  "poor communication",
+  "hidden fees",
+  "too expensive",
+  "cancel reservation",
+  "worst experience",
+  "security deposit",
+  "infestation",
+  "smelly",
+  "disgusting",
+  "terrible experience",
+  "unresponsive",
+  "smaller pictures",
+  "receptionist",
+  "noisy street",
+  "tiny room",
+  "bad location",
+  "dirty bathroom",
+  "missing towel",
+  "cold room",
+  "air conditioning issue",
+  "unclean",
+  "poor value",
+  "noise",
+  "complaint",
+  "maintenance",
+  "stained",
+  "cigarette",
+];
+
+const termRules = [...positiveTerms, ...negativeTerms].map((term) => ({
   term,
   pattern: makePattern(term),
 }));
+
+const REVIEW_THEME_TOKENS = new Set([
+  "clean",
+  "location",
+  "comfortable",
+  "recommend",
+  "subway",
+  "easy",
+  "perfect",
+  "close",
+  "quiet",
+  "helpful",
+  "neighborhood",
+  "restaurants",
+  "responsive",
+  "highly",
+  "amazing",
+  "friendly",
+  "safe",
+  "spacious",
+  "beautiful",
+  "lovely",
+  "experience",
+  "kitchen",
+  "bathroom",
+  "airbnb",
+  "city",
+  "walk",
+  "wonderful",
+  "convenient",
+  "cozy",
+  "charming",
+  "bed",
+  "communication",
+  "value",
+  "view",
+  "brooklyn",
+  "cleanliness",
+  "welcome",
+  "details",
+  "decorated",
+  "renovated",
+  "location",
+  "transportation",
+  "market",
+  "excellent",
+  "best",
+  "warm",
+  "beautifully",
+  "cleaned",
+  "subway",
+]);
 
 function parseNumber(value) {
   if (value === null || value === undefined || value === "") {
@@ -114,6 +207,15 @@ function normalizeText(value) {
     .replace(/[^a-z0-9\s']/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function extractReviewTokens(text) {
+  const tokens = normalizeText(text)
+    .split(" ")
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 3 && !/^\d+$/.test(token) && REVIEW_THEME_TOKENS.has(token));
+
+  return Array.from(new Set(tokens));
 }
 
 function makePattern(term) {
@@ -223,6 +325,7 @@ async function aggregateCalendar(listingById) {
   const monthlyOverallMap = new Map();
   const minNightsMap = new Map();
   const hostTypeOccupancyMap = new Map();
+  const observedMonths = new Set();
 
   const rl = readline.createInterface({
     input: fs.createReadStream(calendarPath),
@@ -255,6 +358,7 @@ async function aggregateCalendar(listingById) {
 
     const booked = parseNumber(row.is_booked) ?? (parseBoolean(row.is_available) === false ? 1 : 0);
     const minGroup = minNightsGroup(parseNumber(row.minimum_nights));
+    observedMonths.add(month);
 
     incrementCounter(monthlyRegionMap, `${month}|${listing.region}`, booked);
     incrementCounter(monthlyOverallMap, String(month), booked);
@@ -277,7 +381,7 @@ async function aggregateCalendar(listingById) {
         occupancyRate: counterToRate(counter),
       };
     }).sort((left, right) => left.region.localeCompare(right.region) || left.month - right.month),
-    monthlyOccupancyOverall: MONTHS.map((month) => {
+    monthlyOccupancyOverall: Array.from(observedMonths).sort((a, b) => a - b).map((month) => {
       const counter = monthlyOverallMap.get(String(month)) ?? makeCounter();
       return {
         year: DATA_YEAR,
@@ -287,7 +391,7 @@ async function aggregateCalendar(listingById) {
         occupancyRate: counterToRate(counter),
       };
     }),
-    monthlyOccupancyByMinNights: MONTHS.flatMap((month) =>
+    monthlyOccupancyByMinNights: Array.from(observedMonths).sort((a, b) => a - b).flatMap((month) =>
       MIN_NIGHTS_GROUPS.map((group) => {
         const counter = minNightsMap.get(`${month}|${group}`) ?? makeCounter();
         return {
@@ -312,6 +416,8 @@ function aggregateReviews(listingById) {
 
   const highCounts = new Map(termRules.map((rule) => [rule.term, 0]));
   const lowCounts = new Map(termRules.map((rule) => [rule.term, 0]));
+  const tokenHighCounts = new Map();
+  const tokenLowCounts = new Map();
   let highReviews = 0;
   let lowReviews = 0;
 
@@ -342,6 +448,11 @@ function aggregateReviews(listingById) {
       lowReviews += 1;
     }
 
+    extractReviewTokens(text).forEach((token) => {
+      const counts = isHigh ? tokenHighCounts : tokenLowCounts;
+      counts.set(token, (counts.get(token) ?? 0) + 1);
+    });
+
     termRules.forEach((rule) => {
       rule.pattern.lastIndex = 0;
       if (rule.pattern.test(text)) {
@@ -369,18 +480,37 @@ function aggregateReviews(listingById) {
     };
   });
 
-  const positive = scoredTerms
+  const tokenCounts = new Set([...tokenHighCounts.keys(), ...tokenLowCounts.keys()]);
+  const scoredTokens = Array.from(tokenCounts).map((token) => {
+    const highCount = tokenHighCounts.get(token) ?? 0;
+    const lowCount = tokenLowCounts.get(token) ?? 0;
+    const highRate = (highCount + 1) / (highReviews + 2);
+    const lowRate = (lowCount + 1) / (lowReviews + 2);
+    const strength = Math.log2(highRate / lowRate);
+
+    return {
+      term: token,
+      group: strength >= 0 ? "High-rating reviews" : "Low-rating reviews",
+      strength,
+      highCount,
+      lowCount,
+    };
+  });
+
+  const positive = [...scoredTerms, ...scoredTokens]
     .filter((term) => term.strength > 0)
-    .sort((left, right) => right.strength - left.strength)
-    .slice(0, 8);
-  const negative = scoredTerms
+    .sort((left, right) => right.highCount + right.lowCount - (left.highCount + left.lowCount))
+    .slice(0, 32);
+  const negative = [...scoredTerms, ...scoredTokens]
     .filter((term) => term.strength < 0)
     .sort((left, right) => left.strength - right.strength)
-    .slice(0, 8);
+    .slice(0, 32);
 
   return {
     reviewGroupCounts: { highReviews, lowReviews },
-    sentimentTerms: [...negative, ...positive].sort((left, right) => left.strength - right.strength),
+    sentimentTerms: [...negative, ...positive]
+      .filter((term, index, array) => array.findIndex((item) => item.term === term.term) === index)
+      .sort((left, right) => (right.highCount + right.lowCount) - (left.highCount + left.lowCount)),
   };
 }
 

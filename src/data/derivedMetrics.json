@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-14T15:14:46.913Z",
+  "generatedAt": "2026-05-14T17:13:04.212Z",
   "sourceYear": 2026,
   "listingCount": 21415,
   "monthlyOccupancyByRegion": [
@@ -521,13 +521,6 @@
       "totalDays": 21510,
       "bookedDays": 8727,
       "occupancyRate": 40.57182705718271
-    },
-    {
-      "year": 2026,
-      "month": 12,
-      "totalDays": 0,
-      "bookedDays": 0,
-      "occupancyRate": null
     }
   ],
   "monthlyOccupancyByMinNights": [
@@ -794,30 +787,6 @@
       "totalDays": 17449,
       "bookedDays": 6398,
       "occupancyRate": 36.66685769958164
-    },
-    {
-      "year": 2026,
-      "month": 12,
-      "minNightsGroup": "Short <=3",
-      "totalDays": 0,
-      "bookedDays": 0,
-      "occupancyRate": null
-    },
-    {
-      "year": 2026,
-      "month": 12,
-      "minNightsGroup": "Medium 4-7",
-      "totalDays": 0,
-      "bookedDays": 0,
-      "occupancyRate": null
-    },
-    {
-      "year": 2026,
-      "month": 12,
-      "minNightsGroup": "Long >7",
-      "totalDays": 0,
-      "bookedDays": 0,
-      "occupancyRate": null
     }
   ],
   "hostPerformance": [
@@ -842,81 +811,18 @@
   },
   "sentimentTerms": [
     {
-      "term": "defectueux",
-      "group": "Low-rating reviews",
-      "strength": -4.554649026464485,
-      "highCount": 0,
-      "lowCount": 2
-    },
-    {
-      "term": "unresponsive",
-      "group": "Low-rating reviews",
-      "strength": -4.42425238920881,
-      "highCount": 26,
-      "lowCount": 73
-    },
-    {
-      "term": "insalubre",
-      "group": "Low-rating reviews",
-      "strength": -4.291614620630691,
-      "highCount": 1,
-      "lowCount": 4
-    },
-    {
-      "term": "deposit",
-      "group": "Low-rating reviews",
-      "strength": -4.1324160257814375,
-      "highCount": 66,
-      "lowCount": 149
-    },
-    {
-      "term": "scam",
-      "group": "Low-rating reviews",
-      "strength": -4.028580214796897,
-      "highCount": 23,
-      "lowCount": 49
-    },
-    {
-      "term": "smelly",
-      "group": "Low-rating reviews",
-      "strength": -3.98717395247217,
-      "highCount": 40,
-      "lowCount": 82
-    },
-    {
-      "term": "rude",
-      "group": "Low-rating reviews",
-      "strength": -3.670973144431717,
-      "highCount": 130,
-      "lowCount": 212
-    },
-    {
-      "term": "dirty",
-      "group": "Low-rating reviews",
-      "strength": -3.5306285749593456,
-      "highCount": 645,
-      "lowCount": 952
-    },
-    {
-      "term": "calme",
+      "term": "clean",
       "group": "High-rating reviews",
-      "strength": 0.8925380602447468,
-      "highCount": 2893,
-      "lowCount": 198
+      "strength": 0.48507192730534215,
+      "highCount": 127910,
+      "lowCount": 11665
     },
     {
-      "term": "spacieux",
+      "term": "recommend",
       "group": "High-rating reviews",
-      "strength": 0.8998333762010786,
-      "highCount": 1066,
-      "lowCount": 72
-    },
-    {
-      "term": "quiet",
-      "group": "High-rating reviews",
-      "strength": 0.9816455625200707,
-      "highCount": 43777,
-      "lowCount": 2829
+      "strength": 0.8867811878311647,
+      "highCount": 79086,
+      "lowCount": 5459
     },
     {
       "term": "comfortable",
@@ -926,32 +832,326 @@
       "lowCount": 4877
     },
     {
-      "term": "spacious",
+      "term": "subway",
       "group": "High-rating reviews",
-      "strength": 1.1164241894910685,
-      "highCount": 30927,
-      "lowCount": 1820
+      "strength": 0.5664026931526044,
+      "highCount": 63557,
+      "lowCount": 5478
     },
     {
-      "term": "wonderful",
+      "term": "easy",
       "group": "High-rating reviews",
-      "strength": 1.6912559335715631,
-      "highCount": 36352,
-      "lowCount": 1436
+      "strength": 0.43887237866240886,
+      "highCount": 58286,
+      "lowCount": 5488
     },
     {
-      "term": "lovely",
+      "term": "perfect",
       "group": "High-rating reviews",
-      "strength": 1.7954751209647422,
-      "highCount": 30156,
-      "lowCount": 1108
+      "strength": 0.7300105976904122,
+      "highCount": 56325,
+      "lowCount": 4334
     },
     {
-      "term": "beautiful",
+      "term": "close",
       "group": "High-rating reviews",
-      "strength": 1.813864069054141,
-      "highCount": 36244,
-      "lowCount": 1315
+      "strength": 0.2585033589673392,
+      "highCount": 54191,
+      "lowCount": 5782
+    },
+    {
+      "term": "quiet",
+      "group": "High-rating reviews",
+      "strength": 0.9816455625200707,
+      "highCount": 43777,
+      "lowCount": 2829
+    },
+    {
+      "term": "restaurants",
+      "group": "High-rating reviews",
+      "strength": 0.8235122945939204,
+      "highCount": 43100,
+      "lowCount": 3108
+    },
+    {
+      "term": "helpful",
+      "group": "High-rating reviews",
+      "strength": 0.5697409734426243,
+      "highCount": 42287,
+      "lowCount": 3636
+    },
+    {
+      "term": "neighborhood",
+      "group": "High-rating reviews",
+      "strength": 1.0145927521842462,
+      "highCount": 43079,
+      "lowCount": 2721
+    },
+    {
+      "term": "responsive",
+      "group": "High-rating reviews",
+      "strength": 0.7529449311782358,
+      "highCount": 41861,
+      "lowCount": 3170
+    },
+    {
+      "term": "highly",
+      "group": "High-rating reviews",
+      "strength": 1.5564762617189132,
+      "highCount": 40529,
+      "lowCount": 1758
+    },
+    {
+      "term": "amazing",
+      "group": "High-rating reviews",
+      "strength": 0.8291227078803564,
+      "highCount": 39218,
+      "lowCount": 2817
+    },
+    {
+      "term": "friendly",
+      "group": "High-rating reviews",
+      "strength": 0.45549553094105777,
+      "highCount": 37628,
+      "lowCount": 3502
+    },
+    {
+      "term": "brooklyn",
+      "group": "High-rating reviews",
+      "strength": 1.4655517639396514,
+      "highCount": 37253,
+      "lowCount": 1721
+    },
+    {
+      "term": "walk",
+      "group": "High-rating reviews",
+      "strength": 0.5978209078104504,
+      "highCount": 34914,
+      "lowCount": 2944
+    },
+    {
+      "term": "dirty",
+      "group": "Low-rating reviews",
+      "strength": -3.5306285749593456,
+      "highCount": 645,
+      "lowCount": 952
+    },
+    {
+      "term": "smell",
+      "group": "Low-rating reviews",
+      "strength": -2.3878705803390368,
+      "highCount": 915,
+      "lowCount": 611
+    },
+    {
+      "term": "uncomfortable",
+      "group": "Low-rating reviews",
+      "strength": -2.111610413092011,
+      "highCount": 947,
+      "lowCount": 522
+    },
+    {
+      "term": "broken",
+      "group": "Low-rating reviews",
+      "strength": -3.4012220716639154,
+      "highCount": 412,
+      "lowCount": 556
+    },
+    {
+      "term": "maintenance",
+      "group": "Low-rating reviews",
+      "strength": -2.9043602778653854,
+      "highCount": 383,
+      "lowCount": 366
+    },
+    {
+      "term": "rude",
+      "group": "Low-rating reviews",
+      "strength": -3.670973144431717,
+      "highCount": 130,
+      "lowCount": 212
+    },
+    {
+      "term": "stained",
+      "group": "Low-rating reviews",
+      "strength": -3.5286538179315405,
+      "highCount": 111,
+      "lowCount": 164
+    },
+    {
+      "term": "not clean",
+      "group": "Low-rating reviews",
+      "strength": -3.5941773906511223,
+      "highCount": 95,
+      "lowCount": 147
+    },
+    {
+      "term": "bug",
+      "group": "Low-rating reviews",
+      "strength": -2.125805727660611,
+      "highCount": 139,
+      "lowCount": 77
+    },
+    {
+      "term": "cigarette",
+      "group": "Low-rating reviews",
+      "strength": -3.434649250353855,
+      "highCount": 70,
+      "lowCount": 97
+    },
+    {
+      "term": "disgusting",
+      "group": "Low-rating reviews",
+      "strength": -4.730498861863903,
+      "highCount": 35,
+      "lowCount": 121
+    },
+    {
+      "term": "smelly",
+      "group": "Low-rating reviews",
+      "strength": -3.98717395247217,
+      "highCount": 40,
+      "lowCount": 82
+    },
+    {
+      "term": "receptionist",
+      "group": "Low-rating reviews",
+      "strength": -4.085163743163265,
+      "highCount": 35,
+      "lowCount": 77
+    },
+    {
+      "term": "unresponsive",
+      "group": "Low-rating reviews",
+      "strength": -4.42425238920881,
+      "highCount": 26,
+      "lowCount": 73
+    },
+    {
+      "term": "too expensive",
+      "group": "Low-rating reviews",
+      "strength": -2.6895786065505938,
+      "highCount": 50,
+      "lowCount": 41
+    },
+    {
+      "term": "unclean",
+      "group": "Low-rating reviews",
+      "strength": -3.9152387417209527,
+      "highCount": 26,
+      "lowCount": 51
+    },
+    {
+      "term": "tiny room",
+      "group": "Low-rating reviews",
+      "strength": -3.2397756891110734,
+      "highCount": 33,
+      "lowCount": 40
+    },
+    {
+      "term": "terrible experience",
+      "group": "Low-rating reviews",
+      "strength": -4.192078947079777,
+      "highCount": 20,
+      "lowCount": 48
+    },
+    {
+      "term": "worst experience",
+      "group": "Low-rating reviews",
+      "strength": -4.706652119909535,
+      "highCount": 14,
+      "lowCount": 49
+    },
+    {
+      "term": "security deposit",
+      "group": "Low-rating reviews",
+      "strength": -4.4291181443806265,
+      "highCount": 15,
+      "lowCount": 43
+    },
+    {
+      "term": "infestation",
+      "group": "Low-rating reviews",
+      "strength": -3.895685944299552,
+      "highCount": 19,
+      "lowCount": 37
+    },
+    {
+      "term": "hidden fees",
+      "group": "Low-rating reviews",
+      "strength": -5.002108003435707,
+      "highCount": 10,
+      "lowCount": 44
+    },
+    {
+      "term": "dirty bathroom",
+      "group": "Low-rating reviews",
+      "strength": -5.17132038691298,
+      "highCount": 4,
+      "lowCount": 22
+    },
+    {
+      "term": "poor communication",
+      "group": "Low-rating reviews",
+      "strength": -3.735221272106306,
+      "highCount": 9,
+      "lowCount": 16
+    },
+    {
+      "term": "not as described",
+      "group": "Low-rating reviews",
+      "strength": -3.969686525743329,
+      "highCount": 7,
+      "lowCount": 15
+    },
+    {
+      "term": "bad location",
+      "group": "Low-rating reviews",
+      "strength": -3.554649026464485,
+      "highCount": 7,
+      "lowCount": 11
+    },
+    {
+      "term": "cold room",
+      "group": "Low-rating reviews",
+      "strength": -2.095217407827188,
+      "highCount": 10,
+      "lowCount": 5
+    },
+    {
+      "term": "poor value",
+      "group": "Low-rating reviews",
+      "strength": -5.291614620630691,
+      "highCount": 0,
+      "lowCount": 4
+    },
+    {
+      "term": "cancel reservation",
+      "group": "Low-rating reviews",
+      "strength": -4.554649026464485,
+      "highCount": 0,
+      "lowCount": 2
+    },
+    {
+      "term": "attention detail",
+      "group": "Low-rating reviews",
+      "strength": -1.9696865257433291,
+      "highCount": 1,
+      "lowCount": 0
+    },
+    {
+      "term": "smaller pictures",
+      "group": "Low-rating reviews",
+      "strength": -2.969686525743329,
+      "highCount": 0,
+      "lowCount": 0
+    },
+    {
+      "term": "air conditioning issue",
+      "group": "Low-rating reviews",
+      "strength": -2.969686525743329,
+      "highCount": 0,
+      "lowCount": 0
     }
   ]
 }

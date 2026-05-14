@@ -5,6 +5,16 @@ import { formatCount, formatCurrency, formatNumber } from "../../utils/format";
 const SIZE = { width: 760, height: 430 };
 const TOOLTIP_ID = "d3-chart-tooltip";
 const MAX_POINTS = 1000;
+const MAX_GOOD_DEAL_POINTS = 20000;
+const BOROUGH_ORDER = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+const HOST_TYPE_AXIS_LABELS = {
+  "Individual host": "Individual",
+  "Professional host": "Professional",
+};
+const HOST_TYPE_LABELS = {
+  "Individual host": "Cá nhân (1 phòng)",
+  "Professional host": "Chuyên nghiệp (Nhiều phòng)",
+};
 
 const COLORS = {
   blue: "#2563eb",
@@ -21,11 +31,37 @@ const COLORS = {
 
 const ROOM_COLORS = d3
   .scaleOrdinal()
-  .domain(["Entire home/apt", "Private room", "Shared room", "Hotel room"])
-  .range(["#2563eb", "#0f766e", "#f97316", "#8b5cf6"]);
+  .domain(["Entire home/apt", "Hotel room", "Private room", "Shared room"])
+  .range(["#4e79a7", "#f28e2b", "#e15759", "#76b7b2"]);
+
+const ROOM_TYPE_OFFSETS = new Map(
+  ROOM_COLORS.domain().map((roomType, index, domain) => [
+    roomType,
+    (index - (domain.length - 1) / 2) * 8,
+  ])
+);
+
+const HOST_COLORS = d3
+  .scaleOrdinal()
+  .domain(["Individual host", "Professional host"])
+  .range(["#4e79a7", "#f28e2b"]);
 
 const REGION_COLORS = d3.scaleOrdinal(d3.schemeTableau10);
 const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1);
+const MONTH_NAMES = {
+  1: "Jan",
+  2: "Feb",
+  3: "Mar",
+  4: "Apr",
+  5: "May",
+  6: "Jun",
+  7: "Jul",
+  8: "Aug",
+  9: "Sep",
+  10: "Oct",
+  11: "Nov",
+  12: "Dec",
+};
 
 function InteractiveChart({
   chart,
@@ -65,29 +101,29 @@ function InteractiveChart({
         case "occupancyLines":
           drawOccupancyLines(svg, metrics, selection, onRegionToggle);
           break;
-        case "capacityHeatmap":
-          drawCapacityHeatmap(svg, data, selection, onRegionToggle);
+        case "stackedRoomTypeBars":
+          drawStackedRoomTypeBars(svg, data, selection, onRegionToggle);
           break;
-        case "qualityScatter":
-          drawQualityScatter(svg, data, selection, onRoomTypeToggle);
+        case "ratingBoxplot":
+          drawRatingBoxplot(svg, data, selection, onRegionToggle);
           break;
         case "priceBoxplot":
-          drawPriceBoxplot(svg, data, selection, onRegionToggle);
+          drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle);
           break;
         case "goodDealScatter":
           drawGoodDealScatter(svg, data, selection, onRoomTypeToggle);
           break;
-        case "costTrend":
-          drawCostTrend(svg, data, selection, onRoomTypeToggle);
+        case "pricePerPersonGroupedBars":
+          drawPricePerPersonGroupedBars(svg, data, selection, onRoomTypeToggle);
           break;
         case "policyHeatmap":
           drawPolicyHeatmap(svg, metrics);
           break;
-        case "hostPerformance":
-          drawHostPerformance(svg, metrics);
+        case "hostPerformanceBars":
+          drawHostPerformanceBars(svg, metrics);
           break;
-        case "sentimentBars":
-          drawSentimentBars(svg, metrics);
+        case "experienceWordCloud":
+          drawExperienceWordCloud(svg, metrics);
           break;
         default:
           drawEmptyState(svg, chart.title, "Unsupported chart type.");
@@ -108,6 +144,10 @@ function drawEmptyState(svg, title, message) {
   const center = svg.append("g").attr("transform", `translate(${SIZE.width / 2}, ${SIZE.height / 2})`);
   center.append("text").attr("class", "placeholder-title").attr("y", -10).text(title);
   center.append("text").attr("class", "placeholder-subtitle").attr("y", 18).text(message);
+}
+
+function monthName(value) {
+  return MONTH_NAMES[Number(value)] ?? String(value);
 }
 
 function drawFrame(svg) {
@@ -195,16 +235,20 @@ function drawOccupancyLines(svg, metrics, selection, onRegionToggle) {
     return;
   }
 
+  const months = Array.from(new Set(rows.map((row) => row.month))).sort((a, b) => a - b);
   drawFrame(svg);
   const margin = { top: 30, right: 132, bottom: 54, left: 62 };
-  const x = d3.scalePoint().domain(MONTHS).range([margin.left, SIZE.width - margin.right]).padding(0.35);
+  const x = d3.scalePoint().domain(months).range([margin.left, SIZE.width - margin.right]).padding(0.35);
   const y = d3
     .scaleLinear()
     .domain([0, Math.ceil((d3.max(rows, (row) => row.occupancyRate) ?? 0) / 10) * 10])
     .nice()
     .range([SIZE.height - margin.bottom, margin.top]);
 
-  drawXYAxes(svg, x, y, margin, "Month", "Occupancy %", { yFormat: (d) => `${d}%` });
+  drawXYAxes(svg, x, y, margin, "Month", "Occupancy %", {
+    xFormat: (d) => monthName(d),
+    yFormat: (d) => `${d}%`,
+  });
 
   const byRegion = d3.group(rows, (row) => row.region);
   REGION_COLORS.domain(Array.from(byRegion.keys()));
@@ -251,6 +295,461 @@ function drawOccupancyLines(svg, metrics, selection, onRegionToggle) {
   }));
 
   drawColorLegend(svg, Array.from(byRegion.keys()), REGION_COLORS, SIZE.width - 118, 42, onRegionToggle);
+}
+
+function drawStackedRoomTypeBars(svg, data, selection, onRegionToggle) {
+  const rows = data.filter(
+    (row) => row.neighbourhood_group_cleansed && row.room_type && ROOM_COLORS.domain().includes(row.room_type)
+  );
+  const regions = BOROUGH_ORDER.filter((region) => rows.some((row) => row.neighbourhood_group_cleansed === region));
+  const roomTypes = ROOM_COLORS.domain();
+
+  if (!regions.length) {
+    drawEmptyState(svg, "No supply data", "No borough and room type data match current filters.");
+    return;
+  }
+
+  const countsByRegion = regions.map((region) => {
+    const entry = { region };
+    roomTypes.forEach((roomType) => {
+      entry[roomType] = d3.sum(
+        rows,
+        (row) => (row.neighbourhood_group_cleansed === region && row.room_type === roomType ? 1 : 0)
+      );
+    });
+    return entry;
+  });
+
+  const stack = d3.stack().keys(roomTypes);
+  const series = stack(countsByRegion);
+  const maxTotal = d3.max(countsByRegion, (row) => d3.sum(roomTypes, (roomType) => row[roomType])) ?? 1;
+
+  drawFrame(svg);
+  const margin = { top: 34, right: 130, bottom: 60, left: 62 };
+  const x = d3.scaleBand().domain(regions).range([margin.left, SIZE.width - margin.right]).padding(0.16);
+  const y = d3.scaleLinear().domain([0, maxTotal]).nice().range([SIZE.height - margin.bottom, margin.top]);
+
+  drawXYAxes(svg, x, y, margin, "Borough", "Listings", {
+    yFormat: formatCompactCount,
+    tickLabelLimit: 12,
+  });
+
+  const groups = svg
+    .append("g")
+    .selectAll("g")
+    .data(series)
+    .join("g")
+    .attr("fill", (d) => ROOM_COLORS(d.key));
+
+  const segments = groups
+    .selectAll("rect")
+    .data((d) => d.map((segment) => ({ key: d.key, region: segment.data.region, count: segment.data[d.key], start: segment[0], end: segment[1] })))
+    .join("rect")
+    .attr("x", (d) => x(d.region))
+    .attr("y", (d) => y(d.end))
+    .attr("width", x.bandwidth())
+    .attr("height", (d) => Math.max(0, y(d.start) - y(d.end)))
+    .attr("rx", 4)
+    .attr("fill", (d) => ROOM_COLORS(d.key))
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 0.8)
+    .style("cursor", "pointer")
+    .style("opacity", (d) => (!selection.region || selection.region === d.region ? 1 : 0.28))
+    .on("click", (_, d) => onRegionToggle?.(d.region));
+
+  bindTooltip(segments, (d) => ({
+    title: `${d.region} - ${d.key}`,
+    lines: [{ label: "Listings", value: formatCount(d.count) }],
+  }));
+
+  svg
+    .append("g")
+    .selectAll("text")
+    .data(series.flatMap((serie) =>
+      serie.map((segment) => ({
+        key: serie.key,
+        region: segment.data.region,
+        count: segment.data[serie.key],
+        start: segment[0],
+        end: segment[1],
+      }))
+    ))
+    .join("text")
+    .attr("x", (d) => x(d.region) + x.bandwidth() / 2)
+    .attr("y", (d) => y((d.start + d.end) / 2) + 4)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#ffffff")
+    .attr("font-size", 10)
+    .attr("font-weight", 700)
+    .style("pointer-events", "none")
+    .text((d) => {
+      const height = y(d.start) - y(d.end);
+      return height > 18 ? formatCompactCount(d.count) : "";
+    });
+
+  drawColorLegend(svg, roomTypes, ROOM_COLORS, SIZE.width - 116, 34);
+}
+
+function drawRatingBoxplot(svg, data, selection, onRegionToggle) {
+  const rows = data.filter((row) => Number.isFinite(row.review_scores_rating));
+  const regions = BOROUGH_ORDER.filter((region) => rows.some((row) => row.neighbourhood_group_cleansed === region));
+
+  if (!regions.length) {
+    drawEmptyState(svg, "No rating data", "No borough ratings match current filters.");
+    return;
+  }
+
+  const stats = regions
+    .map((region) => ({
+      region,
+      ...computeBoxStats(rows.filter((row) => row.neighbourhood_group_cleansed === region).map((row) => row.review_scores_rating)),
+    }))
+    .filter((item) => item.count > 0);
+
+  drawFrame(svg);
+  const margin = { top: 30, right: 34, bottom: 58, left: 64 };
+  const x = d3.scaleBand().domain(regions).range([margin.left, SIZE.width - margin.right]).padding(0.18);
+  const y = d3.scaleLinear().domain([0, 5]).range([SIZE.height - margin.bottom, margin.top]);
+
+  drawXYAxes(svg, x, y, margin, "Borough", "Rating", {
+    yFormat: (d) => formatNumber(d, 1),
+    tickLabelLimit: 12,
+  });
+
+  const points = svg
+    .append("g")
+    .selectAll("circle")
+    .data(rows)
+    .join("circle")
+    .attr("cx", (d) => x(d.neighbourhood_group_cleansed) + x.bandwidth() / 2)
+    .attr("cy", (d) => y(d.review_scores_rating))
+    .attr("r", 3.4)
+    .attr("fill", COLORS.blue)
+    .attr("fill-opacity", 0.6)
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 0.5)
+    .style("opacity", (d) => (!selection.region || selection.region === d.neighbourhood_group_cleansed ? 1 : 0.18));
+
+  bindTooltip(points, (d) => ({
+    title: d.neighbourhood_cleansed || d.neighbourhood_group_cleansed,
+    lines: [
+      { label: "Borough", value: d.neighbourhood_group_cleansed ?? "Unknown" },
+      { label: "Rating", value: formatNumber(d.review_scores_rating, 2) },
+      { label: "Room type", value: d.room_type ?? "Unknown" },
+      { label: "Reviews", value: formatCount(d.number_of_reviews) },
+    ],
+  }));
+
+  const boxGroups = svg
+    .append("g")
+    .selectAll("g")
+    .data(stats)
+    .join("g")
+    .attr("transform", (d) => `translate(${x(d.region)}, 0)`)
+    .style("cursor", "pointer")
+    .style("opacity", (d) => (!selection.region || selection.region === d.region ? 1 : 0.25))
+    .on("click", (_, d) => onRegionToggle?.(d.region));
+
+  boxGroups
+    .append("line")
+    .attr("x1", x.bandwidth() / 2)
+    .attr("x2", x.bandwidth() / 2)
+    .attr("y1", (d) => y(d.lower))
+    .attr("y2", (d) => y(d.upper))
+    .attr("stroke", COLORS.slate)
+    .attr("stroke-width", 1.2);
+
+  boxGroups
+    .append("rect")
+    .attr("x", x.bandwidth() * 0.24)
+    .attr("y", (d) => y(d.q3))
+    .attr("width", x.bandwidth() * 0.52)
+    .attr("height", (d) => Math.max(2, y(d.q1) - y(d.q3)))
+    .attr("rx", 4)
+    .attr("fill", "#94a3b8")
+    .attr("fill-opacity", 0.35)
+    .attr("stroke", "#64748b")
+    .attr("stroke-width", 1);
+
+  boxGroups
+    .append("line")
+    .attr("x1", x.bandwidth() * 0.24)
+    .attr("x2", x.bandwidth() * 0.76)
+    .attr("y1", (d) => y(d.median))
+    .attr("y2", (d) => y(d.median))
+    .attr("stroke", COLORS.text)
+    .attr("stroke-width", 1.6);
+}
+
+function drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle) {
+  const rows = data.filter((row) => Number.isFinite(row.price) && row.price_is_outlier !== true);
+  const regions = BOROUGH_ORDER.filter((region) => rows.some((row) => row.neighbourhood_group_cleansed === region));
+
+  if (!regions.length) {
+    drawEmptyState(svg, "No price distribution", "No borough prices match current filters.");
+    return;
+  }
+
+  const stats = regions
+    .map((region) => ({
+      region,
+      ...computeBoxStats(rows.filter((row) => row.neighbourhood_group_cleansed === region).map((row) => row.price)),
+    }))
+    .filter((item) => item.count > 0);
+
+  drawFrame(svg);
+  const margin = { top: 30, right: 128, bottom: 58, left: 64 };
+  const x = d3.scaleBand().domain(regions).range([margin.left, SIZE.width - margin.right]).padding(0.18);
+  const y = d3.scaleLinear().domain([0, d3.max(rows, (row) => row.price) ?? 1]).nice().range([SIZE.height - margin.bottom, margin.top]);
+
+  drawXYAxes(svg, x, y, margin, "Borough", "Price", {
+    yFormat: (d) => formatCurrency(d, 0),
+    tickLabelLimit: 12,
+  });
+
+  const points = svg
+    .append("g")
+    .selectAll("circle")
+    .data(rows)
+    .join("circle")
+    .attr("cx", (d) => x(d.neighbourhood_group_cleansed) + x.bandwidth() / 2 + (ROOM_TYPE_OFFSETS.get(d.room_type) ?? 0))
+    .attr("cy", (d) => y(d.price))
+    .attr("r", 3.6)
+    .attr("fill", (d) => ROOM_COLORS(d.room_type))
+    .attr("fill-opacity", 0.85)
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 0.5)
+    .style("opacity", (d) => (!selection.region || selection.region === d.neighbourhood_group_cleansed ? 0.85 : 0.16));
+
+  bindTooltip(points, (d) => ({
+    title: d.neighbourhood_cleansed || d.neighbourhood_group_cleansed,
+    lines: [
+      { label: "Borough", value: d.neighbourhood_group_cleansed ?? "Unknown" },
+      { label: "Room type", value: d.room_type ?? "Unknown" },
+      { label: "Price", value: formatCurrency(d.price, 0) },
+      { label: "Reviews", value: formatCount(d.number_of_reviews) },
+    ],
+  }));
+
+  const boxGroups = svg
+    .append("g")
+    .selectAll("g")
+    .data(stats)
+    .join("g")
+    .attr("transform", (d) => `translate(${x(d.region)}, 0)`)
+    .style("cursor", "pointer")
+    .style("opacity", (d) => (!selection.region || selection.region === d.region ? 1 : 0.25))
+    .on("click", (_, d) => onRegionToggle?.(d.region));
+
+  boxGroups
+    .append("line")
+    .attr("x1", x.bandwidth() / 2)
+    .attr("x2", x.bandwidth() / 2)
+    .attr("y1", (d) => y(d.lower))
+    .attr("y2", (d) => y(d.upper))
+    .attr("stroke", COLORS.slate)
+    .attr("stroke-width", 1.2);
+
+  boxGroups
+    .append("rect")
+    .attr("x", x.bandwidth() * 0.24)
+    .attr("y", (d) => y(d.q3))
+    .attr("width", x.bandwidth() * 0.52)
+    .attr("height", (d) => Math.max(2, y(d.q1) - y(d.q3)))
+    .attr("rx", 4)
+    .attr("fill", "#94a3b8")
+    .attr("fill-opacity", 0.35)
+    .attr("stroke", "#64748b")
+    .attr("stroke-width", 1);
+
+  boxGroups
+    .append("line")
+    .attr("x1", x.bandwidth() * 0.24)
+    .attr("x2", x.bandwidth() * 0.76)
+    .attr("y1", (d) => y(d.median))
+    .attr("y2", (d) => y(d.median))
+    .attr("stroke", COLORS.text)
+    .attr("stroke-width", 1.6);
+
+  drawColorLegend(svg, ROOM_COLORS.domain(), ROOM_COLORS, SIZE.width - 116, 34);
+}
+
+function drawPricePerPersonGroupedBars(svg, data, selection, onRoomTypeToggle) {
+  const rows = data
+    .filter((row) => Number.isFinite(row.price) && Number.isFinite(row.accommodates) && row.accommodates > 0 && row.price_is_outlier !== true)
+    .map((row) => ({
+      ...row,
+      pricePerPerson: row.price / row.accommodates,
+    }));
+  const regions = BOROUGH_ORDER.filter((region) => rows.some((row) => row.neighbourhood_group_cleansed === region));
+  const roomTypes = ROOM_COLORS.domain();
+
+  if (!regions.length) {
+    drawEmptyState(svg, "No price-per-person data", "No grouped bar values match current filters.");
+    return;
+  }
+
+  const grouped = regions.map((region) => {
+    const entry = { region };
+    roomTypes.forEach((roomType) => {
+      const values = rows
+        .filter((row) => row.neighbourhood_group_cleansed === region && row.room_type === roomType)
+        .map((row) => row.pricePerPerson);
+      entry[roomType] = values.length ? d3.median(values) : null;
+      entry[`${roomType}Count`] = values.length;
+    });
+    return entry;
+  });
+
+  const maxValue = d3.max(grouped, (row) => d3.max(roomTypes, (roomType) => row[roomType] ?? 0)) ?? 1;
+
+  drawFrame(svg);
+  const margin = { top: 34, right: 128, bottom: 72, left: 64 };
+  const x0 = d3.scaleBand().domain(regions).range([margin.left, SIZE.width - margin.right]).padding(0.12);
+  const x1 = d3.scaleBand().domain(roomTypes).range([0, x0.bandwidth()]).padding(0.16);
+  const y = d3.scaleLinear().domain([0, maxValue]).nice().range([SIZE.height - margin.bottom, margin.top]);
+
+  drawXYAxes(svg, x0, y, margin, "Borough", "Median $ / guest", {
+    yFormat: (d) => formatCurrency(d, 0),
+    tickLabelLimit: 12,
+  });
+
+  const groups = svg
+    .append("g")
+    .selectAll("g")
+    .data(grouped)
+    .join("g")
+    .attr("transform", (d) => `translate(${x0(d.region)}, 0)`);
+
+  const bars = groups
+    .selectAll("rect")
+    .data((d) => roomTypes.map((roomType) => ({ region: d.region, roomType, value: d[roomType], count: d[`${roomType}Count`] })))
+    .join("rect")
+    .attr("x", (d) => x1(d.roomType))
+    .attr("y", (d) => (d.value == null ? y(0) : y(d.value)))
+    .attr("width", x1.bandwidth())
+    .attr("height", (d) => (d.value == null ? 0 : SIZE.height - margin.bottom - y(d.value)))
+    .attr("rx", 3)
+    .attr("fill", (d) => ROOM_COLORS(d.roomType))
+    .attr("fill-opacity", 0.92)
+    .style("cursor", "pointer")
+    .style("opacity", (d) => (!selection.roomType || selection.roomType === d.roomType ? 1 : 0.22))
+    .on("click", (_, d) => onRoomTypeToggle?.(d.roomType));
+
+  bindTooltip(bars, (d) => ({
+    title: `${d.region} - ${d.roomType}`,
+    lines: [
+      { label: "Median price/person", value: formatCurrency(d.value, 0) },
+      { label: "Listings", value: formatCount(d.count) },
+    ],
+  }));
+
+  groups
+    .selectAll("text.bar-label")
+    .data((d) => roomTypes.map((roomType) => ({ region: d.region, roomType, value: d[roomType], count: d[`${roomType}Count`] })))
+    .join("text")
+    .attr("class", "bar-label")
+    .attr("x", (d) => x1(d.roomType) + x1.bandwidth() / 2)
+    .attr("y", (d) => (d.value == null ? y(0) - 4 : y(d.value) - 4))
+    .attr("text-anchor", "middle")
+    .attr("fill", COLORS.text)
+    .attr("font-size", 10)
+    .text((d) => (d.value != null ? formatCurrency(d.value, 0) : ""));
+
+  drawColorLegend(svg, roomTypes, ROOM_COLORS, SIZE.width - 116, 34, onRoomTypeToggle);
+}
+
+function drawHostPerformanceBars(svg, metrics) {
+  const rows = metrics?.hostPerformance ?? [];
+  if (rows.length < 2) {
+    drawEmptyState(svg, "No host metrics", "Run npm run build-derived-data.");
+    return;
+  }
+
+  const displayRows = rows.map((row) => ({
+    ...row,
+    displayLabel: HOST_TYPE_LABELS[row.hostType] ?? row.hostType,
+    axisLabel: HOST_TYPE_AXIS_LABELS[row.hostType] ?? row.hostType,
+    occupancyShare: row.occupancyRate / 100,
+  })).sort((left, right) => {
+    const order = ["Individual host", "Professional host"];
+    return order.indexOf(left.hostType) - order.indexOf(right.hostType);
+  });
+
+  drawFrame(svg);
+  const margin = { top: 44, right: 44, bottom: 72, left: 84 };
+  const panelGap = 32;
+  const panelHeight = (SIZE.height - margin.top - margin.bottom - panelGap) / 2;
+  const x = d3.scaleBand().domain(displayRows.map((row) => row.axisLabel)).range([margin.left, SIZE.width - margin.right]).padding(0.3);
+
+  const panels = [
+    {
+      key: "avgRating",
+      label: "Avg. Review Scores Rating",
+      yMax: 5,
+      yFormat: (d) => formatNumber(d, 1),
+      accessor: (row) => row.avgRating,
+    },
+    {
+      key: "occupancyShare",
+      label: "Avg. Is Booked",
+      yMax: d3.max(displayRows, (row) => row.occupancyShare) ?? 0.4,
+      yFormat: (d) => formatNumber(d, 2),
+      accessor: (row) => row.occupancyShare,
+    },
+  ];
+
+  panels.forEach((panel, index) => {
+    const y0 = margin.top + index * (panelHeight + panelGap);
+    const y = d3.scaleLinear().domain([0, panel.yMax]).nice().range([y0 + panelHeight, y0]);
+    const xAxis = d3.axisBottom(x).tickSizeOuter(0).tickFormat((d) => d);
+    xAxis.tickValues(displayRows.map((row) => row.axisLabel));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(0, ${y0 + panelHeight})`)
+      .call(index === panels.length - 1 ? xAxis : xAxis.tickFormat(() => ""))
+      .call(styleAxisText);
+    svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(d3.axisLeft(y).ticks(5).tickFormat(panel.yFormat)).call(styleAxisText);
+    svg.append("text").attr("x", margin.left).attr("y", y0 - 10).attr("fill", COLORS.text).attr("font-size", 12).attr("font-weight", 400).text(panel.label);
+    svg
+      .append("text")
+      .attr("transform", `translate(${margin.left - 50}, ${y0 + panelHeight / 2}) rotate(-90)`)
+      .attr("text-anchor", "middle")
+      .attr("fill", COLORS.muted)
+      .attr("font-size", 10)
+      .text(panel.label);
+
+    const bars = svg
+      .append("g")
+      .selectAll("rect")
+      .data(displayRows)
+      .join("rect")
+      .attr("x", (d) => x(d.axisLabel))
+      .attr("y", (d) => y(panel.accessor(d)))
+      .attr("width", x.bandwidth())
+      .attr("height", (d) => y(y.domain()[0]) - y(panel.accessor(d)))
+      .attr("fill", (d) => HOST_COLORS(d.hostType))
+      .attr("fill-opacity", 0.95);
+
+    bindTooltip(bars, (d) => ({
+      title: d.displayLabel,
+      lines: [
+        { label: panel.label, value: panel.yFormat(panel.accessor(d)) },
+        { label: "Hosts", value: formatCount(d.hostCount) },
+        { label: "Listings", value: formatCount(d.listingCount) },
+      ],
+    }));
+  });
+
+  svg
+    .append("text")
+    .attr("x", SIZE.width / 2)
+    .attr("y", SIZE.height - 16)
+    .attr("text-anchor", "middle")
+    .attr("fill", COLORS.muted)
+    .attr("font-size", 10)
+    .text("Host Type");
 }
 
 function drawCapacityHeatmap(svg, data, selection, onRegionToggle) {
@@ -424,7 +923,7 @@ function drawGoodDealScatter(svg, data, selection, onRoomTypeToggle) {
       Number.isFinite(row.price) &&
       Number.isFinite(row.review_scores_rating) &&
       Number.isFinite(row.number_of_reviews) &&
-      row.number_of_reviews >= 5 &&
+      row.number_of_reviews > 0 &&
       row.price_is_outlier !== true
   );
   const medianPrice = d3.median(eligible, (row) => row.price);
@@ -440,18 +939,18 @@ function drawGoodDealScatter(svg, data, selection, onRoomTypeToggle) {
   }
 
   drawFrame(svg);
-  const margin = { top: 28, right: 34, bottom: 58, left: 62 };
-  const xMax = d3.quantile(rows.map((row) => row.price).sort(d3.ascending), 0.98) ?? d3.max(rows, (row) => row.price);
+  const margin = { top: 28, right: 150, bottom: 58, left: 62 };
+  const xMax = d3.max(rows, (row) => row.price) ?? 1;
   const x = d3.scaleLinear().domain([0, xMax]).nice().range([margin.left, SIZE.width - margin.right]);
-  const y = d3.scaleLinear().domain([4, 5]).range([SIZE.height - margin.bottom, margin.top]);
-  const radius = d3.scaleSqrt().domain([5, d3.max(rows, (row) => row.number_of_reviews) ?? 6]).range([2.5, 9]);
-  const displayRows = samplePoints(rows, MAX_POINTS, (row) => row.isGoodDeal || selection.roomType === row.room_type).filter((row) => row.price <= xMax);
+  const y = d3.scaleLinear().domain([0, 5]).range([SIZE.height - margin.bottom, margin.top]);
+  const radius = d3.scaleSqrt().domain([1, d3.max(rows, (row) => row.number_of_reviews) ?? 2]).range([2.5, 9]);
+  const displayRows = samplePoints(rows, MAX_GOOD_DEAL_POINTS, (row) => row.isGoodDeal || selection.roomType === row.room_type);
 
-  drawXYAxes(svg, x, y, margin, "Price", "Rating", { xFormat: (d) => `$${formatNumber(d, 0)}`, yFormat: (d) => formatNumber(d, 1) });
+  drawXYAxes(svg, x, y, margin, "Price", "Review Scores Rating", { xFormat: (d) => `$${formatNumber(d, 0)}`, yFormat: (d) => formatNumber(d, 1) });
   svg.append("line").attr("x1", x(medianPrice)).attr("x2", x(medianPrice)).attr("y1", margin.top).attr("y2", SIZE.height - margin.bottom).attr("stroke", COLORS.slate).attr("stroke-dasharray", "4 4");
   svg.append("line").attr("x1", margin.left).attr("x2", SIZE.width - margin.right).attr("y1", y(4.8)).attr("y2", y(4.8)).attr("stroke", COLORS.slate).attr("stroke-dasharray", "4 4");
-  svg.append("text").attr("x", x(medianPrice) + 6).attr("y", margin.top + 12).attr("fill", COLORS.muted).attr("font-size", 10).text("median price");
-  svg.append("text").attr("x", margin.left + 6).attr("y", y(4.8) - 6).attr("fill", COLORS.muted).attr("font-size", 10).text("rating 4.8");
+  svg.append("text").attr("x", x(medianPrice) + 6).attr("y", margin.top + 12).attr("fill", COLORS.muted).attr("font-size", 10).text("Median");
+  svg.append("text").attr("x", margin.left + 6).attr("y", y(4.8) - 6).attr("fill", COLORS.muted).attr("font-size", 10).text("Good Deal threshold (4.8)");
 
   const points = svg
     .append("g")
@@ -461,17 +960,42 @@ function drawGoodDealScatter(svg, data, selection, onRoomTypeToggle) {
     .attr("cx", (d) => x(d.price))
     .attr("cy", (d) => y(d.review_scores_rating))
     .attr("r", (d) => radius(d.number_of_reviews))
-    .attr("fill", (d) => (d.isGoodDeal ? COLORS.green : "#94a3b8"))
+    .attr("fill", (d) => (d.isGoodDeal ? "#59a14f" : "#bab0ab"))
     .attr("stroke", "#ffffff")
     .attr("stroke-width", 0.8)
-    .style("opacity", (d) => (d.isGoodDeal ? 0.88 : selection.roomType && selection.roomType !== d.room_type ? 0.1 : 0.36))
+    .style("opacity", (d) => (d.isGoodDeal ? 0.92 : 0.42))
     .style("cursor", "pointer")
     .on("click", (_, d) => onRoomTypeToggle?.(d.room_type));
 
   bindTooltip(points, (d) => ({
-    title: d.isGoodDeal ? "Good deal" : d.room_type,
-    lines: listingTooltip(d).lines,
+    title: d.isGoodDeal ? "Good deal" : "Normal",
+    lines: [
+      { label: "Price", value: formatCurrency(d.price, 0) },
+      { label: "Rating", value: formatNumber(d.review_scores_rating, 2) },
+      { label: "Room type", value: d.room_type ?? "Unknown" },
+      { label: "Reviews", value: formatCount(d.number_of_reviews) },
+      { label: "Neighbourhood", value: d.neighbourhood_cleansed ?? "Unknown" },
+    ],
   }));
+
+  drawSizeLegend(
+    svg,
+    "Number of Reviews",
+    [1, 1000, 2000, 3000, d3.max(rows, (row) => row.number_of_reviews) ?? 0],
+    radius,
+    SIZE.width - 112,
+    44
+  );
+  drawBinaryLegend(
+    svg,
+    [
+      { label: "Good Deal", color: "#59a14f" },
+      { label: "Normal", color: "#bab0ab" },
+    ],
+    SIZE.width - 112,
+    176,
+    "Good Deal Flag"
+  );
 }
 
 function drawCostTrend(svg, data, selection, onRoomTypeToggle) {
@@ -551,20 +1075,23 @@ function drawCostTrend(svg, data, selection, onRoomTypeToggle) {
 }
 
 function drawPolicyHeatmap(svg, metrics) {
-  const rows = metrics?.monthlyOccupancyByMinNights ?? [];
+  const rows = (metrics?.monthlyOccupancyByMinNights ?? []).filter(
+    (row) => row.totalDays > 0 && Number.isFinite(row.occupancyRate)
+  );
   if (!rows.length) {
     drawEmptyState(svg, "No policy data", "Run npm run build-derived-data.");
     return;
   }
 
   drawFrame(svg);
-  const groups = ["Short <=3", "Medium 4-7", "Long >7"];
-  const margin = { top: 34, right: 38, bottom: 62, left: 128 };
-  const x = d3.scaleBand().domain(MONTHS).range([margin.left, SIZE.width - margin.right]).padding(0.06);
+  const groups = ["Long >7", "Medium 4-7", "Short <=3"];
+  const months = Array.from(new Set(rows.map((row) => row.month))).sort((a, b) => a - b);
+  const margin = { top: 34, right: 148, bottom: 62, left: 120 };
+  const x = d3.scaleBand().domain(months).range([margin.left, SIZE.width - margin.right]).padding(0.06);
   const y = d3.scaleBand().domain(groups).range([margin.top, SIZE.height - margin.bottom]).padding(0.08);
   const extent = d3.extent(rows, (row) => row.occupancyRate);
   const color = d3.scaleSequential(d3.interpolateYlGnBu).domain(extent);
-  drawHeatmapAxes(svg, x, y, margin, "Month", "Minimum nights");
+  drawHeatmapAxes(svg, x, y, margin, "Month", "Minimum nights", { xFormat: monthName });
 
   const cells = svg
     .append("g")
@@ -592,12 +1119,22 @@ function drawPolicyHeatmap(svg, metrics) {
     .text((d) => `${formatNumber(d.occupancyRate, 0)}%`);
 
   bindTooltip(cells, (d) => ({
-    title: `${d.minNightsGroup} - Month ${d.month}`,
+    title: `${d.minNightsGroup} - ${monthName(d.month)}`,
     lines: [
       { label: "Occupancy", value: `${formatNumber(d.occupancyRate, 1)}%` },
       { label: "Calendar days", value: formatCount(d.totalDays) },
     ],
   }));
+
+  drawSequentialLegend(
+    svg,
+    color,
+    extent,
+    "Occupancy %",
+    SIZE.width - 146,
+    34,
+    (value) => `${formatNumber(value, 0)}%`
+  );
 }
 
 function drawHostPerformance(svg, metrics) {
@@ -650,15 +1187,83 @@ function drawHostPerformance(svg, metrics) {
   });
 }
 
-function drawSentimentBars(svg, metrics) {
-  const rows = (metrics?.sentimentTerms ?? []).slice().sort((a, b) => a.strength - b.strength);
+function drawExperienceWordCloud(svg, metrics) {
+  const source = metrics?.sentimentTerms ?? [];
+  const rows = source
+    .map((row) => ({
+      ...row,
+      count: (row.highCount ?? 0) + (row.lowCount ?? 0),
+      sentiment: row.strength >= 0 ? "Praise" : "Complaint",
+    }))
+    .filter((row) => row.count > 0)
+    .sort((left, right) => right.count - left.count)
+    .slice(0, 48);
+
   if (!rows.length) {
     drawEmptyState(svg, "No review language metrics", "Run npm run build-derived-data.");
     return;
   }
 
   drawFrame(svg);
-  const margin = { top: 26, right: 46, bottom: 48, left: 150 };
+  const bounds = { left: 34, top: 34, right: SIZE.width - 150, bottom: SIZE.height - 36 };
+  const fontSize = d3
+    .scaleSqrt()
+    .domain(d3.extent(rows, (row) => row.count))
+    .range([13, 44]);
+  const placedWords = layoutWordCloud(rows, bounds, fontSize);
+
+  const words = svg
+    .append("g")
+    .selectAll("text")
+    .data(placedWords, (d) => d.term)
+    .join("text")
+    .attr("transform", (d) => `translate(${d.x}, ${d.y}) rotate(${d.rotate})`)
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .attr("fill", (d) => (d.strength >= 0 ? "#4e79a7" : "#f28e2b"))
+    .attr("font-size", (d) => d.fontSize)
+    .attr("font-weight", (d, index) => (index < 5 ? 800 : 650))
+    .attr("letter-spacing", 0)
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 4)
+    .attr("paint-order", "stroke fill")
+    .style("cursor", "default")
+    .text((d) => d.term);
+
+  bindTooltip(words, (d) => ({
+    title: d.term,
+    lines: [
+      { label: "Experience type", value: d.sentiment },
+      { label: "Mentions", value: formatCount(d.count) },
+      { label: "Strength", value: formatNumber(d.strength, 2) },
+      { label: "High / Low count", value: `${formatCount(d.highCount)} / ${formatCount(d.lowCount)}` },
+    ],
+  }));
+
+  drawBinaryLegend(
+    svg,
+    [
+      { label: "Praise", color: "#4e79a7" },
+      { label: "Complaint", color: "#f28e2b" },
+    ],
+    SIZE.width - 126,
+    34,
+    "Review tone"
+  );
+}
+
+function drawSentimentBars(svg, metrics) {
+  const source = metrics?.sentimentTerms ?? [];
+  const positive = source.filter((row) => row.strength >= 0).sort((a, b) => b.strength - a.strength);
+  const negative = source.filter((row) => row.strength < 0).sort((a, b) => a.strength - b.strength);
+  const rows = [...positive, ...negative];
+  if (!rows.length) {
+    drawEmptyState(svg, "No review language metrics", "Run npm run build-derived-data.");
+    return;
+  }
+
+  drawFrame(svg);
+  const margin = { top: 26, right: 160, bottom: 48, left: 150 };
   const maxAbs = d3.max(rows, (row) => Math.abs(row.strength)) ?? 1;
   const x = d3.scaleLinear().domain([-maxAbs, maxAbs]).nice().range([margin.left, SIZE.width - margin.right]);
   const y = d3.scaleBand().domain(rows.map((row) => row.term)).range([margin.top, SIZE.height - margin.bottom]).padding(0.18);
@@ -677,7 +1282,7 @@ function drawSentimentBars(svg, metrics) {
     .attr("width", (d) => Math.abs(x(d.strength) - x(0)))
     .attr("height", y.bandwidth())
     .attr("rx", 4)
-    .attr("fill", (d) => (d.strength < 0 ? COLORS.orange : COLORS.teal));
+    .attr("fill", (d) => (d.strength < 0 ? "#f28e2b" : "#4e79a7"));
 
   bindTooltip(bars, (d) => ({
     title: d.term,
@@ -688,8 +1293,128 @@ function drawSentimentBars(svg, metrics) {
     ],
   }));
 
-  svg.append("text").attr("x", margin.left).attr("y", SIZE.height - 18).attr("fill", COLORS.orange).attr("font-size", 11).text("Low-rating terms");
-  svg.append("text").attr("x", SIZE.width - margin.right).attr("y", SIZE.height - 18).attr("text-anchor", "end").attr("fill", COLORS.teal).attr("font-size", 11).text("High-rating terms");
+  drawBinaryLegend(
+    svg,
+    [
+      { label: "Hài lòng", color: "#4e79a7" },
+      { label: "Phàn nàn", color: "#f28e2b" },
+    ],
+    SIZE.width - 132,
+    34,
+    "Phân loại đánh giá"
+  );
+}
+
+function computeBoxStats(values) {
+  const sorted = values.filter((value) => Number.isFinite(value)).sort(d3.ascending);
+  if (!sorted.length) {
+    return { count: 0 };
+  }
+
+  const q1 = d3.quantileSorted(sorted, 0.25);
+  const median = d3.quantileSorted(sorted, 0.5);
+  const q3 = d3.quantileSorted(sorted, 0.75);
+  const iqr = q3 - q1;
+  const lower = d3.max([d3.min(sorted), q1 - 1.5 * iqr]);
+  const upper = d3.min([d3.max(sorted), q3 + 1.5 * iqr]);
+  return {
+    count: sorted.length,
+    q1,
+    median,
+    q3,
+    lower,
+    upper,
+    min: d3.min(sorted),
+    max: d3.max(sorted),
+  };
+}
+
+function formatCompactCount(value) {
+  if (!Number.isFinite(value)) {
+    return "0";
+  }
+
+  if (Math.abs(value) < 1000) {
+    return String(Math.round(value));
+  }
+
+  return `${Math.round(value / 1000)}K`;
+}
+
+function drawBinaryLegend(svg, items, x, y, title) {
+  const legend = svg.append("g").attr("transform", `translate(${x}, ${y})`);
+  legend.append("text").attr("x", 0).attr("y", 0).attr("fill", COLORS.text).attr("font-size", 12).text(title);
+  items.forEach((item, index) => {
+    const row = legend.append("g").attr("transform", `translate(0, ${18 + index * 20})`);
+    row.append("rect").attr("width", 14).attr("height", 14).attr("rx", 2).attr("fill", item.color);
+    row.append("text").attr("x", 20).attr("y", 12).attr("fill", COLORS.text).attr("font-size", 10).text(item.label);
+  });
+}
+
+function drawSizeLegend(svg, title, values, radiusScale, x, y) {
+  const uniqueValues = Array.from(new Set(values.filter((value) => Number.isFinite(value)))).sort((a, b) => a - b);
+  const legend = svg.append("g").attr("transform", `translate(${x}, ${y})`);
+  legend.append("text").attr("x", 0).attr("y", 0).attr("fill", COLORS.text).attr("font-size", 12).text(title);
+
+  uniqueValues.forEach((value, index) => {
+    const cy = 18 + index * 22;
+    legend.append("circle").attr("cx", 8).attr("cy", cy).attr("r", radiusScale(value)).attr("fill", "#ffffff").attr("stroke", COLORS.border);
+    legend.append("text").attr("x", 28).attr("y", cy + 4).attr("fill", COLORS.text).attr("font-size", 10).text(value >= 1000 ? value.toLocaleString("en-US") : String(value));
+  });
+}
+
+function layoutWordCloud(rows, bounds, fontSize) {
+  const centerX = (bounds.left + bounds.right) / 2;
+  const centerY = (bounds.top + bounds.bottom) / 2;
+  const placed = [];
+
+  rows.forEach((row, index) => {
+    const size = fontSize(row.count);
+    const rotate = index % 7 === 0 ? -18 : index % 5 === 0 ? 18 : 0;
+    const width = row.term.length * size * (rotate ? 0.5 : 0.58);
+    const height = size * (rotate ? 1.45 : 1.1);
+    let candidate = null;
+
+    for (let step = 0; step < 2600; step += 1) {
+      const angle = step * 0.36;
+      const radius = 2.7 * Math.sqrt(step);
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      const box = {
+        x0: x - width / 2,
+        x1: x + width / 2,
+        y0: y - height / 2,
+        y1: y + height / 2,
+      };
+
+      if (
+        box.x0 >= bounds.left &&
+        box.x1 <= bounds.right &&
+        box.y0 >= bounds.top &&
+        box.y1 <= bounds.bottom &&
+        placed.every((item) => !wordBoxesOverlap(box, item.box))
+      ) {
+        candidate = { ...row, x, y, rotate, fontSize: size, box };
+        break;
+      }
+    }
+
+    if (candidate) {
+      placed.push(candidate);
+    }
+  });
+
+  return placed;
+}
+
+function wordBoxesOverlap(left, right) {
+  const padding = 5;
+  return !(
+    left.x1 + padding < right.x0 ||
+    left.x0 - padding > right.x1 ||
+    left.y1 + padding < right.y0 ||
+    left.y0 - padding > right.y1
+  );
 }
 
 function drawXYAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = {}) {
@@ -698,8 +1423,12 @@ function drawXYAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = {}) {
   if (!isCategorical && typeof xScale.ticks === "function") {
     xAxis.ticks(5);
   }
-  if (options.xFormat) {
-    xAxis.tickFormat(options.xFormat);
+  if (options.xFormat || options.tickLabelLimit) {
+    const format = options.xFormat || ((d) => d);
+    xAxis.tickFormat((d) => {
+      const text = String(format(d));
+      return options.tickLabelLimit ? truncate(text, options.tickLabelLimit) : text;
+    });
   }
 
   const yAxis = d3.axisLeft(yScale).ticks(5).tickSizeOuter(0);
@@ -713,8 +1442,13 @@ function drawXYAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = {}) {
   svg.append("text").attr("transform", `translate(20, ${margin.top + 8}) rotate(-90)`).attr("fill", COLORS.muted).attr("font-size", 10).text(yLabel);
 }
 
-function drawHeatmapAxes(svg, xScale, yScale, margin, xLabel, yLabel) {
-  svg.append("g").attr("transform", `translate(0, ${SIZE.height - margin.bottom})`).call(d3.axisBottom(xScale).tickSizeOuter(0)).call(styleAxisText);
+function drawHeatmapAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = {}) {
+  const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
+  if (options.xFormat) {
+    xAxis.tickFormat(options.xFormat);
+  }
+
+  svg.append("g").attr("transform", `translate(0, ${SIZE.height - margin.bottom})`).call(xAxis).call(styleAxisText);
   svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(d3.axisLeft(yScale).tickSizeOuter(0)).call(styleAxisText);
   svg.append("text").attr("x", SIZE.width - margin.right).attr("y", SIZE.height - 18).attr("text-anchor", "end").attr("fill", COLORS.muted).attr("font-size", 10).text(xLabel);
   svg.append("text").attr("transform", `translate(20, ${margin.top + 8}) rotate(-90)`).attr("fill", COLORS.muted).attr("font-size", 10).text(yLabel);
@@ -727,30 +1461,46 @@ function styleAxisText(group) {
 
 function drawColorLegend(svg, domain, colorScale, x, y, onClick) {
   const legend = svg.append("g").attr("transform", `translate(${x}, ${y})`);
+  const availableWidth = Math.max(72, SIZE.width - x - 20);
   domain.forEach((item, index) => {
     const row = legend.append("g").attr("transform", `translate(0, ${index * 22})`).style("cursor", onClick ? "pointer" : "default");
     row.append("rect").attr("width", 11).attr("height", 11).attr("rx", 3).attr("fill", colorScale(item));
-    row.append("text").attr("x", 17).attr("y", 10).attr("fill", COLORS.text).attr("font-size", 10).text(truncate(item, 17));
+    row.append("title").text(item);
+    row
+      .append("text")
+      .attr("x", 17)
+      .attr("y", 10)
+      .attr("fill", COLORS.text)
+      .attr("font-size", 10)
+      .text(truncate(item, Math.max(12, Math.floor(availableWidth / 7))));
     if (onClick) {
       row.on("click", () => onClick(item));
     }
   });
 }
 
-function drawSequentialLegend(svg, color, domain, label, x, y) {
+function drawSequentialLegend(svg, color, domain, label, x, y, formatValue = (value) => formatCurrency(value, 0)) {
   const steps = d3.range(6);
   const group = svg.append("g").attr("transform", `translate(${x}, ${y})`);
+  const stepWidth = Math.max(16, Math.min(24, Math.floor((SIZE.width - x - 20) / steps.length)));
   group.append("text").attr("x", 0).attr("y", -6).attr("fill", COLORS.muted).attr("font-size", 10).text(label);
   group
     .selectAll("rect")
     .data(steps)
     .join("rect")
-    .attr("x", (d) => d * 28)
-    .attr("width", 28)
+    .attr("x", (d) => d * stepWidth)
+    .attr("width", stepWidth)
     .attr("height", 10)
     .attr("fill", (d) => color(domain[0] + ((domain[1] - domain[0]) * d) / (steps.length - 1)));
-  group.append("text").attr("x", 0).attr("y", 26).attr("fill", COLORS.muted).attr("font-size", 9).text(formatCurrency(domain[0], 0));
-  group.append("text").attr("x", steps.length * 28).attr("y", 26).attr("text-anchor", "end").attr("fill", COLORS.muted).attr("font-size", 9).text(formatCurrency(domain[1], 0));
+  group.append("text").attr("x", 0).attr("y", 26).attr("fill", COLORS.muted).attr("font-size", 9).text(formatValue(domain[0]));
+  group
+    .append("text")
+    .attr("x", steps.length * stepWidth)
+    .attr("y", 26)
+    .attr("text-anchor", "end")
+    .attr("fill", COLORS.muted)
+    .attr("font-size", 9)
+    .text(formatValue(domain[1]));
 }
 
 function listingTooltip(row) {
