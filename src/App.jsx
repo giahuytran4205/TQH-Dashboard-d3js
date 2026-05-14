@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "./components/Header";
 import FilterPanel from "./components/filters/FilterPanel";
 import KpiGrid from "./components/kpi/KpiGrid";
@@ -6,6 +6,7 @@ import ChartGrid from "./components/charts/ChartGrid";
 import InsightPanel from "./components/InsightPanel";
 import SelectionStrip from "./components/interactions/SelectionStrip";
 import { DASHBOARD_CONFIG } from "./config/dashboardConfig";
+import derivedMetrics from "./data/derivedMetrics.json";
 import { useCsvData } from "./hooks/useCsvData";
 import {
   applyFilters,
@@ -29,6 +30,12 @@ function createInitialFilterValues(filters) {
   }, {});
 }
 
+const EMPTY_SELECTION = Object.freeze({
+  region: null,
+  roomType: null,
+  brush: null,
+});
+
 export default function App() {
   const { data, columns, loading, error } = useCsvData(DASHBOARD_CONFIG);
   const [filterValues, setFilterValues] = useState(() =>
@@ -39,7 +46,8 @@ export default function App() {
     roomType: null,
     brush: null,
   });
-  const [, startSelectionTransition] = useTransition();
+  const [geoData, setGeoData] = useState(null);
+  const [geoError, setGeoError] = useState(null);
 
   const resolvedFilters = useMemo(
     () => resolveFilterConfigs(DASHBOARD_CONFIG.filters, columns),
@@ -57,6 +65,36 @@ export default function App() {
       return next;
     });
   }, [resolvedFilters]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadGeoData() {
+      try {
+        const response = await fetch(DASHBOARD_CONFIG.dataSources.neighbourhoods.path);
+        if (!response.ok) {
+          throw new Error(`GeoJSON request failed: ${response.status}`);
+        }
+
+        const json = await response.json();
+        if (!cancelled) {
+          setGeoData(json);
+          setGeoError(null);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setGeoData(null);
+          setGeoError(error);
+        }
+      }
+    }
+
+    loadGeoData();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const optionsByFilterId = useMemo(
     () => buildFilterOptionsMap(data, resolvedFilters),
@@ -85,6 +123,30 @@ export default function App() {
         DASHBOARD_CONFIG
       ),
     [filteredData, selection.region, selection.roomType]
+  );
+
+  const regionSelection = useMemo(
+    () =>
+      selection.region
+        ? {
+            region: selection.region,
+            roomType: null,
+            brush: null,
+          }
+        : EMPTY_SELECTION,
+    [selection.region]
+  );
+
+  const roomTypeSelection = useMemo(
+    () =>
+      selection.roomType
+        ? {
+            region: null,
+            roomType: selection.roomType,
+            brush: null,
+          }
+        : EMPTY_SELECTION,
+    [selection.roomType]
   );
 
   const kpiItems = useMemo(() => {
@@ -146,28 +208,46 @@ export default function App() {
     }
 
     return {
-      tone: "success",
-      label: "Ready",
-      message: `Loaded ${formatCount(data.length)} rows. Click charts to cross-filter the view.`,
+      tone: geoError ? "neutral" : "success",
+      label: geoError ? "Partial" : "Ready",
+      message: geoError
+        ? `Loaded ${formatCount(data.length)} rows. GeoJSON unavailable, map view will show fallback state.`
+        : `Loaded ${formatCount(data.length)} rows and derived metrics for 10 domain tasks.`,
     };
-  }, [data.length, error, loading]);
+  }, [data.length, error, geoError, loading]);
 
   const chartCards = useMemo(
     () =>
-      DASHBOARD_CONFIG.chartCards.map((chart) => ({
-        ...chart,
-        data: chart.kind === "scatter" ? scatterData : selectedData,
-      })),
-    [scatterData, selectedData]
+      DASHBOARD_CONFIG.chartCards.map((chart) => {
+        switch (chart.kind) {
+          case "choropleth":
+          case "capacityHeatmap":
+          case "priceBoxplot":
+            return { ...chart, data: selectedData, selection: regionSelection };
+          case "occupancyLines":
+            return { ...chart, metrics: derivedMetrics, selection: regionSelection };
+          case "qualityScatter":
+          case "goodDealScatter":
+          case "costTrend":
+            return { ...chart, data: scatterData, selection: roomTypeSelection };
+          case "policyHeatmap":
+          case "hostPerformance":
+          case "sentimentBars":
+            return { ...chart, metrics: derivedMetrics, selection: EMPTY_SELECTION };
+          default:
+            return { ...chart, data: selectedData, selection: EMPTY_SELECTION };
+        }
+      }),
+    [regionSelection, roomTypeSelection, scatterData, selectedData]
   );
 
   const updateSelection = useCallback(
     (nextSelection) => {
-      startSelectionTransition(() => {
-        setSelection(nextSelection);
-      });
+      setSelection((current) =>
+        typeof nextSelection === "function" ? nextSelection(current) : nextSelection
+      );
     },
-    [startSelectionTransition]
+    []
   );
 
   const toggleRegion = useCallback((region) => {
@@ -266,13 +346,13 @@ export default function App() {
 
       <ChartGrid
         charts={chartCards}
-        rows={selectedData.length}
-        selection={selection}
         loading={loading}
         error={Boolean(error)}
         onRegionToggle={toggleRegion}
         onRoomTypeToggle={toggleRoomType}
         onBrushChange={updateBrush}
+        metrics={derivedMetrics}
+        geoData={geoData}
       />
 
       <InsightPanel insight={insight} loading={loading} error={Boolean(error)} />

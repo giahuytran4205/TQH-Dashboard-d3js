@@ -2,13 +2,13 @@ import ChartCard from "./ChartCard";
 
 export default function ChartGrid({
   charts,
-  rows,
-  selection,
   loading,
   error,
   onRegionToggle,
   onRoomTypeToggle,
   onBrushChange,
+  metrics,
+  geoData,
 }) {
   return (
     <section className="chart-grid" aria-label="Chart area">
@@ -16,13 +16,13 @@ export default function ChartGrid({
         <ChartCard
           key={chart.id}
           {...chart}
-          rows={rows}
-          selection={selection}
           loading={loading}
           error={error}
           onRegionToggle={onRegionToggle}
           onRoomTypeToggle={onRoomTypeToggle}
           onBrushChange={onBrushChange}
+          metrics={metrics}
+          geoData={geoData}
         />
       ))}
     </section>

@@ -1,0 +1,485 @@
+{
+  "generatedAt": "2026-05-14T14:05:29.687Z",
+  "sourceYear": 2026,
+  "listingCount": 21415,
+  "monthlyOccupancyByRegion": [
+    {
+      "year": 2026,
+      "month": 1,
+      "region": "Manhattan",
+      "totalDays": 663865,
+      "bookedDays": 136498,
+      "occupancyRate": 20.561108056607893
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "region": "Manhattan",
+      "totalDays": 599620,
+      "bookedDays": 131727,
+      "occupancyRate": 21.968413328441347
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "region": "Manhattan",
+      "totalDays": 663865,
+      "bookedDays": 139549,
+      "occupancyRate": 21.02068944740271
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "region": "Manhattan",
+      "totalDays": 642450,
+      "bookedDays": 135571,
+      "occupancyRate": 21.102186940617948
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "region": "Manhattan",
+      "totalDays": 663865,
+      "bookedDays": 192994,
+      "occupancyRate": 29.071272020666854
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "region": "Manhattan",
+      "totalDays": 642450,
+      "bookedDays": 182525,
+      "occupancyRate": 28.4107712662464
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "region": "Manhattan",
+      "totalDays": 663865,
+      "bookedDays": 185527,
+      "occupancyRate": 27.946495145850434
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "region": "Manhattan",
+      "totalDays": 663865,
+      "bookedDays": 245474,
+      "occupancyRate": 36.9764937148366
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "region": "Manhattan",
+      "totalDays": 642450,
+      "bookedDays": 239175,
+      "occupancyRate": 37.22857809946299
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "region": "Manhattan",
+      "totalDays": 663865,
+      "bookedDays": 246560,
+      "occupancyRate": 37.14008119120604
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "region": "Manhattan",
+      "totalDays": 21510,
+      "bookedDays": 8727,
+      "occupancyRate": 40.57182705718271
+    }
+  ],
+  "monthlyOccupancyOverall": [
+    {
+      "year": 2026,
+      "month": 1,
+      "totalDays": 663865,
+      "bookedDays": 136498,
+      "occupancyRate": 20.561108056607893
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "totalDays": 599620,
+      "bookedDays": 131727,
+      "occupancyRate": 21.968413328441347
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "totalDays": 663865,
+      "bookedDays": 139549,
+      "occupancyRate": 21.02068944740271
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "totalDays": 642450,
+      "bookedDays": 135571,
+      "occupancyRate": 21.102186940617948
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "totalDays": 663865,
+      "bookedDays": 192994,
+      "occupancyRate": 29.071272020666854
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "totalDays": 642450,
+      "bookedDays": 182525,
+      "occupancyRate": 28.4107712662464
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "totalDays": 663865,
+      "bookedDays": 185527,
+      "occupancyRate": 27.946495145850434
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "totalDays": 663865,
+      "bookedDays": 245474,
+      "occupancyRate": 36.9764937148366
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "totalDays": 642450,
+      "bookedDays": 239175,
+      "occupancyRate": 37.22857809946299
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "totalDays": 663865,
+      "bookedDays": 246560,
+      "occupancyRate": 37.14008119120604
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "totalDays": 21510,
+      "bookedDays": 8727,
+      "occupancyRate": 40.57182705718271
+    },
+    {
+      "year": 2026,
+      "month": 12,
+      "totalDays": 0,
+      "bookedDays": 0,
+      "occupancyRate": null
+    }
+  ],
+  "monthlyOccupancyByMinNights": [
+    {
+      "year": 2026,
+      "month": 1,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 108865,
+      "bookedDays": 19544,
+      "occupancyRate": 17.952509989436457
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 16070,
+      "bookedDays": 3713,
+      "occupancyRate": 23.10516490354698
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "minNightsGroup": "Long >7",
+      "totalDays": 538904,
+      "bookedDays": 113241,
+      "occupancyRate": 21.0132045781809
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 97874,
+      "bookedDays": 19628,
+      "occupancyRate": 20.054355600057217
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 14528,
+      "bookedDays": 3593,
+      "occupancyRate": 24.731552863436125
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "minNightsGroup": "Long >7",
+      "totalDays": 487207,
+      "bookedDays": 108506,
+      "occupancyRate": 22.271026483609635
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 107584,
+      "bookedDays": 25144,
+      "occupancyRate": 23.371505056513982
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 16985,
+      "bookedDays": 3833,
+      "occupancyRate": 22.56697085663821
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "minNightsGroup": "Long >7",
+      "totalDays": 539245,
+      "bookedDays": 110572,
+      "occupancyRate": 20.50496527552411
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 103133,
+      "bookedDays": 28920,
+      "occupancyRate": 28.04146102605374
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 17346,
+      "bookedDays": 4491,
+      "occupancyRate": 25.89069526115531
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "minNightsGroup": "Long >7",
+      "totalDays": 521943,
+      "bookedDays": 102160,
+      "occupancyRate": 19.573018509684008
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 106279,
+      "bookedDays": 42032,
+      "occupancyRate": 39.548734933524024
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 18167,
+      "bookedDays": 6523,
+      "occupancyRate": 35.905763197005555
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "minNightsGroup": "Long >7",
+      "totalDays": 539414,
+      "bookedDays": 144439,
+      "occupancyRate": 26.7770209894441
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 102462,
+      "bookedDays": 43176,
+      "occupancyRate": 42.13854892545529
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 17779,
+      "bookedDays": 6526,
+      "occupancyRate": 36.70622644693177
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "minNightsGroup": "Long >7",
+      "totalDays": 522185,
+      "bookedDays": 132823,
+      "occupancyRate": 25.436004481170464
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 105947,
+      "bookedDays": 44721,
+      "occupancyRate": 42.21072800551219
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 18332,
+      "bookedDays": 7104,
+      "occupancyRate": 38.75190922976216
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "minNightsGroup": "Long >7",
+      "totalDays": 539586,
+      "bookedDays": 133702,
+      "occupancyRate": 24.778626576671744
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 106628,
+      "bookedDays": 53212,
+      "occupancyRate": 49.90434032336722
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 17945,
+      "bookedDays": 9073,
+      "occupancyRate": 50.56004458066313
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "minNightsGroup": "Long >7",
+      "totalDays": 539292,
+      "bookedDays": 183189,
+      "occupancyRate": 33.96842526868561
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 103246,
+      "bookedDays": 54842,
+      "occupancyRate": 53.11779633109273
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 17433,
+      "bookedDays": 9120,
+      "occupancyRate": 52.31457580450869
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "minNightsGroup": "Long >7",
+      "totalDays": 521771,
+      "bookedDays": 175213,
+      "occupancyRate": 33.58044046142848
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 106714,
+      "bookedDays": 57048,
+      "occupancyRate": 53.45877766741008
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 18046,
+      "bookedDays": 9349,
+      "occupancyRate": 51.80649451401973
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "minNightsGroup": "Long >7",
+      "totalDays": 539105,
+      "bookedDays": 180163,
+      "occupancyRate": 33.418907262963614
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 3486,
+      "bookedDays": 2018,
+      "occupancyRate": 57.88869764773379
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 575,
+      "bookedDays": 311,
+      "occupancyRate": 54.086956521739125
+    },
+    {
+      "year": 2026,
+      "month": 11,
+      "minNightsGroup": "Long >7",
+      "totalDays": 17449,
+      "bookedDays": 6398,
+      "occupancyRate": 36.66685769958164
+    },
+    {
+      "year": 2026,
+      "month": 12,
+      "minNightsGroup": "Short <=3",
+      "totalDays": 0,
+      "bookedDays": 0,
+      "occupancyRate": null
+    },
+    {
+      "year": 2026,
+      "month": 12,
+      "minNightsGroup": "Medium 4-7",
+      "totalDays": 0,
+      "bookedDays": 0,
+      "occupancyRate": null
+    },
+    {
+      "year": 2026,
+      "month": 12,
+      "minNightsGroup": "Long >7",
+      "totalDays": 0,
+      "bookedDays": 0,
+      "occupancyRate": null
+    }
+  ],
+  "hostPerformance": [
+    {
+      "hostType": "Professional host",
+      "hostCount": 1,
+      "listingCount": 21415,
+      "avgRating": null,
+      "occupancyRate": 28.236683727132572
+    }
+  ],
+  "reviewGroupCounts": {
+    "highReviews": 0,
+    "lowReviews": 0
+  },
+  "sentimentTerms": []
+}

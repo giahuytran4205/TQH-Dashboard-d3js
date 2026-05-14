@@ -16,7 +16,7 @@ export default function Header({
         <p className="dashboard-header__description">{description}</p>
         <p className="dashboard-header__source">
           <span>Example source:</span> {sourceLabel}
-          <span className="dashboard-header__divider">·</span>
+          <span className="dashboard-header__divider">|</span>
           <span>{rowCountLabel}</span>
         </p>
       </div>

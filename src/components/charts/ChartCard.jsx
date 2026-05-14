@@ -20,7 +20,8 @@ function ChartCard({
   onRegionToggle,
   onRoomTypeToggle,
   onBrushChange,
-  rows,
+  metrics,
+  geoData,
 }) {
   const chartConfig = useMemo(
     () => ({
@@ -51,13 +52,14 @@ function ChartCard({
         <InteractiveChart
           chart={chartConfig}
           data={data}
-          rows={rows}
           selection={selection}
           loading={loading}
           error={error}
           onRegionToggle={onRegionToggle}
           onRoomTypeToggle={onRoomTypeToggle}
           onBrushChange={onBrushChange}
+          metrics={metrics}
+          geoData={geoData}
         />
       </div>
 
