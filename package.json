@@ -9,6 +9,7 @@
     "preview": "vite preview --host 0.0.0.0",
     "download-data": "node scripts/download-data.js",
     "build-derived-data": "node scripts/build-derived-data.js",
+    "setup-data": "npm run download-data && npm run build-derived-data",
     "postinstall": "npm run download-data"
   },
   "dependencies": {
