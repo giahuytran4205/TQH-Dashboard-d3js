@@ -11,50 +11,32 @@ luận, giúp chủ nhà / nền tảng biết chính xác các điểm cần t�
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Word Cloud (Đám mây từ vựng) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Từ khóa (Keyword): C, Tần suất xuất hiện (Count): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ explore $\rightarrow$ summarize
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Dẫn xuất (derive): bóc tách văn bản loại bỏ stopwords để lấy ra các unigram/bigram (1--2 từ) có ý nghĩa.
-    \item Explore: Khám phá nhanh và tóm tắt (summarize) các chủ đề / ngữ cảnh lưu trú được thảo luận nhiều nhất.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Text (Chữ viết)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Size (Kích thước chữ): Tỷ lệ thuận với tần suất đếm được.
-        \item Color: Biểu diễn độ lớn của Tần suất (Q) (chữ càng đậm = xuất hiện càng nhiều).
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: Áp dụng tập stopwords mở rộng để loại bỏ các từ vô nghĩa.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: Top các từ khóa xuất hiện nhiều nhất
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Word Cloud (Đám mây từ vựng)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Từ khóa (Keyword): Categorical (C)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Tần suất xuất hiện (Count): Quantitative (Q)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Text (Chữ viết) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Size (Kích thước chữ): Tỷ lệ thuận với tần suất đếm được \newline
+\hspace*{1em} Color: Biểu diễn độ lớn của Tần suất (Q) (chữ càng đậm = xuất hiện càng nhiều) \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: Áp dụng tập stopwords mở rộng để loại bỏ các từ vô nghĩa. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce (derive) $\rightarrow$ explore $\rightarrow$ summarize} \newline
+Dẫn xuất (derive): bóc tách văn bản loại bỏ stopwords để lấy ra các unigram/bigram (1--2 từ) có ý nghĩa. Explore: Khám phá nhanh và tóm tắt (summarize) các chủ đề / ngữ cảnh lưu trú được thảo luận nhiều nhất.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: Top các từ khóa xuất hiện nhiều nhất.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

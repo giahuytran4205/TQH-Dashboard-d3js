@@ -7,70 +7,42 @@ thấp nhưng đánh giá cao (good deal)?
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Scatter Plot \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Price: Quantitative (Key trục X) \newline
-review\_scores\_rating: Quantitative (Key trục Y) \newline
-good\_deal\_flag (derived): Categorical (Good Deal / Normal) \newline
-number\_of\_reviews: Quantitative (Size -- proxy độ tin cậy) \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Point (Circle)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Price (Quantitative)
-        \item Pos Y: review\_scores\_rating (Quantitative)
-        \item Hue Color: good\_deal\_flag (Categorical -- xanh=Good Deal, xám=Normal)
-        \item Size: number\_of\_reviews (Quantitative)
-    \end{itemize}
-    \item Reference Lines:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Dọc (trục X): MEDIAN(price) -- phân cách giá cao/thấp
-        \item Ngang (trục Y): Constant = 4.8 -- ngưỡng Good Deal Flag
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover để xem giá, rating, room\_type, neighbourhood, number\_of\_reviews
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Superimpose: Reference Lines đặt lên scatter plot
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: number\_of\_reviews $\geq$ 5 (loại listing ít đánh giá, không đủ tin cậy)
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce $\rightarrow$ discover $\rightarrow$ compare \newline
-Scatter plot tối ưu cho phân tích 2Q correlation. 4 góc phần tư từ reference lines giúp nhận diện Good Deal (góc trên trái: price $<$ median VÀ rating $\geq$ 4.8). \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Color: 2 (Good Deal / Normal)
-    \item Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Scatter Plot}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Price: Quantitative (Key trục X)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{review\_scores\_rating: Quantitative (Key trục Y)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{good\_deal\_flag (derived): Categorical (Good Deal / Normal)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{number\_of\_reviews: Quantitative (Size -- proxy độ tin cậy)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Point (Circle) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Price (Quantitative) \newline
+\hspace*{1em} Pos Y: review\_scores\_rating (Quantitative) \newline
+\hspace*{1em} Hue Color: good\_deal\_flag (Categorical -- xanh=Good Deal, xám=Normal) \newline
+\hspace*{1em} Size: number\_of\_reviews (Quantitative) \newline
+Reference Lines: Dọc: MEDIAN(price); Ngang: Constant = 4.8 (ngưỡng Good Deal) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover để xem giá, rating, room\_type, neighbourhood, number\_of\_reviews. \\ \cline{2-3}
+& \textbf{Facet} &
+Superimpose: Reference Lines đặt lên scatter plot. \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: number\_of\_reviews $\geq$ 5 (loại listing ít đánh giá, không đủ tin cậy). \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ discover $\rightarrow$ compare} \newline
+Scatter plot tối ưu cho phân tích 2Q correlation. 4 góc phần tư từ reference lines giúp nhận diện Good Deal (góc trên trái: price $<$ median VÀ rating $\geq$ 4.8).
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Color: 2 (Good Deal / Normal). \newline
+Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

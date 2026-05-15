@@ -7,61 +7,41 @@ thấp nhưng đánh giá cao (good deal)?
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Point Map (Geographic Scatter Map) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Longitude: Quantitative/Geographic (Key) \newline
-Latitude: Quantitative/Geographic (Key) \newline
-price\_is\_outlier (derived): Categorical (True/False) \newline
-Price: Quantitative \newline
-Room Type: Categorical \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Point (Circle)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Longitude (Geographic)
-        \item Pos Y: Latitude (Geographic)
-        \item Hue Color: price\_is\_outlier (Categorical -- đỏ=True, xanh=False)
-        \item Size: Price (Quantitative -- điểm lớn = giá cao)
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Selection: Hover để xem id, price, room\_type, neighbourhood, price\_is\_outlier
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Giải pháp overplotting: giảm opacity điểm False (xanh) để outlier (đỏ) nổi bật; hoặc filter theo borough để zoom vào từng khu vực
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce $\rightarrow$ locate $\rightarrow$ explore \newline
-Point Map là idiom duy nhất trả lời câu hỏi `ở đâu' --- không thể thay thế bằng bar chart hay Glyph cho phân tích spatial distribution. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: $\sim$21,000 listings
-    \item Color: 2 (True/False outlier)
-    \item Value range (Price): 9 $\rightarrow$ 50138
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Point Map (Geographic Scatter Map)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Longitude: Quantitative/Geographic (Key)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Latitude: Quantitative/Geographic (Key)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{price\_is\_outlier (derived): Categorical (True/False)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Price: Quantitative} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Room Type: Categorical} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Point (Circle) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Longitude (Geographic) \newline
+\hspace*{1em} Pos Y: Latitude (Geographic) \newline
+\hspace*{1em} Hue Color: price\_is\_outlier (Categorical -- đỏ=True, xanh=False) \newline
+\hspace*{1em} Size: Price (Quantitative -- điểm lớn = giá cao) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Hover để xem id, price, room\_type, neighbourhood, price\_is\_outlier. \\ \cline{2-3}
+& \textbf{Reduce} &
+Giảm opacity điểm False (xanh) để outlier (đỏ) nổi bật; hoặc filter theo borough để zoom vào từng khu vực. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ locate $\rightarrow$ explore} \newline
+Point Map là idiom duy nhất trả lời câu hỏi `ở đâu' --- không thể thay thế bằng bar chart hay Glyph cho phân tích spatial distribution.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: $\sim$21,000 listings. \newline
+Color: 2 (True/False outlier). \newline
+Value range (Price): 9 $\rightarrow$ 50138.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

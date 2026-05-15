@@ -7,63 +7,39 @@ chứa tác động thế nào đến giá/người?
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Scatter Plot với Trend Line \\
-\addlinespace[0.2cm]
-
-\textbf{What} & accommodates: Quantitative (Key trục X -- sức chứa 1--16) \newline
-price\_per\_person (derived): Quantitative (Value trục Y) \newline
-Room Type: Categorical (Color) \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Point (Circle)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: accommodates (Quantitative -- giữ từng giá trị riêng 1--16)
-        \item Pos Y: MEDIAN(price\_per\_person) (Quantitative)
-        \item Hue Color: Room Type (Categorical -- 4 màu)
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Selection: Hover để xem accommodates, median price/person, room\_type, count
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Superimpose: Trend Line (Linear) cho từng room type
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: accommodates $\leq$ 16, price\_is\_outlier = False
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & discover $\rightarrow$ explore \newline
-Phát hiện xu hướng giảm của price/person khi sức chứa tăng (economies of scale). Scatter + Trend Line là idiom chuẩn để phân tích relationship giữa 2 biến Q, đặc biệt để xác định crossover point giữa các room type. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Key: 16 (giá trị accommodates 1--16)
-    \item Color key: 4 room type
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Scatter Plot với Trend Line}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{accommodates: Quantitative (Key trục X -- sức chứa 1--16)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{price\_per\_person (derived): Quantitative (Value trục Y)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Room Type: Categorical (Color)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Point (Circle) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: accommodates (Quantitative -- giữ từng giá trị riêng 1--16) \newline
+\hspace*{1em} Pos Y: MEDIAN(price\_per\_person) (Quantitative) \newline
+\hspace*{1em} Hue Color: Room Type (Categorical -- 4 màu) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Hover để xem accommodates, median price/person, room\_type, count. \\ \cline{2-3}
+& \textbf{Facet} &
+Superimpose: Trend Line (Linear) cho từng room type. \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: accommodates $\leq$ 16, price\_is\_outlier = False. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{discover $\rightarrow$ explore} \newline
+Phát hiện xu hướng giảm của price/person khi sức chứa tăng (economies of scale). Scatter + Trend Line là idiom chuẩn để phân tích relationship giữa 2 biến Q, đặc biệt để xác định crossover point giữa các room type.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Key: 16 (giá trị accommodates 1--16). \newline
+Color key: 4 room type.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

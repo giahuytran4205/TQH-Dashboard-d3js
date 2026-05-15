@@ -7,61 +7,37 @@ nights ảnh hưởng thế nào?
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Line Chart \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Month: Ordinal (tháng 1--12, cyclic -- seasonality lặp lại theo năm) \newline
-occupancy\_rate\_pct (derived): Quantitative (AVG(is\_booked) $\times$ 100) \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Line + Point
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Month (Ordinal, Discrete -- tiến trình thời gian tháng 1--12)
-        \item Pos Y: Occupancy Rate (\%) (Quantitative)
-        \item Reference Line: Average (ngang -- mức trung bình tổng thể $\sim$30\%)
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover để xem tháng, occupancy rate (\%) cụ thể
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Superimpose: Reference Line (average occupancy ngang)
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: Year = 2026 (dữ liệu calendar 2025 chỉ có từ tháng 11, không đủ để phân tích seasonality)
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & discover $\rightarrow$ browse \newline
-Line chart (không phải bar) vì Month là Ordinal có thứ tự -- đường kết nối nhấn mạnh tính liên tục và xu hướng thời gian, không phải giá trị tại từng điểm rời rạc. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Key: 12 (tháng); Items: dữ liệu 2026 (tháng 1--11)
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Line Chart}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Month: Ordinal (tháng 1--12, cyclic -- seasonality lặp lại theo năm)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{occupancy\_rate\_pct (derived): Quantitative (AVG(is\_booked) $\times$ 100)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Line + Point \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Month (Ordinal, Discrete -- tiến trình thời gian tháng 1--12) \newline
+\hspace*{1em} Pos Y: Occupancy Rate (\%) (Quantitative) \newline
+\hspace*{1em} Reference Line: Average (ngang -- mức trung bình tổng thể $\sim$30\%) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover để xem tháng, occupancy rate (\%) cụ thể. \\ \cline{2-3}
+& \textbf{Facet} &
+Superimpose: Reference Line (average occupancy ngang). \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: Year = 2026 (dữ liệu calendar 2025 chỉ có từ tháng 11, không đủ để phân tích seasonality). \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{discover $\rightarrow$ browse} \newline
+Line chart (không phải bar) vì Month là Ordinal có thứ tự -- đường kết nối nhấn mạnh tính liên tục và xu hướng thời gian, không phải giá trị tại từng điểm rời rạc.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Key: 12 (tháng); Items: dữ liệu 2026 (tháng 1--11).
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

@@ -7,59 +7,39 @@ Câu hỏi: Giá niêm yết phân bổ như thế nào theo từng borough? Lo�
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Bar Chart \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Borough: Categorical \newline
-Median Price: Quantitative (aggregate: MEDIAN) \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Bar
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Borough (Categorical)
-        \item Pos Y: MEDIAN(Price) (Quantitative -- length từ gốc 0)
-        \item Hue Color: Borough (Categorical -- redundant encoding)
-        \item Label: giá trị MEDIAN trên đầu cột
-        \item Order: sort descending theo median price
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Selection: Hover để xem median price chính xác theo từng borough
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: price\_is\_outlier = False
-    \item Aggregate: MEDIAN(price) theo borough
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce $\rightarrow$ compare $\rightarrow$ summarize \newline
-Tóm tắt median giá thành 1 số đại diện dễ so sánh. Sort descending giúp nhận diện borough đắt/rẻ nhất ngay lập tức. Bar chart phù hợp khi task là Compare giá trị tuyệt đối. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 5 (borough)
-    \item Items: $\sim$21,000 listing (sau lọc)
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Bar Chart}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Borough: Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Median Price: Quantitative (aggregate: MEDIAN)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Bar \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Borough (Categorical) \newline
+\hspace*{1em} Pos Y: MEDIAN(Price) (Quantitative -- length từ gốc 0) \newline
+\hspace*{1em} Hue Color: Borough (Categorical -- redundant encoding) \newline
+\hspace*{1em} Label: giá trị MEDIAN trên đầu cột \newline
+\hspace*{1em} Order: sort descending theo median price \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Hover để xem median price chính xác theo từng borough. \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: price\_is\_outlier = False. \newline
+Aggregate: MEDIAN(price) theo borough. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ compare $\rightarrow$ summarize} \newline
+Tóm tắt median giá thành 1 số đại diện dễ so sánh. Sort descending giúp nhận diện borough đắt/rẻ nhất ngay lập tức. Bar chart phù hợp khi task là Compare giá trị tuyệt đối.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 5 (borough). \newline
+Items: $\sim$21,000 listing (sau lọc).
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

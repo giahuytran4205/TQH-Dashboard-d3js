@@ -10,61 +10,39 @@ chi tiết về hiệu suất kinh doanh qua thời gian của từng khu vực.
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Multi-line Chart (Biểu đồ đa đường) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Tháng (Month): O, Quận (Neighbourhood Group): C, Tỷ lệ lấp đầy (Avg. is Booked): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ browse, lookup $\rightarrow$ summarize, compare
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Dẫn xuất (derive) dữ liệu tỷ lệ lấp đầy từ trạng thái đặt phòng theo ngày.
-    \item Duyệt (browse) và tìm kiếm (lookup) xu hướng biến động lấp đầy theo tiến trình thời gian 12 tháng.
-    \item Tóm tắt (summarize) và so sánh (compare) hiệu suất kinh doanh, tính mùa vụ giữa 5 quận để nhận diện sự khác biệt về nhu cầu thị trường.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Point, Line (Đường nối các điểm dữ liệu).
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX: Trục thời gian tiến lên (Tháng -- Ordinal).
-        \item PosY: Mức độ lấp đầy (Tỷ lệ \% -- Quantitative).
-        \item Hue Color: Phân biệt 5 quận (Categorical).
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover + Highlight: Rê chuột vào một đường để highlight xu hướng của riêng quận đó, giúp khắc phục hiện tượng rối mắt khi các đường cắt nhau (line crossing).
-    \item Selection: Chọn một quận trên Legend để quan sát riêng biệt dữ liệu của khu vực đó.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: Có thể lọc theo Năm (Year) để so sánh xu hướng lấp đầy giữa các giai đoạn khác nhau (ví dụ: trước và sau đại dịch).
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 12 (Tháng trong năm).
-    \item Categorical key: 5 (Nhóm các quận của NYC).
-    \item Y-axis range: 0.0 $\rightarrow$ 0.6
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Multi-line Chart (Biểu đồ đa đường)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Tháng (Month): Ordinal (O)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Quận (Neighbourhood Group): Categorical (C)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Tỷ lệ lấp đầy (Avg. is Booked): Quantitative (Q)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Point, Line (Đường nối các điểm dữ liệu) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Trục thời gian tiến lên (Tháng -- Ordinal) \newline
+\hspace*{1em} PosY: Mức độ lấp đầy (Tỷ lệ \% -- Quantitative) \newline
+\hspace*{1em} Hue Color: Phân biệt 5 quận (Categorical) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover + Highlight: Rê chuột vào một đường để highlight xu hướng của riêng quận đó, giúp khắc phục hiện tượng rối mắt khi các đường cắt nhau (line crossing). \newline
+Selection: Chọn một quận trên Legend để quan sát riêng biệt dữ liệu của khu vực đó. \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: Có thể lọc theo Năm (Year) để so sánh xu hướng lấp đầy giữa các giai đoạn khác nhau (ví dụ: trước và sau đại dịch). \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce (derive) $\rightarrow$ browse, lookup $\rightarrow$ summarize, compare} \newline
+Dẫn xuất (derive) dữ liệu tỷ lệ lấp đầy từ trạng thái đặt phòng theo ngày. Duyệt (browse) và tìm kiếm (lookup) xu hướng biến động lấp đầy theo tiến trình thời gian 12 tháng. Tóm tắt (summarize) và so sánh (compare) hiệu suất kinh doanh, tính mùa vụ giữa 5 quận.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 12 (Tháng trong năm). \newline
+Categorical key: 5 (Nhóm các quận của NYC). \newline
+Y-axis range: 0.0 $\rightarrow$ 0.6.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

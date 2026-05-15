@@ -8,12 +8,13 @@
 \centering
 \begin{tabularx}{\textwidth}{@{} l l l l X @{}}
 \toprule
-\textbf{Dataset} & \textbf{Type} & \textbf{Granularity} & \textbf{Avail.} & \textbf{Vai trò} \\
+\textbf{Dataset} & \textbf{Type} & \textbf{Granularity} & \textbf{Avail.} & \textbf{Vai trò} \\ 
 \midrule
-listings\_clean & Entity & 1 dòng/listing & Static & Fact chính: thị trường \& không gian \\
-calendar\_clean & Temporal & 1 dòng/listing-ngày & Temp. & Fact chính: xu hướng thời gian \\
-reviews\_clean & Text/Event & 1 dòng/review & Temp. & Bổ trợ chất lượng \& hoạt động \\
-neighbourhoods & Spatial & 1 feature/vùng & Static & Tham chiếu không gian bản đồ \\
+listings\_clean & Entity & 1 dòng/listing & Static & Fact chính: thị trường \& không gian \\ \hline
+calendar\_clean & Temporal & 1 dòng/listing-ngày & Temp. & Fact chính: xu hướng thời gian \\ \hline
+reviews\_clean & Text/Event & 1 dòng/review & Temp. & Bổ trợ chất lượng \& hoạt động \\ \hline
+neighbourhoods & Spatial & 1 feature/vùng & Static & Tham chiếu không gian bản đồ \\ 
+
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -29,20 +30,19 @@ neighbourhoods & Spatial & 1 feature/vùng & Static & Tham chiếu không gian b
 \toprule
 \textbf{Attribute} & \textbf{Type} & \textbf{Direction} & \textbf{Discrete/Cont.} & \textbf{Role} \\
 \midrule
-id                              & C & Nominal    & Discrete   & Key (PK) \\
-host\_id                        & C & Nominal    & Discrete   & Key (FK) \\
-neighbourhood\_group\_cleansed  & C & Nominal    & Discrete   & Dimension (spatial -- cấp quận) \\
-neighbourhood\_cleansed         & C & Nominal    & Discrete   & Dimension (spatial -- join GeoJSON) \\
-latitude                        & Q & Sequential & Continuous & Spatial coordinate (Y) \\
-longitude                       & Q & Sequential & Continuous & Spatial coordinate (X) \\
-room\_type                      & C & Nominal    & Discrete   & Dimension (category) \\
-price                           & Q & Sequential & Continuous & Measure (financial) \\
-availability\_365               & Q & Sequential & Discrete   & Measure (availability) \\
-accommodates                    & Q & Sequential & Discrete   & Measure (capacity) \\
-number\_of\_reviews             & Q & Sequential & Discrete   & Measure (activity) \\
-reviews\_per\_month             & Q & Sequential & Continuous & Measure (rate) \\
-review\_scores\_rating          & Q & Sequential & Continuous & Measure (quality signal) \\
-\bottomrule
+id                              & C & Nominal    & Discrete   & Key (PK) \\ \hline
+host\_id                        & C & Nominal    & Discrete   & Key (FK) \\ \hline
+neighbourhood\_group\_cleansed  & C & Nominal    & Discrete   & Dimension (spatial -- cấp quận) \\ \hline
+neighbourhood\_cleansed         & C & Nominal    & Discrete   & Dimension (spatial -- join GeoJSON) \\ \hline
+latitude                        & Q & Sequential & Continuous & Spatial coordinate (Y) \\ \hline
+longitude                       & Q & Sequential & Continuous & Spatial coordinate (X) \\ \hline
+room\_type                      & C & Nominal    & Discrete   & Dimension (category) \\ \hline
+price                           & Q & Sequential & Continuous & Measure (financial) \\ \hline
+availability\_365               & Q & Sequential & Discrete   & Measure (availability) \\ \hline
+accommodates                    & Q & Sequential & Discrete   & Measure (capacity) \\ \hline
+number\_of\_reviews             & Q & Sequential & Discrete   & Measure (activity) \\ \hline
+reviews\_per\_month             & Q & Sequential & Continuous & Measure (rate) \\ \hline
+review\_scores\_rating          & Q & Sequential & Continuous & Measure (quality signal) \\ \bottomrule
 \end{tabularx}
 \end{table}
 
@@ -55,15 +55,15 @@ review\_scores\_rating          & Q & Sequential & Continuous & Measure (quality
 \toprule
 \textbf{Attribute} & \textbf{Type} & \textbf{Direction} & \textbf{Discrete/Cont.} & \textbf{Role} \\
 \midrule
-listing\_id     & C & Nominal    & Discrete & Key (FK) \\
-date            & O & Sequential & Discrete & Temporal dimension \\
-available       & C & Nominal    & Discrete & Raw state \\
-minimum\_nights & Q & Sequential & Discrete & Constraint \\
-maximum\_nights & Q & Sequential & Discrete & Constraint \\
-is\_available   & C & Nominal    & Discrete & Derived state \\
-is\_booked      & Q & Sequential & Discrete & Measure (occupancy proxy) \\
-year            & O & Sequential & Discrete & Time aggregation \\
-month           & O & Cyclic     & Discrete & Time aggregation (seasonality) \\
+listing\_id     & C & Nominal    & Discrete & Key (FK) \\ \hline
+date            & O & Sequential & Discrete & Temporal dimension \\ \hline
+available       & C & Nominal    & Discrete & Raw state \\ \hline
+minimum\_nights & Q & Sequential & Discrete & Constraint \\ \hline
+maximum\_nights & Q & Sequential & Discrete & Constraint \\ \hline
+is\_available   & C & Nominal    & Discrete & Derived state \\ \hline
+is\_booked      & Q & Sequential & Discrete & Measure (occupancy proxy) \\ \hline
+year            & O & Sequential & Discrete & Time aggregation \\ \hline
+month           & O & Cyclic     & Discrete & Time aggregation (seasonality) \\ 
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -77,9 +77,9 @@ month           & O & Cyclic     & Discrete & Time aggregation (seasonality) \\
 \toprule
 \textbf{Attribute} & \textbf{Type} & \textbf{Direction} & \textbf{Discrete/Cont.} & \textbf{Role} \\
 \midrule
-listing\_id & C & Nominal    & Discrete & Key (FK) \\
-date        & O & Sequential & Discrete & Temporal dimension \\
-comments    & C & Nominal    & Discrete & Text attribute \\
+listing\_id & C & Nominal    & Discrete & Key (FK) \\ \hline
+date        & O & Sequential & Discrete & Temporal dimension \\ \hline
+comments    & C & Nominal    & Discrete & Text attribute \\ 
 \bottomrule
 \end{tabular}
 \end{table}
@@ -93,8 +93,8 @@ comments    & C & Nominal    & Discrete & Text attribute \\
 \toprule
 \textbf{Attribute} & \textbf{Type} & \textbf{Direction} & \textbf{Discrete/Cont.} & \textbf{Role} \\
 \midrule
-neighbourhood       & C & Nominal & Discrete & Spatial key \\
-neighbourhood\_group & C & Nominal & Discrete & Spatial grouping \\
+neighbourhood       & C & Nominal & Discrete & Spatial key \\ \hline
+neighbourhood\_group & C & Nominal & Discrete & Spatial grouping \\ 
 \bottomrule
 \end{tabular}
 \end{table}
@@ -119,8 +119,8 @@ Với \texttt{id} trong bảng listings là khóa chính, các \texttt{listing\_
 \subsubsection*{3.3 Hierarchical Attributes}
 
 \begin{itemize}
-    \item \textbf{Không gian (spatial hierarchy):} \texttt{neighbourhood\_group\_cleansed} $\rightarrow$ \texttt{neighbourhood\_cleansed}.
-    \item \textbf{Thời gian (temporal hierarchy):} \texttt{year} $\rightarrow$ \texttt{month} $\rightarrow$ \texttt{date}.
+    \item \textbf{Không gian:} \texttt{neighbourhood-group-cleansed} $\rightarrow$ \texttt{neighbourhood-cleansed}.
+    \item \textbf{Thời gian:} \texttt{year} $\rightarrow$ \texttt{month} $\rightarrow$ \texttt{date}.
 \end{itemize}
 
 Hai cấu trúc phân cấp này là cơ sở để roll-up/drill-down nhất quán khi tổng hợp số liệu trên dashboard.
@@ -134,10 +134,10 @@ Hai cấu trúc phân cấp này là cơ sở để roll-up/drill-down nhất qu
 \toprule
 \textbf{Attribute} & \textbf{Definition} & \textbf{Purpose} \\
 \midrule
-is\_available        & map từ \texttt{available}     & Chuẩn hóa trạng thái \\
-is\_booked           & $1 - \texttt{is\_available}$  & Đo occupancy \\
-year, month          & extract từ \texttt{date}      & Time aggregation \\
-price\_is\_outlier   & IQR flag                      & Robust analysis \\
+is\_available        & map từ \texttt{available}     & Chuẩn hóa trạng thái \\ \hline
+is\_booked           & $1 - \texttt{is\_available}$  & Đo occupancy \\ \hline
+year, month          & extract từ \texttt{date}      & Time aggregation \\ \hline
+price\_is\_outlier   & IQR flag                      & Robust analysis \\ \hline
 occupancy\_rate\_pct & mean(is\_booked)              & KPI theo thời gian \\
 \bottomrule
 \end{tabularx}
@@ -168,125 +168,238 @@ occupancy\_rate\_pct & mean(is\_booked)              & KPI theo thời gian \\
 \subsection{Domain Tasks (User Stories)}
 
 \begin{description}
-    \item[Task 1 -- Thị trường \& phân bố] Người dùng muốn hiểu: giá phân bố như thế nào theo khu vực; loại phòng nào chiếm ưu thế; khu vực nào đắt/rẻ bất thường.
+    \item[Task 1 -- Thị trường \& phân bố:] Người dùng muốn hiểu giá phân bố như thế nào theo khu vực; loại phòng nào chiếm ưu thế; khu vực nào đắt/rẻ bất thường.
 
-    \item[Task 2 -- Phân tích tỷ lệ lấp đầy theo thời gian] Người dùng muốn: quan sát occupancy theo tháng; nhận diện mùa cao/thấp điểm; so sánh xu hướng theo thời gian.
+    \item[Task 2 -- Phân tích tỷ lệ lấp đầy theo thời gian:] Người dùng muốn quan sát occupancy theo tháng; nhận diện mùa cao/thấp điểm; so sánh xu hướng theo thời gian.
 
-    \item[Task 3 -- Cấu trúc nguồn cung và sức chứa] Người dùng muốn hiểu: cấu trúc nguồn cung trên thị trường Airbnb NYC theo loại phòng, sức chứa và khu vực; xác định phân khúc nào đang chiếm ưu thế và khu vực nào phù hợp với từng quy mô khách.
+    \item[Task 3 -- Cấu trúc nguồn cung và sức chứa::] Người dùng muốn hiểu cấu trúc nguồn cung trên thị trường Airbnb NYC theo loại phòng, sức chứa và khu vực; xác định phân khúc nào đang chiếm ưu thế và khu vực nào phù hợp với từng quy mô khách.
 
-    \item[Task 4 -- Chỉ số chất lượng và đánh giá khách hàng] Người dùng muốn: quan sát chất lượng dịch vụ của listing thông qua điểm đánh giá và mức độ hoạt động của review; nhận diện khu vực hoặc nhóm listing có trải nghiệm tốt, ổn định, hoặc cần cải thiện.
+    \item[Task 4 -- Chỉ số chất lượng và đánh giá khách hàng:] Người dùng muốn quan sát chất lượng dịch vụ của listing thông qua điểm đánh giá và mức độ hoạt động của review; nhận diện khu vực hoặc nhóm listing có trải nghiệm tốt, ổn định, hoặc cần cải thiện.
 
-    \item[Task 5 -- Phân bố mức giá theo khu vực] Người dùng muốn hiểu: mức giá thuê trung bình chênh lệch như thế nào giữa 5 quận; quận nào tập trung nhiều phòng giá rẻ, quận nào đắt đỏ nhất.
+    \item[Task 5 -- Phân bố mức giá theo khu vực:] Người dùng muốn hiểu mức giá thuê trung bình chênh lệch như thế nào giữa 5 quận; quận nào tập trung nhiều phòng giá rẻ, quận nào đắt đỏ nhất.
 
-    \item[Task 6 -- Bản đồ Giá Bất thường \& Giá trị Thực] Người dùng muốn: tìm kiếm các listing bị gắn cờ ngoại lệ (\texttt{price\_is\_outlier = True}); nhận diện các ``món hời'' (giá dưới mức trung vị nhưng điểm đánh giá cực cao) trong cùng một khu vực/loại phòng.
+    \item[Task 6 -- Bản đồ Giá Bất thường \& Giá trị Thực:] Người dùng muốn tìm kiếm các listing bị gắn cờ ngoại lệ (\texttt{price\_is\_outlier = True}); nhận diện các ``món hời'' (giá dưới mức trung vị nhưng điểm đánh giá cực cao) trong cùng một khu vực/loại phòng.
 
-    \item[Task 7 -- Hiệu quả Chi phí lưu trú] Người dùng muốn hiểu: khu vực nào mang lại ``giá trị tốt nhất'' tính trên đầu người (Price / Accommodates); chi phí bình quân đầu người thay đổi ra sao khi quy mô nhóm khách tăng lên.
+    \item[Task 7 -- Hiệu quả Chi phí lưu trú:] Người dùng muốn hiểu khu vực nào mang lại ``giá trị tốt nhất'' tính trên đầu người (Price / Accommodates); chi phí bình quân đầu người thay đổi ra sao khi quy mô nhóm khách tăng lên.
 
-    \item[Task 8 -- Phân tích Mùa vụ và Cơ hội Đặt phòng] Người dùng muốn: quan sát tỷ lệ lấp đầy thay đổi như thế nào theo các tháng trong năm; nhận diện xem ràng buộc đêm tối thiểu (\texttt{minimum\_nights}) có làm giảm cơ hội tiếp cận phòng của khách thuê vào mùa cao điểm không.
+    \item[Task 8 -- Phân tích Mùa vụ và Cơ hội Đặt phòng:] Người dùng muốn quan sát tỷ lệ lấp đầy thay đổi như thế nào theo các tháng trong năm; nhận diện xem ràng buộc đêm tối thiểu (\texttt{minimum\_nights}) có làm giảm cơ hội tiếp cận phòng của khách thuê vào mùa cao điểm không.
 
-    \item[Task 9 -- Phân tích Danh mục Chủ nhà] Người dùng muốn hiểu: mức độ chuyên nghiệp hóa của thị trường (chủ nhà sở hữu nhiều listing vs. cá nhân lẻ tẻ); so sánh lợi thế cạnh tranh (mức độ lấp đầy, điểm đánh giá) của chủ nhà lớn so với chủ nhà cá nhân.
+    \item[Task 9 -- Phân tích Danh mục Chủ nhà:] Người dùng muốn hiểu mức độ chuyên nghiệp hóa của thị trường (chủ nhà sở hữu nhiều listing vs. cá nhân lẻ tẻ); so sánh lợi thế cạnh tranh (mức độ lấp đầy, điểm đánh giá) của chủ nhà lớn so với chủ nhà cá nhân.
 
-    \item[Task 10 -- Trải nghiệm khách hàng] Người dùng muốn: khai phá dữ liệu ngôn ngữ tự nhiên từ cột bình luận (comments); nhận diện các từ khóa/chủ đề xuất hiện nhiều nhất ở nhóm phòng điểm cao so với nhóm phòng điểm thấp.
+    \item[Task 10 -- Trải nghiệm khách hàng:] Người dùng muốn khai phá dữ liệu ngôn ngữ tự nhiên từ cột bình luận (comments); nhận diện các từ khóa/chủ đề xuất hiện nhiều nhất ở nhóm phòng điểm cao so với nhóm phòng điểm thấp.
 \end{description}
 
 \subsection{Task Abstraction}
 
 \subsubsection*{2.1 Domain Task 1 -- Thị trường và phân bố}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện phân bố giá theo khu vực. Action ``Discover'' $\rightarrow$ Target ``Outliers'': Nhận diện các khu vực có giá bất thường.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện phân bố giá theo khu vực. 
+    \item Action ``Discover'' $\rightarrow$ Target ``Outliers'': Nhận diện các khu vực có giá bất thường.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá các khu vực và loại phòng. Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định vị trí các khu vực giá cao/thấp.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá các khu vực và loại phòng. 
+    \item Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định vị trí các khu vực giá cao/thấp.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh giá giữa các khu vực hoặc loại phòng. Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính giá trung bình theo khu vực.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh giá giữa các khu vực hoặc loại phòng. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính giá trung bình theo khu vực.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Locate + Compare + Summarize $\rightarrow$ Distribution + Outliers + Features.
 
 \subsubsection*{2.2 Domain Task 2 -- Phân tích tỷ lệ lấp đầy theo thời gian}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Trends'': Phát hiện xu hướng occupancy theo thời gian.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Trends'': Phát hiện xu hướng occupancy theo thời gian.
+\end{itemize}
 
-\textbf{Search:} Action ``Browse'' $\rightarrow$ Target ``Trends'': Duyệt dữ liệu theo timeline. Action ``Locate'' $\rightarrow$ Target ``Extremes'': Xác định các tháng cao điểm/thấp điểm.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Browse'' $\rightarrow$ Target ``Trends'': Duyệt dữ liệu theo timeline. 
+    \item Action ``Locate'' $\rightarrow$ Target ``Extremes'': Xác định các tháng cao điểm/thấp điểm.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Trends'': So sánh occupancy giữa các tháng. Action ``Summarize'' $\rightarrow$ Target ``Trends'': Tính occupancy trung bình theo tháng.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Trends'': So sánh occupancy giữa các tháng. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Trends'': Tính occupancy trung bình theo tháng.
+\end{itemize}
 
 \textbf{Summary:} Discover + Browse + Locate + Compare + Summarize $\rightarrow$ Trends + Extremes.
 
 \subsubsection*{2.3 Domain Task 3 -- Cấu trúc nguồn cung và sức chứa}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện phân bố nguồn cung theo \texttt{room\_type} và \texttt{accommodates}. Action ``Discover'' $\rightarrow$ Target ``Features'': Nhận diện các đặc trưng từng khu vực theo cấu trúc loại phòng và sức chứa.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện phân bố nguồn cung theo \texttt{room\_type} và \texttt{accommodates}. 
+    \item Action ``Discover'' $\rightarrow$ Target ``Features'': Nhận diện các đặc trưng từng khu vực theo cấu trúc loại phòng và sức chứa.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá sự khác biệt về nguồn cung giữa các nhóm vùng (borough). Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định các khu vực có sức chứa lớn hoặc cấu trúc nguồn cung khác biệt.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá sự khác biệt về nguồn cung giữa các nhóm vùng (borough). 
+    \item Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định các khu vực có sức chứa lớn hoặc cấu trúc nguồn cung khác biệt.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh phân bố \texttt{room\_type} hoặc \texttt{accommodates} giữa các khu vực. Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh mối quan hệ giữa sức chứa và giá. Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính số lượng listing, sức chứa trung bình.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh phân bố \texttt{room\_type} hoặc \texttt{accommodates} giữa các khu vực. 
+    \item Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh mối quan hệ giữa sức chứa và giá. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính số lượng listing, sức chứa trung bình.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Locate + Compare + Summarize $\rightarrow$ Distribution + Features + Outliers + Dependency.
 
 \subsubsection*{2.4 Domain Task 4 -- Chỉ số chất lượng và đánh giá khách hàng}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện phân bố điểm đánh giá giữa các nhóm listing hoặc khu vực. Action ``Discover'' $\rightarrow$ Target ``Outliers'': Nhận diện các listing hoặc khu vực có rating quá cao hoặc quá thấp.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện phân bố điểm đánh giá giữa các nhóm listing hoặc khu vực. 
+    \item Action ``Discover'' $\rightarrow$ Target ``Outliers'': Nhận diện các listing hoặc khu vực có rating quá cao hoặc quá thấp.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá các tín hiệu chất lượng theo \texttt{room\_type} và \texttt{neighbourhood\_group\_cleansed}. Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định các khu vực có rating thấp bất thường hoặc số lượng review quá thấp/cao.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá các tín hiệu chất lượng theo \texttt{room\_type} và \texttt{neighbourhood\_group\_cleansed}. 
+    \item Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định các khu vực có rating thấp bất thường hoặc số lượng review quá thấp/cao.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh phân bố rating giữa các khu vực hoặc các loại phòng. Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh mối quan hệ giữa \texttt{review\_scores\_rating} và \texttt{number\_of\_reviews}. Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính rating trung bình hoặc số review trung bình theo khu vực/loại phòng.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh phân bố rating giữa các khu vực hoặc các loại phòng. 
+    \item Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh mối quan hệ giữa \texttt{review\_scores\_rating} và \texttt{number\_of\_reviews}. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính rating trung bình hoặc số review trung bình theo khu vực/loại phòng.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Locate + Compare + Summarize $\rightarrow$ Distribution + Outliers + Features + Dependency.
 
 \subsubsection*{2.5 Domain Task 5 -- Phân bố giá theo khu vực}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện sự phân bố mức giá trên toàn bộ 5 quận.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Distribution'': Phát hiện sự phân bố mức giá trên toàn bộ 5 quận.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá đặc trưng về giá trị bất động sản của từng khu vực. Action ``Locate'' $\rightarrow$ Target ``Extremes'': Xác định vị trí của các quận đắt đỏ nhất và rẻ nhất.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá đặc trưng về giá trị bất động sản của từng khu vực. 
+    \item Action ``Locate'' $\rightarrow$ Target ``Extremes'': Xác định vị trí của các quận đắt đỏ nhất và rẻ nhất.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh sự chênh lệch và khoảng biến thiên giá giữa các quận. Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính toán mức giá trung bình/trung vị theo từng quận.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh sự chênh lệch và khoảng biến thiên giá giữa các quận. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính toán mức giá trung bình/trung vị theo từng quận.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Locate + Compare + Summarize $\rightarrow$ Distribution + Features + Extremes.
 
 \subsubsection*{2.6 Domain Task 6 -- Bản đồ giá bất thường và giá trị thực}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Outliers'': Phát hiện các listing có mức giá và chất lượng bất thường.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Outliers'': Phát hiện các listing có mức giá và chất lượng bất thường.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá sự phân bổ không gian của các ``món hời'' trên bản đồ. Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định chính xác vị trí các listing có giá trị thực vượt trội.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá sự phân bổ không gian của các ``món hời'' trên bản đồ. 
+    \item Action ``Locate'' $\rightarrow$ Target ``Outliers'': Xác định chính xác vị trí các listing có giá trị thực vượt trội.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh tương quan giữa mức giá và điểm đánh giá để tìm ra độ lệch.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh tương quan giữa mức giá và điểm đánh giá để tìm ra độ lệch.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Locate + Compare $\rightarrow$ Outliers + Features + Dependency.
 
 \subsubsection*{2.7 Domain Task 7 -- Hiệu quả chi phí lưu trú}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Dependency'': Phát hiện mối quan hệ phụ thuộc giữa sức chứa (quy mô khách) và biến động chi phí bình quân.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Dependency'': Phát hiện mối quan hệ phụ thuộc giữa sức chứa (quy mô khách) và biến động chi phí bình quân.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá xu hướng thay đổi giá khi số lượng người lưu trú thay đổi.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá xu hướng thay đổi giá khi số lượng người lưu trú thay đổi.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh chi phí bình quân đầu người giữa các khu vực. Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh sự tối ưu chi phí giữa các nhóm quy mô khách khác nhau. Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính toán chi phí đầu người trung bình theo quy mô và khu vực.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh chi phí bình quân đầu người giữa các khu vực. 
+    \item Action ``Compare'' $\rightarrow$ Target ``Dependency'': So sánh sự tối ưu chi phí giữa các nhóm quy mô khách khác nhau. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính toán chi phí đầu người trung bình theo quy mô và khu vực.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Compare + Summarize $\rightarrow$ Dependency + Features + Distribution.
 
 \subsubsection*{2.8 Domain Task 8 -- Phân tích mùa vụ và cơ hội đặt phòng}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Trends'': Phát hiện xu hướng lấp đầy theo mùa vụ. Action ``Discover'' $\rightarrow$ Target ``Dependency'': Phát hiện mối quan hệ giữa chính sách \texttt{minimum\_nights} và tỷ lệ lấp đầy.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Trends'': Phát hiện xu hướng lấp đầy theo mùa vụ. 
+    \item Action ``Discover'' $\rightarrow$ Target ``Dependency'': Phát hiện mối quan hệ giữa chính sách \texttt{minimum\_nights} và tỷ lệ lấp đầy.
+\end{itemize}
 
-\textbf{Search:} Action ``Browse'' $\rightarrow$ Target ``Trends'': Duyệt dữ liệu lấp đầy dọc theo trục thời gian. Action ``Locate'' $\rightarrow$ Target ``Extremes'': Xác định chính xác các tháng cao điểm và thấp điểm.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Browse'' $\rightarrow$ Target ``Trends'': Duyệt dữ liệu lấp đầy dọc theo trục thời gian. 
+    \item Action ``Locate'' $\rightarrow$ Target ``Extremes'': Xác định chính xác các tháng cao điểm và thấp điểm.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Trends'': So sánh tỷ lệ lấp đầy giữa các tháng. Action ``Compare'' $\rightarrow$ Target ``Dependency'': Đối chiếu tỷ lệ lấp đầy giữa nhóm phòng có \texttt{minimum\_nights} ngắn và dài.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Trends'': So sánh tỷ lệ lấp đầy giữa các tháng. 
+    \item Action ``Compare'' $\rightarrow$ Target ``Dependency'': Đối chiếu tỷ lệ lấp đầy giữa nhóm phòng có \texttt{minimum\_nights} ngắn và dài.
+\end{itemize}
 
 \textbf{Summary:} Discover + Browse + Locate + Compare $\rightarrow$ Trends + Extremes + Dependency.
 
 \subsubsection*{2.9 Domain Task 9 -- Phân tích danh mục chủ nhà}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Dependency'': Phát hiện mối quan hệ giữa quy mô danh mục của chủ nhà và hiệu suất kinh doanh (occupancy \& rating).
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Dependency'': Phát hiện mối quan hệ giữa quy mô danh mục của chủ nhà và hiệu suất kinh doanh (occupancy \& rating).
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá đặc trưng của nhóm listing thuộc quyền sở hữu của các chủ nhà sở hữu nhiều phòng.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá đặc trưng của nhóm listing thuộc quyền sở hữu của các chủ nhà sở hữu nhiều phòng.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh phân bố điểm đánh giá và tỷ lệ lấp đầy giữa nhóm chủ nhà lớn và chủ nhà nhỏ lẻ. Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính trung bình điểm đánh giá và lấp đầy theo phân loại quy mô chủ nhà.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh phân bố điểm đánh giá và tỷ lệ lấp đầy giữa nhóm chủ nhà lớn và chủ nhà nhỏ lẻ. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Distribution'': Tính trung bình điểm đánh giá và lấp đầy theo phân loại quy mô chủ nhà.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Compare + Summarize $\rightarrow$ Dependency + Features + Distribution.
 
 \subsubsection*{2.10 Domain Task 10 -- Trải nghiệm khách hàng}
 
-\textbf{Analyze:} Action ``Discover'' $\rightarrow$ Target ``Features'': Phát hiện các chủ đề và từ khóa (keywords) nổi bật phản ánh trải nghiệm khách hàng.
+\textbf{Analyze:} 
+\begin{itemize}
+    \item Action ``Discover'' $\rightarrow$ Target ``Features'': Phát hiện các chủ đề và từ khóa (keywords) nổi bật phản ánh trải nghiệm khách hàng.
+\end{itemize}
 
-\textbf{Search:} Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá ngôn ngữ và ngữ cảnh mà khách hàng sử dụng khi mô tả các nhóm listing khác nhau.
+\textbf{Search:} 
+\begin{itemize}
+    \item Action ``Explore'' $\rightarrow$ Target ``Features'': Khám phá ngôn ngữ và ngữ cảnh mà khách hàng sử dụng khi mô tả các nhóm listing khác nhau.
+\end{itemize}
 
-\textbf{Query:} Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh tần suất xuất hiện của các từ khóa tích cực/tiêu cực giữa nhóm phòng điểm cao và điểm thấp. Action ``Summarize'' $\rightarrow$ Target ``Features'': Tổng hợp thành tập hợp các từ vựng cốt lõi nhất.
+\textbf{Query:} 
+\begin{itemize}
+    \item Action ``Compare'' $\rightarrow$ Target ``Distribution'': So sánh tần suất xuất hiện của các từ khóa tích cực/tiêu cực giữa nhóm phòng điểm cao và điểm thấp. 
+    \item Action ``Summarize'' $\rightarrow$ Target ``Features'': Tổng hợp thành tập hợp các từ vựng cốt lõi nhất.
+\end{itemize}
 
 \textbf{Summary:} Discover + Explore + Compare + Summarize $\rightarrow$ Features + Distribution.

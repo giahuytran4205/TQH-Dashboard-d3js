@@ -7,58 +7,38 @@ nights ảnh hưởng thế nào?
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Heatmap (Matrix Chart) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Month: Ordinal (tháng 1--12, cyclic) \newline
-minimum\_nights\_group (derived): Categorical (Short $\leq$3 / Medium 4--7 / Long $>$7) \newline
-occupancy\_rate\_pct (derived): Quantitative \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Point (Được hiển thị dưới dạng vùng diện tích hình vuông -- Square/Area lấp đầy ô lưới ma trận)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Month (Ordinal -- 12 cột)
-        \item Pos Y: Minimum Nights Group (Categorical -- Short/Medium/Long, top$\rightarrow$bottom)
-        \item Color (Luminance/Sequential): Occupancy Rate (Quantitative -- đậm=cao, nhạt=thấp)
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover để xem month, Minimum Nights Group, occupancy\_rate\_pct (\%)
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Binning minimum\_nights $\rightarrow$ 3 nhóm (giảm số chiều từ hàng trăm giá trị $\rightarrow$ 3 nhóm)
-    \item Sort thủ công: Short $\rightarrow$ Medium $\rightarrow$ Long (thứ tự logic nghiệp vụ, không alphabetical)
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & discover $\rightarrow$ compare \newline
-Phát hiện pattern 2 chiều đồng thời (month $\times$ minimum\_nights\_group). Heatmap theo nguyên lý `2 keys $\rightarrow$ heatmap' --- encode 3 biến trong cấu trúc ma trận. Color Luminance/Sequential đúng cho quantitative trong heatmap vì kích thước ô đồng đều loại bỏ bias từ Area. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Key: 12 (tháng) $\times$ 3 (nhóm) = 36 ô
-    \item Bin: 3 (Short $\leq$3, Medium 4--7, Long $>$7 đêm)
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Heatmap (Matrix Chart)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Month: Ordinal (tháng 1--12, cyclic)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{minimum\_nights\_group (derived): Categorical (Short $\leq$3 / Medium 4--7 / Long $>$7)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{occupancy\_rate\_pct (derived): Quantitative} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Point (Square/Area lấp đầy ô lưới ma trận) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Month (Ordinal -- 12 cột) \newline
+\hspace*{1em} Pos Y: Minimum Nights Group (Categorical -- Short/Medium/Long, top$\rightarrow$bottom) \newline
+\hspace*{1em} Color (Luminance/Sequential): Occupancy Rate (Quantitative -- đậm=cao, nhạt=thấp) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover để xem month, Minimum Nights Group, occupancy\_rate\_pct (\%). \\ \cline{2-3}
+& \textbf{Reduce} &
+Binning minimum\_nights $\rightarrow$ 3 nhóm (giảm số chiều từ hàng trăm giá trị $\rightarrow$ 3 nhóm). \newline
+Sort thủ công: Short $\rightarrow$ Medium $\rightarrow$ Long (thứ tự logic nghiệp vụ, không alphabetical). \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{discover $\rightarrow$ compare} \newline
+Phát hiện pattern 2 chiều đồng thời (month $\times$ minimum\_nights\_group). Heatmap theo nguyên lý `2 keys $\rightarrow$ heatmap' --- encode 3 biến trong cấu trúc ma trận. Color Luminance/Sequential đúng cho quantitative vì kích thước ô đồng đều loại bỏ bias từ Area.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Key: 12 (tháng) $\times$ 3 (nhóm) = 36 ô. \newline
+Bin: 3 (Short $\leq$3, Medium 4--7, Long $>$7 đêm).
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

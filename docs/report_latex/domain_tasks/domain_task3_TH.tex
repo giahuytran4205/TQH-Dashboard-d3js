@@ -10,63 +10,39 @@ nhu cầu sức chứa để định vị sản phẩm phù hợp.
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Stacked Bar Chart \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Khu vực: Categorical, Loại phòng: Categorical, Số lượng listing: Quantitative \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce $\rightarrow$ browse, compare $\rightarrow$ summarize
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Biểu đồ giúp so sánh cơ cấu nguồn cung Airbnb giữa các khu vực, đồng thời cho biết loại phòng nào chiếm ưu thế trong từng khu vực.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Bar
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX: Khu vực
-        \item PosY: Số lượng listing
-        \item Hue Color: Loại phòng
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Selection: Chọn một loại phòng để highlight trên toàn bộ biểu đồ.
-    \item Hover để xem số lượng listing của từng loại phòng trong từng khu vực.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Có thể facet theo nhóm sức chứa nếu cần phân tích sâu hơn.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Sắp xếp khu vực theo tổng số listing giảm dần.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: khu vực
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Stacked Bar Chart}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Khu vực: Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Loại phòng: Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Số lượng listing: Quantitative} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Bar \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Khu vực \newline
+\hspace*{1em} PosY: Số lượng listing \newline
+\hspace*{1em} Hue Color: Loại phòng \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Chọn một loại phòng để highlight trên toàn bộ biểu đồ. \newline
+Hover để xem số lượng listing của từng loại phòng trong từng khu vực. \\ \cline{2-3}
+& \textbf{Facet} &
+Có thể facet theo nhóm sức chứa nếu cần phân tích sâu hơn. \\ \cline{2-3}
+& \textbf{Reduce} &
+Sắp xếp khu vực theo tổng số listing giảm dần. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ browse, compare $\rightarrow$ summarize} \newline
+Biểu đồ giúp so sánh cơ cấu nguồn cung Airbnb giữa các khu vực, đồng thời cho biết loại phòng nào chiếm ưu thế trong từng khu vực.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: khu vực.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -121,63 +97,39 @@ nhu cầu sức chứa để định vị sản phẩm phù hợp.
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Heat Map (Bản đồ nhiệt) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Khu vực: Categorical, Nhóm sức chứa: Ordinal, Số lượng listing: Quantitative \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce $\rightarrow$ browse, lookup $\rightarrow$ summarize
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Biểu đồ giúp xác định khu vực nào phù hợp với từng quy mô khách, ví dụ khu vực nào có nhiều listing cho cặp đôi, nhóm nhỏ, gia đình hoặc nhóm đông người.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Area
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX: Nhóm sức chứa
-        \item PosY: Khu vực
-        \item Hue Color: Số lượng listing
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Selection: Chọn một ô để highlight tổ hợp khu vực và nhóm sức chứa.
-    \item Hover để xem số lượng listing chi tiết.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Có thể facet theo loại phòng.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Chuẩn hóa sức chứa thành các nhóm: 1--2 khách, 3--4 khách, 5--6 khách, 7+ khách.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: khu vực $\times$ nhóm sức chứa
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Heat Map (Bản đồ nhiệt)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Khu vực: Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Nhóm sức chứa: Ordinal} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Số lượng listing: Quantitative} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Area \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Nhóm sức chứa \newline
+\hspace*{1em} PosY: Khu vực \newline
+\hspace*{1em} Hue Color: Số lượng listing \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Chọn một ô để highlight tổ hợp khu vực và nhóm sức chứa. \newline
+Hover để xem số lượng listing chi tiết. \\ \cline{2-3}
+& \textbf{Facet} &
+Có thể facet theo loại phòng. \\ \cline{2-3}
+& \textbf{Reduce} &
+Chuẩn hóa sức chứa thành các nhóm: 1--2 khách, 3--4 khách, 5--6 khách, 7+ khách. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ browse, lookup $\rightarrow$ summarize} \newline
+Biểu đồ giúp xác định khu vực nào phù hợp với từng quy mô khách, ví dụ khu vực nào có nhiều listing cho cặp đôi, nhóm nhỏ, gia đình hoặc nhóm đông người.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: khu vực $\times$ nhóm sức chứa.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

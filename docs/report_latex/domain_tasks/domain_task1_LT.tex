@@ -10,63 +10,40 @@ vùng địa lý để định vị phân khúc thị trường.
 
 \subsubsection*{A. Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & 100\% Stacked Bar Chart \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Quận (Neighbourhood Group): C, Loại phòng (Room Type): C, Tỷ trọng đóng góp (\% of count): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & Produce $\rightarrow$ Compare $\rightarrow$ Discover
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Tính toán (produce) tỉ lệ phần trăm (\%) đóng góp của từng loại phòng theo từng quận.
-    \item So sánh cơ cấu nguồn cung giữa các quận, so sánh giữa các loại phòng và biết được mỗi loại phòng chiếm tỷ trọng bao nhiêu phần trăm trong tổng số listing của khu vực đó.
-    \item Khám phá (Discover) ra đặc trưng phân khúc thị trường của từng quận (ví dụ: khu vực nào chuyên phục vụ khách thuê nguyên căn, khu vực nào tập trung phòng chia sẻ giá rẻ).
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Area (Bar Chart)
-    \item Glyph: Sub-bars xếp chồng lên mức 100\%
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX: Phân biệt các quận.
-        \item PosY: So sánh tỷ trọng (0\% -- 100\%).
-        \item Hue Color: Phân biệt 4 loại phòng.
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Change alignment + Selection: Chọn một loại phòng (thông qua Parameter) để đưa sub-bar tương ứng xuống dưới cùng (trục 0\%) giúp tạo đường cơ sở chung dễ so sánh. Hover để xem chi tiết \%.
-    \item Highlight: Chọn trên Legend để làm nổi bật một loại phòng cụ thể.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Sort: Sắp xếp các quận trên trục X giảm dần theo tỷ trọng của loại phòng chiếm ưu thế (Entire home/apt).
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 5 (Năm quận của NYC)
-    \item Stacked key: 4 (Các loại phòng: Entire home, Private room, Shared room, Hotel room)
-    \item Y-axis range: 0\% $\rightarrow$ 100\%
-    \item Color scale: 4 màu sắc rời rạc
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{100\% Stacked Bar Chart}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{listing: room type distribution per borough} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Quận (Neighbourhood Group): Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Loại phòng (Room Type): Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Tỷ trọng đóng góp (\% of count): Quantitative, Continuous} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Area (Bar Chart); Glyph: Sub-bars xếp chồng lên mức 100\% \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Phân biệt các quận \newline
+\hspace*{1em} PosY: So sánh tỷ trọng (0\% -- 100\%) \newline
+\hspace*{1em} Hue Color: Phân biệt 4 loại phòng \\ \cline{2-3}
+& \textbf{Manipulate} &
+Change alignment + Selection: Chọn một loại phòng (thông qua Parameter) để đưa sub-bar tương ứng xuống dưới cùng (trục 0\%) giúp tạo đường cơ sở chung dễ so sánh. Hover để xem chi tiết \%. \newline
+Highlight: Chọn trên Legend để làm nổi bật một loại phòng cụ thể. \\ \cline{2-3}
+& \textbf{Reduce} &
+Sort: Sắp xếp các quận trên trục X giảm dần theo tỷ trọng của loại phòng chiếm ưu thế (Entire home/apt). \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ compare $\rightarrow$ discover} \newline
+Tính toán tỉ lệ phần trăm (\%) đóng góp của từng loại phòng theo từng quận. So sánh cơ cấu nguồn cung giữa các quận, biết được mỗi loại phòng chiếm tỷ trọng bao nhiêu phần trăm trong tổng số listing của khu vực đó. Khám phá đặc trưng phân khúc thị trường của từng quận (ví dụ: khu vực nào chuyên phục vụ khách thuê nguyên căn, khu vực nào tập trung phòng chia sẻ giá rẻ).
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 5 (Năm quận của NYC). \newline
+Stacked key: 4 (Entire home, Private room, Shared room, Hotel room). \newline
+Y-axis range: 0\% $\rightarrow$ 100\%. Color scale: 4 màu sắc rời rạc.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

@@ -10,60 +10,38 @@ vùng địa lý để định vị phân khúc thị trường.
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Choropleth Map (Bản đồ phân bố sắc độ) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Tọa độ (Longitude/Latitude): Q, Khu vực (Neighbourhood): C, Giá trung bình (AVG Price): Q, Nhãn ngoại lệ (Price Is Outlier): C \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ explore $\rightarrow$ locate $\rightarrow$ summarize, compare
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Tạo ra (derive) giá trị trung bình của từng khu vực để so sánh.
-    \item Khám phá (Explore) bức tranh tổng quan về phân bố giá thuê trên toàn bộ không gian địa lý của 5 quận New York.
-    \item Xác định vị trí (Locate) các cụm khu vực đắt đỏ nhất hoặc bình dân nhất.
-    \item Tóm tắt (Summarize) và so sánh (Compare) mức chênh lệch giá trị bất động sản/lưu trú giữa vùng trung tâm và vùng lân cận.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Area (vùng bản đồ)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX, PosY: Vị trí địa lý (Kinh độ, Vĩ độ) thực tế.
-        \item Color (Luminance/Độ sáng tối -- Sequential Blue): Biểu diễn độ lớn của giá trung bình (đậm = giá cao, nhạt = giá thấp).
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Navigate: Tích hợp tính năng Zoom/Pan giúp người dùng tự do phóng to, và di chuyển trên bản đồ để quan sát vi mô các phường nhỏ nằm sát nhau.
-    \item Select: Cung cấp Tooltip để người dùng Hover chuột vào từng phân khu để xem chi tiết tên khu vực và con số AVG Price chính xác.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: Sử dụng bộ lọc Price Is Outlier (True/False/All) để kiểm soát việc hiển thị. Có thể chọn ``False'' để loại bỏ các căn siêu sang, giúp màu sắc bản đồ phản ánh đúng mức giá đại trà của thị trường.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: Tọa độ không gian giới hạn trong khu vực NYC (hàng trăm phường/neighbourhoods).
-    \item Color Range: Dải màu liên tục (Continuous) biểu diễn giá trị từ \$126.5 đến \$830.6.
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Choropleth Map (Bản đồ phân bố sắc độ)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Tọa độ (Longitude/Latitude): Quantitative, Spatial} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Khu vực (Neighbourhood): Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Giá trung bình (AVG Price): Quantitative} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Nhãn ngoại lệ (Price Is Outlier): Categorical} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Area (vùng bản đồ) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX, PosY: Vị trí địa lý (Kinh độ, Vĩ độ) thực tế \newline
+\hspace*{1em} Color (Luminance -- Sequential Blue): Biểu diễn độ lớn của giá trung bình (đậm = giá cao, nhạt = giá thấp) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Navigate: Tích hợp Zoom/Pan giúp người dùng phóng to và di chuyển trên bản đồ. \newline
+Select: Tooltip khi Hover vào từng phân khu để xem tên khu vực và AVG Price chính xác. \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: Sử dụng bộ lọc Price Is Outlier (True/False/All) để kiểm soát hiển thị. Chọn ``False'' để loại bỏ các căn siêu sang, giúp màu sắc bản đồ phản ánh đúng mức giá đại trà. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce (derive) $\rightarrow$ explore $\rightarrow$ locate $\rightarrow$ summarize, compare} \newline
+Tạo ra (derive) giá trị trung bình của từng khu vực để so sánh. Khám phá bức tranh tổng quan về phân bố giá thuê trên không gian địa lý 5 quận NYC. Xác định vị trí các cụm khu vực đắt đỏ nhất hoặc bình dân nhất. Tóm tắt và so sánh mức chênh lệch giá giữa vùng trung tâm và vùng lân cận.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: Tọa độ không gian giới hạn trong khu vực NYC (hàng trăm phường/neighbourhoods). \newline
+Color Range: Dải màu liên tục (Continuous) biểu diễn giá trị từ \$126.5 đến \$830.6.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 
 \begin{figure}[H]

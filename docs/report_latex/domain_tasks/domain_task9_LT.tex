@@ -12,57 +12,35 @@ chức/chuỗi phòng.
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Pie Chart (Biểu đồ tròn) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Loại chủ nhà (Host Type): C, Tỷ trọng đóng góp (\% of count): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ explore $\rightarrow$ summarize
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Derive: phân loại chủ nhà dựa trên số lượng listing sở hữu (1 phòng = Cá nhân, $>$ 1 phòng = Chuyên nghiệp)
-    \item Explore và Summarize: xem nhóm nào đang chiếm ưu thế kiểm soát nguồn cung trên thị trường
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Area (vùng góc quạt)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Angle: Độ lớn của tỷ trọng phần trăm (0\%--100\%)
-        \item Color: Phân biệt 2 nhóm chủ nhà
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover + Tooltip: Rê chuột vào từng phần quạt để xem chi tiết tên nhóm và tỷ lệ \% chính xác
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Không áp dụng
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 2 (Cá nhân, Chuyên nghiệp)
-    \item Value range: 0\%--100\%
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Pie Chart (Biểu đồ tròn)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Loại chủ nhà (Host Type): Categorical (C)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Tỷ trọng đóng góp (\% of count): Quantitative (Q)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Area (vùng góc quạt) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Angle: Độ lớn của tỷ trọng phần trăm (0\%--100\%) \newline
+\hspace*{1em} Color: Phân biệt 2 nhóm chủ nhà \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover + Tooltip: Rê chuột vào từng phần quạt để xem chi tiết tên nhóm và tỷ lệ \% chính xác. \\ \cline{2-3}
+& \textbf{Reduce} &
+Không áp dụng. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce (derive) $\rightarrow$ explore $\rightarrow$ summarize} \newline
+Derive: phân loại chủ nhà dựa trên số lượng listing sở hữu (1 phòng = Cá nhân, $>$ 1 phòng = Chuyên nghiệp). Explore và Summarize: xem nhóm nào đang chiếm ưu thế kiểm soát nguồn cung trên thị trường.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 2 (Cá nhân, Chuyên nghiệp). \newline
+Value range: 0\%--100\%.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

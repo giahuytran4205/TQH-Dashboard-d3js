@@ -7,60 +7,39 @@ chứa tác động thế nào đến giá/người?
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Grouped Bar Chart \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Borough: Categorical (Key nhóm chính) \newline
-Room Type: Categorical (Key nhóm phụ) \newline
-price\_per\_person (derived): Quantitative (price / accommodates) \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Bar (grouped -- Stack Marks OFF)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Borough $\times$ Room Type (Categorical -- tạo cụm cột cạnh nhau)
-        \item Pos Y: MEDIAN(price\_per\_person) (Quantitative -- length)
-        \item Hue Color: Room Type (Categorical -- 4 màu)
-        \item Label: giá trị median ở đầu mỗi cột
-        \item Note: Analysis $\rightarrow$ Stack Marks $\rightarrow$ Off (bắt buộc để tạo Grouped, không phải Stacked)
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Selection:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover để xem median price/person theo từng borough $\times$ room type
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: price\_is\_outlier = False
-    \item Aggregate: MEDIAN(price\_per\_person) theo borough $\times$ room type
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & compare $\rightarrow$ summarize \newline
-So sánh chi phí/người theo 2 chiều categorical đồng thời (borough $\times$ room type). Grouped bar (không phải Stacked) vì task là Compare giá trị tuyệt đối, không phải part-to-whole. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 5 borough $\times$ 4 room type = 20 cột
-    \item Items: $\sim$21,000 listing (sau lọc)
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Grouped Bar Chart}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Borough: Categorical (Key nhóm chính)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Room Type: Categorical (Key nhóm phụ)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{price\_per\_person (derived): Quantitative (price / accommodates)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Bar (grouped -- Stack Marks OFF) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Borough $\times$ Room Type (Categorical -- tạo cụm cột cạnh nhau) \newline
+\hspace*{1em} Pos Y: MEDIAN(price\_per\_person) (Quantitative -- length) \newline
+\hspace*{1em} Hue Color: Room Type (Categorical -- 4 màu) \newline
+\hspace*{1em} Label: giá trị median ở đầu mỗi cột \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover để xem median price/person theo từng borough $\times$ room type. \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: price\_is\_outlier = False. \newline
+Aggregate: MEDIAN(price\_per\_person) theo borough $\times$ room type. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{compare $\rightarrow$ summarize} \newline
+So sánh chi phí/người theo 2 chiều categorical đồng thời (borough $\times$ room type). Grouped bar (không phải Stacked) vì task là Compare giá trị tuyệt đối, không phải part-to-whole.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 5 borough $\times$ 4 room type = 20 cột. \newline
+Items: $\sim$21,000 listing (sau lọc).
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

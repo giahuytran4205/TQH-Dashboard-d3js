@@ -30,9 +30,9 @@
 \toprule
 \textbf{Phiên bản} & \textbf{Ý nghĩa} & \textbf{Dùng cho bước nào} \\
 \midrule
-raw      & Dữ liệu gốc sau khi nạp file & Kiểm tra hiện trạng và phát hiện lỗi chính \\
-selected & Tập con thuộc tính phục vụ profiling theo task & Đo lường chất lượng trên biến trọng yếu \\
-clean    & Dữ liệu sau pipeline làm sạch và kiểm tra toàn vẹn & Phân tích, tổng hợp KPI, thiết kế biểu đồ \\
+raw      & Dữ liệu gốc sau khi nạp file & Kiểm tra hiện trạng và phát hiện lỗi chính \\ \hline
+selected & Tập con thuộc tính phục vụ profiling theo task & Đo lường chất lượng trên biến trọng yếu \\ \hline
+clean    & Dữ liệu sau pipeline làm sạch và kiểm tra toàn vẹn & Phân tích, tổng hợp KPI, thiết kế biểu đồ \\ \hline
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -50,9 +50,9 @@ Quy ước sử dụng trong báo cáo: profiling chủ yếu đọc trên raw/s
 \toprule
 \textbf{Dataset} & \textbf{Rows (raw)} & \textbf{Cột profiling chính} \\
 \midrule
-Listings                    & 36,353         & 13 \\
-Calendar                    & 13,268,858     & 10 \\
-Reviews                     & 1,000,870      & 3  \\
+Listings                    & 36,353         & 13 \\ \hline
+Calendar                    & 13,268,858     & 10 \\\hline
+Reviews                     & 1,000,870      & 3  \\\hline
 GeoJSON (neighbourhoods)    & 233 features   & 2 thuộc tính vùng chính \\
 \bottomrule
 \end{tabular}
@@ -122,8 +122,8 @@ Chú thích tra cứu bảng quyết định làm sạch chi tiết: xem Bảng~
 \toprule
 \textbf{Dataset} & \textbf{Clean rows} & \textbf{Clean cols} & \textbf{Vai trò phân tích} \\
 \midrule
-listings\_clean  & 21,415    & 14 & Bảng số liệu chính dạng cho thị trường/không gian \\
-calendar\_clean  & 7,816,487 & 11 & Bảng số liệu chính theo thời gian cho tỷ lệ lấp đầy (occupancy) hoặc khả dụng \\
+listings\_clean  & 21,415    & 14 & Bảng số liệu chính dạng cho thị trường/không gian \\ \hline
+calendar\_clean  & 7,816,487 & 11 & Bảng số liệu chính theo thời gian cho tỷ lệ lấp đầy (occupancy) hoặc khả dụng \\ \hline
 reviews\_clean   & 787,325   & 3  & Tín hiệu bổ trợ chất lượng/hoạt động \\
 \bottomrule
 \end{tabularx}

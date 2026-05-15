@@ -12,52 +12,36 @@ chức/chuỗi phòng.
 
 \subsubsection*{A. Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Bar Chart \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Loại chủ nhà (Host Type): C, Điểm đánh giá (Avg Rating): Q, Tỷ lệ lấp đầy (Avg Is Booked): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ lookup $\rightarrow$ compare
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item derive: tính trung bình cho Rating và tỉ lệ lấp đầy
-    \item Compare: trực diện chất lượng dịch vụ và khả năng thu hút khách hàng giữa 2 nhóm chủ nhà
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Line (Bar mark)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX: Phân biệt 2 loại chủ nhà
-        \item PosY: thể hiện độ lớn của Avg Rating / Avg Is Booked
-        \item Hue Color: Phân biệt loại chủ nhà
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover + Tooltip: Xem chi tiết các con số
-    \item Facet (Juxtapose): tách thành 2 biểu đồ xếp dọc nhau (1 cho rating, 1 cho IsBooked) dùng chung trục X để dễ đối chiếu
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 2 (Loại chủ nhà)
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Bar Chart}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Loại chủ nhà (Host Type): Categorical (C)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Điểm đánh giá (Avg Rating): Quantitative (Q)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Tỷ lệ lấp đầy (Avg Is Booked): Quantitative (Q)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Line (Bar mark) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Phân biệt 2 loại chủ nhà \newline
+\hspace*{1em} PosY: Độ lớn của Avg Rating / Avg Is Booked \newline
+\hspace*{1em} Hue Color: Phân biệt loại chủ nhà \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover + Tooltip: Xem chi tiết các con số. \\ \cline{2-3}
+& \textbf{Facet} &
+Juxtapose: Tách thành 2 biểu đồ xếp dọc nhau (1 cho rating, 1 cho IsBooked) dùng chung trục X để dễ đối chiếu. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce (derive) $\rightarrow$ lookup $\rightarrow$ compare} \newline
+Derive: tính trung bình cho Rating và tỉ lệ lấp đầy. Compare: trực diện chất lượng dịch vụ và khả năng thu hút khách hàng giữa 2 nhóm chủ nhà.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 2 (Loại chủ nhà).
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

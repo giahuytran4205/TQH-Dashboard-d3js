@@ -7,61 +7,38 @@ Câu hỏi: Giá niêm yết phân bổ như thế nào theo từng borough? Lo�
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Box-and-Whisker Plot \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Borough (neighbourhood\_group\_cleansed): Categorical \newline
-Price: Quantitative \newline
-Room Type: Categorical \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Glyph (Mark phức hợp bao gồm Area cho thân hộp, Line cho râu/trung vị, và Point cho ngoại lệ).
-    \end{itemize}
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Pos X: Borough (Categorical -- phân biệt 5 borough)
-        \item Pos Y: Price (Quantitative -- IQR, median, whiskers)
-        \item Hue Color: Room Type (Categorical -- 4 loại phòng)
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Selection: hover để xem chi tiết (median, Q1, Q3, min, max, count)
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: price\_is\_outlier = False (loại extreme outliers bằng IQR method)
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce $\rightarrow$ compare $\rightarrow$ discover \newline
-So sánh phân phối giá đầy đủ giữa 5 borough. Glyph là idiom duy nhất hiển thị Q1, median, Q3, whiskers đồng thời --- bar chart chỉ cho median, histogram chỉ cho 1 nhóm. \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 5 (borough)
-    \item Color key: 4 (room type)
-    \item Items: $\sim$21,000 listing (sau lọc)
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Box-and-Whisker Plot}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Borough (neighbourhood\_group\_cleansed): Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Price: Quantitative} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Room Type: Categorical} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Glyph (Area cho thân hộp, Line cho râu/trung vị, Point cho ngoại lệ) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} Pos X: Borough (Categorical -- phân biệt 5 borough) \newline
+\hspace*{1em} Pos Y: Price (Quantitative -- IQR, median, whiskers) \newline
+\hspace*{1em} Hue Color: Room Type (Categorical -- 4 loại phòng) \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Hover để xem chi tiết (median, Q1, Q3, min, max, count). \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: price\_is\_outlier = False (loại extreme outliers bằng IQR method). \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ compare $\rightarrow$ discover} \newline
+So sánh phân phối giá đầy đủ giữa 5 borough. Glyph là idiom duy nhất hiển thị Q1, median, Q3, whiskers đồng thời --- bar chart chỉ cho median, histogram chỉ cho 1 nhóm.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: 5 (borough). \newline
+Color key: 4 (room type). \newline
+Items: $\sim$21,000 listing (sau lọc).
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

@@ -11,46 +11,32 @@ luận, giúp chủ nhà / nền tảng biết chính xác các điểm cần t�
 
 \subsubsection*{A. Idiom}
 
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Diverging Bar Chart (Biểu đồ thanh phân kỳ) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Từ khóa thuộc Whitelist (Keyword): C, Nhóm đánh giá (Dominant Group): C, Độ lệch đặc trưng (Strength / Log-Odds Ratio): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ locate $\rightarrow$ compare
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Derive: Tính toán chỉ số toán học Strength (Log-Odds Ratio) để đo lường mức độ đặc trưng của cụm từ thuộc về nhóm Điểm Cao hay Điểm Thấp (loại bỏ nhiễu do mất cân bằng dữ liệu lượng review).
-    \item Xác định (locate) chính xác các yếu tố khiến khách ghét và yếu tố khiến khách khen để so sánh (compare) mức độ nghiêm trọng.
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Line (bar mark)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item PosX: Trục X phân kỳ ở giữa (0). Đâm sang phải (Dương) thể hiện sự Hài lòng. Đâm sang trái (Âm) thể hiện sự Phàn nàn.
-        \item PosY: Danh sách từ khóa.
-        \item Color: Phân biệt Nhóm Đánh giá (Xanh = Hài lòng, Cam = Phàn nàn).
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Filter: Áp dụng Whitelist để chỉ giữ lại các n-grams thực sự mang ý nghĩa Insight (loại bỏ tên riêng, địa danh).
-    \item Sort: Sắp xếp giảm dần theo chỉ số Strength trên trục Y.
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Diverging Bar Chart (Biểu đồ thanh phân kỳ)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Từ khóa thuộc Whitelist (Keyword): Categorical (C)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Nhóm đánh giá (Dominant Group): Categorical (C)} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Độ lệch đặc trưng (Strength / Log-Odds Ratio): Quantitative (Q)} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Line (bar mark) \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Trục X phân kỳ ở giữa (0). Dương = Hài lòng, Âm = Phàn nàn \newline
+\hspace*{1em} PosY: Danh sách từ khóa \newline
+\hspace*{1em} Color: Phân biệt Nhóm Đánh giá (Xanh = Hài lòng, Cam = Phàn nàn) \\ \cline{2-3}
+& \textbf{Reduce} &
+Filter: Áp dụng Whitelist để chỉ giữ lại các n-grams thực sự mang ý nghĩa Insight (loại bỏ tên riêng, địa danh). \newline
+Sort: Sắp xếp giảm dần theo chỉ số Strength trên trục Y. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce (derive) $\rightarrow$ locate $\rightarrow$ compare} \newline
+Derive: Tính toán chỉ số Log-Odds Ratio để đo lường mức độ đặc trưng của cụm từ thuộc nhóm Điểm Cao hay Điểm Thấp (loại bỏ nhiễu do mất cân bằng dữ liệu). Xác định (locate) các yếu tố khiến khách ghét và khách khen để so sánh (compare) mức độ nghiêm trọng.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering
