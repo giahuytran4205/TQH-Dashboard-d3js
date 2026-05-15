@@ -1,4 +1,4 @@
-\subsection{Biểu đồ 2: Giá vs Rating --- Phát hiện Good Deal}
+\subsection{Task 6: Giá và điểm đánh giá --- Phát hiện lựa chọn tốt}
 
 \subsubsection{Thiết kế Idiom}
 
@@ -42,7 +42,7 @@ Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False.
 \begin{figure}[H]
     \centering
     \safeincludegraphics[width=0.9\linewidth]{charts/domain_task6_chart2.png}
-    \caption{Hình 6.2. Scatter plot giá niêm yết vs. điểm đánh giá --- phát hiện Good Deal}
+    \caption{Hình 6.2. Giá niêm yết và điểm đánh giá --- phát hiện lựa chọn tốt}
     \label{fig:domain-task6-chart2}
 \end{figure}
 
@@ -76,12 +76,12 @@ Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False.
     \item Khả năng tách biệt (Separability): PosX, PosY, Color và Size tách biệt tốt.
 \end{itemize}
 
-\subsubsection{Phân tích biểu đồ (Insight)}
+\subsubsection{Phân tích biểu đồ}
 
 \begin{itemize}
     \item Vùng góc trên-trái (price $<$ median, rating $\geq$ 4.8) là vùng `Good Deal' --- tập trung nhiều điểm xanh, chủ yếu thuộc Brooklyn và Queens.
     \item Manhattan có nhiều listing ở phần bên phải chart (giá cao) với rating không tương xứng --- không phải lựa chọn tối ưu về cost-efficiency.
     \item Listing `Good Deal' có Size lớn (nhiều reviews) là những nơi đã được kiểm chứng bởi nhiều khách --- độ tin cậy cao.
     \item Quan trọng: Không có tương quan dương rõ ràng giữa giá cao và rating cao --- nhiều listing Brooklyn/Queens giá thấp vẫn đạt rating 4.7--5.0, chứng minh giá không phải là proxy của chất lượng trên Airbnb.
-    \item Khuyến nghị: Ưu tiên listing trong vùng `Good Deal' tại Brooklyn/Queens với number\_of\_reviews $\geq$ 20--30.
+    \item Khuyến nghị: Ưu tiên listing trong vùng `Good Deal' tại Brooklyn/Queens với \seqsplit{number\_of\_reviews} $\geq$ 20--30.
 \end{itemize}

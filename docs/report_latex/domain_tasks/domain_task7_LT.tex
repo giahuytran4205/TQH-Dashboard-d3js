@@ -1,11 +1,6 @@
-\section{Domain Task 7: Phân tích hiệu quả chi phí lưu trú}
+\subsection{Task 7: Sức chứa và chi phí mỗi người}
 
-Câu hỏi: Borough và loại phòng nào có chi phí mỗi người thấp nhất? Sức
-chứa tác động thế nào đến giá/người?
-
-\subsection{Biểu đồ 2 -- Scatter Plot: Sức chứa vs Chi phí mỗi người}
-
-\subsubsection*{A. Thiết kế Idiom}
+\subsubsection{Thiết kế Idiom}
 
 \begin{table}[H]
 \centering
@@ -50,7 +45,7 @@ Color key: 4 room type.
 
 \noindent\small\textit{Xem biểu đồ tương tác: }\href{https://public.tableau.com/app/profile/duy.le4605/viz/Group10_17788537028430/Task7_2-AccommodatesvsPriceperPerso?publish=yes}{Tableau Public}\normalsize
 
-\subsubsection*{B. Đánh giá biểu đồ}
+\subsubsection{Đánh giá biểu đồ}
 
 \textbf{1. Nguyên lý biểu đạt (Expressiveness):}
 
@@ -66,7 +61,7 @@ Color key: 4 room type.
     \item Đánh giá mức độ quan trọng:
     \begin{itemize}
         \item Ưu tiên 1 -- Vị trí hai trục (PosX và PosY): PosX/PosY là cặp kênh quan trọng nhất. PosX mã hóa Accommodates (Quantitative/Ordinal --- số người từ 1 đến 16) và PosY mã hóa MEDIAN price\_per\_person (Quantitative). Theo Mackinlay, Position là kênh hiệu quả nhất cho cả dữ liệu định lượng lẫn thứ tự. Accommodates được giữ nguyên thứ tự tăng dần trên trục X, cho phép người xem theo dõi xu hướng giảm của price/person khi sức chứa tăng --- insight cốt lõi về economies of scale. Đây là lý do scatter plot với 2 trục Position là idiom tối ưu để phân tích mối quan hệ giữa hai biến định lượng/thứ tự.
-        \item Ưu tiên 2 -- Màu sắc (Color Hue): Color Hue mã hóa Room Type (Categorical/Nominal), phân biệt các nhóm điểm và đường xu hướng theo loại phòng. Đây là kênh quan trọng thứ hai vì nó cho phép so sánh đồng thời xu hướng giữa các room type trên cùng một biểu đồ --- phát hiện crossover point (điểm giao nhau về chi phí) giữa Entire home và Private room. Theo Mackinlay, Color Hue phù hợp cho dữ liệu danh mục và đặc biệt hiệu quả khi cần phân biệt các nhóm trong scatter plot đa chiều. Màu trend line tương ứng với màu điểm duy trì tính nhất quán thị giác.
+        \item Ưu tiên 2 -- Màu sắc (Color Hue): Color Hue mã hóa Room Type dạng danh mục, phân biệt các nhóm điểm và đường xu hướng theo loại phòng. Đây là kênh quan trọng thứ hai vì nó cho phép so sánh đồng thời xu hướng giữa các room type trên cùng một biểu đồ --- phát hiện crossover point (điểm giao nhau về chi phí) giữa Entire home và Private room. Theo Mackinlay, Color Hue phù hợp cho dữ liệu danh mục và đặc biệt hiệu quả khi cần phân biệt các nhóm trong scatter plot đa chiều. Màu trend line tương ứng với màu điểm duy trì tính nhất quán thị giác.
         \item Ưu tiên 3 -- Đường xu hướng (Trend Line --- superimposed): Mặc dù Trend Line không phải một kênh thị giác theo định nghĩa Mackinlay, đây là lớp thông tin bổ sung (superimposed) quan trọng về mặt thiết kế. Trend Line mã hóa hướng và độ dốc của mối quan hệ giữa Accommodates và Price/person --- thuộc tính mà Position điểm rời rạc không thể truyền tải rõ ràng khi dữ liệu có noise. Đường xu hướng dốc xuống của Entire home/apt và đường gần phẳng của Private room trực tiếp minh họa insight economies of scale, phục vụ task discover (phát hiện xu hướng) mà không yêu cầu người xem tự suy diễn từ đám mây điểm.
     \end{itemize}
     \item Kết luận: Scatter plot với Trend Line là lựa chọn chuẩn mực để phân tích mối quan hệ giữa 2 biến Q và so sánh xu hướng giữa các nhóm.
@@ -80,7 +75,7 @@ Color key: 4 room type.
     \item Khả năng tách biệt (Separability): PosX, PosY và Color tách biệt hoàn toàn. Trend lines không làm rối các điểm dữ liệu thực.
 \end{itemize}
 
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
+\subsubsection{Phân tích biểu đồ}
 
 \begin{itemize}
     \item Trend line của Entire home/apt dốc xuống mạnh nhất --- xác nhận `economies of scale': càng nhiều người chia phòng, giá mỗi người càng giảm. Sweet spot rõ ràng ở 4--6 người.
