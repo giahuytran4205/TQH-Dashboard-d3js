@@ -1,0 +1,423 @@
+﻿\section{Bảng Profiling Chi Tiết}
+
+Phụ lục này tập hợp các bảng chi tiết đã được lược khỏi phần profiling chính để giữ mạch trình bày ngắn gọn.
+
+\subsection*{A.1 Bảng kiểm tra tính hợp lệ (regex/rule)}
+
+\begin{table}[H]
+\centering
+\caption{Kết quả kiểm tra tính hợp lệ}\label{tab:A1}
+\begin{tabularx}{\textwidth}{|l|l|X|r|r|r|}
+\hline
+\textbf{Dataset} & \textbf{Field} & \textbf{Rule} & \textbf{Valid} & \textbf{Invalid} & \textbf{Validity (\%)} \\
+\hline
+\seqsplit{listings\_raw}            & price                 & \seqsplit{numeric\_string\_currency} & 21,415        & 0 & 100.00 \\ \hline
+
+\seqsplit{listings\_std}           & price                 & \seqsplit{positive\_numeric}         & 21,415        & 0 & 100.00 \\ \hline
+
+\seqsplit{listings\_std}           & \seqsplit{review\_scores\_rating} & \seqsplit{rating\_0\_100}           & 25,007        & 0 & 100.00 \\ \hline
+
+\seqsplit{listings\_std}           & latitude              & \seqsplit{lat\_nyc}                  & 36,353        & 0 & 100.00 \\ \hline
+
+\seqsplit{listings\_std}           & longitude             & \seqsplit{lon\_nyc}                  & 36,353        & 0 & 100.00 \\ \hline
+
+\seqsplit{calendar\_raw}            & date                  & \seqsplit{date\_yyyy\_mm\_dd}        & 13,268,858    & 0 & 100.00 \\ \hline
+
+\seqsplit{calendar\_raw}            & available             & \seqsplit{available\_tf}             & 13,268,858    & 0 & 100.00 \\ \hline
+
+\seqsplit{reviews\_raw}             & date                  & \seqsplit{date\_yyyy\_mm\_dd}        & 1,000,870     & 0 & 100.00 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection*{A.2 Bảng thống kê mô tả số (raw selected)}
+
+\begin{table}[H]
+\centering
+\caption{Thống kê mô tả số trên tập raw selected}\label{tab:A2}
+\begin{tabularx}{\textwidth}{|l|X|r|r|r|r|r|}
+\hline
+\textbf{Dataset} & \textbf{Field} & \textbf{Min} & \textbf{Max} & \textbf{Mode} & \textbf{AVG} & \textbf{Median} \\
+\hline
+\seqsplit{listings\_raw\_selected}  & price                 & 9        & 50,138            & 150   & 519.62    & 154 \\ \hline
+
+\seqsplit{listings\_raw\_selected}  & \seqsplit{review\_scores\_rating} & 0        & 5                & 5     & 4.72      & 4.86 \\ \hline
+
+\seqsplit{listings\_raw\_selected}  & \seqsplit{availability\_365}     & 0        & 365              & 0     & 165.38    & 156 \\ \hline
+
+\seqsplit{calendar\_raw\_selected}  & \seqsplit{minimum\_nights}       & 1        & 1,124            & 30    & 29.40     & 30 \\ \hline
+
+\seqsplit{calendar\_raw\_selected}  & \seqsplit{maximum\_nights}       & 1        & 2,147,483,647    & 1125  & 647,712.28 & 365 \\ \hline
+
+\hline
+\end{tabularx}
+\end{table}
+\begin{table}[H]
+\centering
+\caption{Thống kê hai chiều theo từng thuộc tính}\label{tab:A3}
+\small % Giảm cỡ chữ để các cột số không bị dính nhau
+\begin{tabularx}{\textwidth}{|X|r|r|r|r|r|r|r|}
+\hline
+\textbf{Field} & \textbf{Null} & \textbf{Missing} & \textbf{Actual} & \textbf{Comp. (\%)} & \textbf{Card.} & \textbf{Uniq. (\%)} & \textbf{Dist. (\%)} \\
+\hline
+
+% --- Phần 1: Listings ---
+\multicolumn{8}{l}{\textbf{Dataset: Listings}} \\ 
+\hline
+\seqsplit{id} & 0 & 0 & 36,353 & 100.00 & 36,353 & 100.00 & 100.00 \\ \hline
+
+\seqsplit{price} & 14,938 & 14,938 & 21,415 & 58.91 & 1,106 & 5.16 & 3.04 \\ \hline
+
+\seqsplit{reviews\_per\_month} & 11,346 & 11,346 & 25,007 & 68.79 & 825 & 3.30 & 2.27 \\ \hline
+
+\seqsplit{review\_scores\_rating} & 11,346 & 11,346 & 25,007 & 68.79 & 161 & 0.64 & 0.44 \\ \hline
+
+\hline
+
+% --- Phần 2: Calendar ---
+\multicolumn{8}{l}{\textbf{Dataset: Calendar}} \\ 
+\hline
+\seqsplit{listing\_id} & 0 & 0 & 13,268,858 & 100.00 & 36,353 & 0.27 & 0.27 \\ \hline
+
+price & 13,268,858 & 13,268,858 & 0 & 0.00 & 0 & 0.00 & 0.00 \\ \hline
+
+\seqsplit{minimum\_nights} & 0 & 0 & 13,268,858 & 100.00 & 155 & 0.00 & 0.00 \\ \hline
+
+\seqsplit{maximum\_nights} & 0 & 0 & 13,268,858 & 100.00 & 287 & 0.00 & 0.00 \\ 
+
+\hline
+
+% --- Phần 3: Reviews ---
+\multicolumn{8}{l}{\textbf{Dataset: Reviews}} \\ 
+\hline
+\seqsplit{listing\_id} & 0 & 0 & 1,000,870 & 100.00 & 25,007 & 2.50 & 2.50 \\ \hline
+
+comments & 257 & 257 & 1,000,613 & 99.97 & 960,213 & 95.96 & 95.94 \\ 
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection*{A.4 Bảng mẫu định dạng phổ biến (top patterns)}
+
+\begin{table}[H]
+\centering
+\caption{Mẫu định dạng phổ biến nhất theo từng trường}\label{tab:A4}
+\begin{tabular}{|l|l|l|r|r|}
+\hline
+\textbf{Dataset} & \textbf{Field} & \textbf{Pattern} & \textbf{Count} & \textbf{Pct} \\
+\hline
+listings & room\_type & ssssss ssss-sss  & 19,427     & 53.44\% \\ \hline
+
+listings & room\_type & sssssss ssss     & 16,306     & 44.85\% \\ \hline
+
+calendar & date       & dddd-dd-dd       & 13,268,858 & 100.00\% \\ \hline
+
+calendar & available  & s                & 13,268,858 & 100.00\% \\ \hline
+
+reviews  & date       & dddd-dd-dd       & 1,000,870  & 100.00\% \\ \hline
+
+reviews  & comments   & sssss ssss-      & 1,965      & 0.20\% \\ \hline
+
+reviews  & comments   & -                & 1,836      & 0.18\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.5 Bảng hồ sơ ngoại lệ (IQR)}
+
+\begin{table}[H]
+\centering
+\caption{Hồ sơ ngoại lệ theo phương pháp IQR}\label{tab:A5}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Field} & \textbf{Lower} & \textbf{Upper} & \textbf{Outlier count} & \textbf{Outlier pct} \\
+\hline
+listings.price (clean)         & $-$178.5  & 537.5  & 1,385     & 6.47\% \\ \hline
+
+calendar.minimum\_nights (raw) & 30        & 30     & 2,532,685 & 19.09\% \\ \hline
+
+calendar.maximum\_nights (raw) & $-$775    & 2,265  & 6,553     & 0.05\% \\
+
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.6 Bảng phân tích giá trị thiếu}
+
+\begin{table}[H]
+\centering
+\caption{Phân tích giá trị thiếu theo từng trường}\label{tab:A6}
+\begin{tabular}{|l|l|r|r|l|}
+\hline
+\textbf{Dataset} & \textbf{Field} & \textbf{Missing count} & \textbf{Missing pct} & \textbf{Missing type} \\
+\hline
+listings & price                  & 14,938     & 41.09\%  & MCAR/technical \\ \hline
+
+listings & reviews\_per\_month    & 11,346     & 31.21\%  & MAR/semantic \\ \hline
+
+listings & review\_scores\_rating & 11,346     & 31.21\%  & MAR/semantic \\ \hline
+
+calendar & price                  & 13,268,858 & 100.00\% & MCAR/source-missing \\ \hline
+
+reviews  & comments               & 257        & 0.03\%   & MCAR/empty-text \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.7 Bảng ví dụ bản ghi lỗi \texttt{minimum\_nights} $>$ \texttt{maximum\_nights}}
+
+\begin{table}[H]
+\centering
+\caption{Ví dụ bản ghi lỗi minimum\_nights > maximum\_nights}\label{tab:A7}
+\begin{tabular}{|r|l|r|r|}
+\hline
+\textbf{listing\_id} & \textbf{date} & \textbf{minimum\_nights} & \textbf{maximum\_nights} \\
+\hline
+6601284 & 2025-11-14 & 30 & 5 \\ \hline
+
+6601284 & 2025-11-15 & 30 & 4 \\ \hline
+
+6601284 & 2025-11-16 & 30 & 3 \\ \hline
+
+6601284 & 2025-11-17 & 30 & 2 \\ \hline
+
+6601284 & 2025-11-26 & 30 & 7 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.8 Bảng quyết định làm sạch (cleaning decision)}
+
+\begin{table}[H]
+\centering
+\caption{Bảng quyết định làm sạch (Dataset: Listings)}\label{tab:A8-listings}
+\small % Giảm cỡ chữ để chứa được nhiều text hơn trên 1 dòng
+\renewcommand{\arraystretch}{1.3} % Tăng khoảng cách dòng để dễ đọc hơn
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Vấn đề phát hiện} & \textbf{Quyết định làm sạch} & \textbf{Lý do} & \textbf{Tác động} \\
+\hline
+price thiếu 41.09\% và có bản ghi không đạt điều kiện cốt lõi & Loại các dòng thiếu price hoặc price $\leq$ 0; giữ outlier bằng cờ \texttt{price\_is\_outlier} & price là measure chính của Task 1, cần dữ liệu hợp lệ; giữ outlier để không mất tín hiệu thị trường cao cấp & Tăng độ tin cậy phân tích giá và không gian \\
+\hline
+\texttt{reviews\_per\_month}, \texttt{review\_scores\_rating} thiếu theo ngữ nghĩa (listing chưa có review) & Giữ missing, không nội suy cưỡng bức; diễn giải theo điều kiện \texttt{number\_of\_reviews} & Missing mang ý nghĩa nghiệp vụ, không phải lỗi thu thập thuần túy & Tránh sai lệch khi so sánh chất lượng review giữa các nhóm listing \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Bảng quyết định làm sạch (Dataset: Calendar)}\label{tab:A8-calendar}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Vấn đề phát hiện} & \textbf{Quyết định làm sạch} & \textbf{Lý do} & \textbf{Tác động} \\
+\hline
+Khóa logic trùng (\texttt{listing\_id}, \texttt{date}) và bản ghi availability không hợp lệ & Loại trùng theo khóa logic; loại dòng thiếu khóa/ngày & Đảm bảo mức độ chi tiết listing-ngày nhất quán cho chuỗi thời gian & Ổn định phép tổng hợp theo tháng \\
+\hline
+Mâu thuẫn \texttt{minimum\_nights} $>$ \texttt{maximum\_nights} & Gán NaN cho cặp nights mâu thuẫn thay vì loại toàn dòng & Giữ lại thông tin availability/time còn hợp lệ & Giảm mất dữ liệu không cần thiết cho Task 2 \\
+\hline
+price thiếu 100\% & Không dùng \texttt{calendar.price} cho phân tích giá theo thời gian & Không có tín hiệu giá để ước lượng đáng tin cậy & Task 2 chuyển sang xu hướng lấp đầy \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Bảng quyết định làm sạch (Dataset: Reviews)}\label{tab:A8-reviews}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Vấn đề phát hiện} & \textbf{Quyết định làm sạch} & \textbf{Lý do} & \textbf{Tác động} \\
+\hline
+Thiếu/không hợp lệ ở \texttt{listing\_id}, \texttt{date}, \texttt{comments}; tồn tại trùng toàn dòng & Loại trùng toàn dòng; loại bản ghi thiếu khóa/ngày/comments & Bảo toàn toàn vẹn khóa và chất lượng văn bản & Tăng độ tin cậy cho thống kê và phân tích text \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Bảng quyết định làm sạch (Kiểm tra Liên bảng)}\label{tab:A8-cross}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Vấn đề phát hiện} & \textbf{Quyết định làm sạch} & \textbf{Lý do} & \textbf{Tác động} \\
+\hline
+Bản ghi mồ côi trong calendar/reviews không tồn tại trong listings\_clean & Loại orphan theo tập \texttt{valid\_listing\_ids} từ listings\_clean & Đảm bảo toàn vẹn tham chiếu 1-n & Tránh sai lệch khi join và tổng hợp cross-table \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection*{A.9 Bảng tổng quan chỉ số của file GeoJSON}
+
+\begin{table}[H]
+\centering
+\caption{Tổng quan chỉ số của file GeoJSON}\label{tab:A9}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Chỉ số} & \textbf{Giá trị} \\
+\hline
+Số feature không gian (n\_features)              & 233 \\
+Số neighbourhood duy nhất (n\_neighbourhood)     & 230 \\
+Số neighbourhood\_group duy nhất (n\_neighbourhood\_group) & 5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.10 Bảng kiểm tra tọa độ và bbox}
+
+\begin{table}[H]
+\centering
+\caption{Kiểm tra tọa độ và bounding box GeoJSON}\label{tab:A10}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Chỉ số} & \textbf{Giá trị} \\
+\hline
+latitude min  & 40.50456 \\
+latitude max  & 40.91115 \\
+longitude min & $-$74.25191 \\
+longitude max & $-$73.71365 \\
+Tỷ lệ bản ghi nằm trong bbox NYC mở rộng & 100.00\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.11 Bảng coverage join theo neighbourhood}
+
+\begin{table}[H]
+\centering
+\caption{Coverage join giữa listings\_clean và GeoJSON}\label{tab:A11}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Chỉ số} & \textbf{Giá trị} \\
+\hline
+Số khu vực trong listings\_clean        & 222 \\
+Số khu vực trong geojson                & 230 \\
+Khu vực chỉ có trong listings\_clean   & 0 \\
+Khu vực chỉ có trong geojson           & 8 \\
+\hline
+\end{tabular}
+\end{table}
+
+Các khu vực chỉ có trong GeoJSON (không xuất hiện trong listings\_clean): Bloomfield, Charleston, Glen Oaks, New Dorp, New Springville, Pleasant Plains, Port Ivory, Richmondtown.
+
+\subsection*{A.12 Bảng quy mô giảm sau làm sạch}
+
+\begin{table}[H]
+\centering
+\caption{Quy mô giảm theo pipeline làm sạch}\label{tab:A12}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Bảng} & \textbf{Raw rows} & \textbf{Clean rows} & \textbf{Giảm} & \textbf{Tỷ lệ giảm} \\
+\hline
+Listings & 36,353     & 21,415    & 14,938    & 41.09\% \\
+Calendar & 13,268,858 & 7,816,487 & 5,452,371 & 41.09\% \\
+Reviews  & 1,000,870  & 787,325   & 213,545   & 21.34\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.13 Bảng toàn vẹn khóa sau làm sạch}
+
+\begin{table}[H]
+\centering
+\caption{Toàn vẹn khóa sau làm sạch}\label{tab:A13}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Chỉ số} & \textbf{Giá trị} \\
+\hline
+listings\_clean.id cardinality          & 21,415 \\
+calendar\_clean.listing\_id cardinality & 21,415 \\
+reviews\_clean.listing\_id cardinality  & 14,999 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.14 Bảng occupancy theo tháng}
+
+\begin{table}[H]
+\centering
+\caption{Tỷ lệ lấp đầy trung bình theo tháng}\label{tab:A14}
+\begin{tabular}{|r|r|}
+\hline
+\textbf{Tháng} & \textbf{Tỷ lệ lấp đầy (\%)} \\
+\hline
+1  & 20.56 \\
+2  & 21.97 \\
+3  & 21.02 \\
+4  & 21.10 \\
+5  & 29.07 \\
+6  & 28.41 \\
+7  & 27.95 \\
+8  & 36.98 \\
+9  & 37.23 \\
+10 & 37.14 \\
+11 & 51.66 \\
+12 & 35.86 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{A.15 Phân loại toàn bộ 28 thuộc tính được phân tích}
+
+Bảng dưới đây là danh sách phân rã và gán vai trò chi tiết cho toàn bộ 28 thuộc tính được sử dụng (bao gồm các trường gốc và trường dẫn xuất đã chốt sau làm sạch), phục vụ cho quá trình xây dựng Dashboard trực quan hóa.
+
+\begin{longtable}{|r|>{\raggedright\arraybackslash}p{3.5cm}|>{\raggedright\arraybackslash}p{3cm}|c|>{\raggedright\arraybackslash}p{6.5cm}|}
+\caption{Phân loại toàn bộ 28 thuộc tính được phân tích}\label{tab:A15} \\
+\hline
+\textbf{STT} & \textbf{Tên cột} & \textbf{Nhóm} & \textbf{Type} & \textbf{Vai trò phân tích chi tiết} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+% --- Phần 1: Listings ---
+\multicolumn{5}{l}{\textbf{Dataset: Listings}} \\ 
+\hline
+1  & id & Khóa (PK) & C & Định danh duy nhất căn hộ, dùng đếm tổng cung (Total Listings). \\ \hline
+2  & \seqsplit{host\_id} & Khóa ngoại (FK) & C & Định danh chủ nhà, dùng đếm số lượng chủ nhà hoặc nhóm chủ tập đoàn. \\ \hline
+3  & \seqsplit{neighbourhood\_group\_cleansed} & Không gian & C & Phân nhóm cấp Quận (Borough), làm filter hoặc group by cho Bar/Boxplot. \\ \hline
+4  & \seqsplit{neighbourhood\_cleansed} & Không gian & C & Phân nhóm cấp Phường/Khu vực nhỏ, là khóa Join với mảng GeoJSON. \\ \hline
+5  & latitude & Tọa độ điểm & Q & Trục Y không gian, dùng thả ghim lên bản đồ (Point Map). \\ \hline
+6  & longitude & Tọa độ điểm & Q & Trục X không gian, dùng thả ghim lên bản đồ (Point Map). \\ \hline
+7  & \seqsplit{room\_type} & Phân loại nhà & C & Gom cụm so sánh cơ cấu thị trường (Entire home vs Private room). \\ \hline
+8  & price & Tài chính & Q & Đo lường mức giá, tìm phân bố giá trị trung vị và ngoại lệ qua Chart. \\ \hline
+9  & \seqsplit{availability\_365} & Mức sẵn sàng & Q & Đo lường tổng số ngày trống trong năm tiếp theo. \\ \hline
+10 & accommodates & Quy mô nhà & Q & Đo sức chứa tối đa của phòng, dùng đánh giá quy mô tệp khách phù hợp. \\ \hline
+11 & \seqsplit{number\_of\_reviews} & Mức độ hoạt động & Q & Đếm tổng số nhận xét, đo độ ``hot'' và mật độ khách thuê thực tế. \\ \hline
+12 & \seqsplit{reviews\_per\_month} & Mức độ hoạt động & Q & Tốc độ tăng trưởng mức độ nhận xét bình quân trên tháng. \\ \hline
+13 & \seqsplit{review\_scores\_rating} & Tín hiệu chất lượng & Q & Chấm điểm sự hài lòng trung bình để nhận diện rủi ro/chất lượng phòng. \\ 
+\hline
+
+% --- Phần 2: Calendar ---
+\multicolumn{5}{l}{\textbf{Dataset: Calendar}} \\ 
+\hline
+14 & \seqsplit{listing\_id} & Khóa ngoại (FK) & C & Khóa liên kết dữ liệu chuỗi thời gian về đúng căn nhà mục tiêu. \\ \hline
+15 & date & Thời gian & O & Dòng mốc thời gian chi tiết của sự kiện. \\ \hline
+16 & available & Trạng thái gốc & C & Ký tự gốc (t/f) biểu thị nhà có ai đặt hay chưa. \\ \hline
+17 & price & Tài chính & Q & (Vô hiệu hóa -- missing 100\%) Gốc là đo giá biến động theo thời gian. \\ \hline
+18 & \seqsplit{minimum\_nights} & Quy định & Q & Ràng buộc số đêm thuê tối thiểu của chủ nhà theo mùa. \\ \hline
+19 & \seqsplit{maximum\_nights} & Quy định & Q & Ràng buộc số đêm thuê tối đa của chủ nhà theo mùa. \\ \hline
+20 & \seqsplit{is\_available} & Trạng thái phòng & C & Trường dẫn xuất T/F quy chuẩn tỷ lệ phòng trống. \\ \hline
+21 & \seqsplit{is\_booked} & Trạng thái phòng & Q & Trường dẫn xuất nhị phân (0/1) dùng tính trực tiếp \% lấp đầy khi đo mean(). \\ \hline
+22 & year & Thời gian tổng hợp & O & Lọc hoặc phân rã biểu đồ đường theo các năm riêng biệt. \\ \hline
+23 & month & Thời gian tổng hợp & O & Trục X chính giúp hiện thực hóa User Story về Tính Mùa Vụ. \\ 
+\hline
+
+% --- Phần 3: Reviews ---
+\multicolumn{5}{l}{\textbf{Dataset: Reviews}} \\ 
+\hline
+24 & \seqsplit{listing\_id} & Khóa ngoại (FK) & C & Cầu nối ghép nội dung review về đối tượng căn nhà. \\ \hline
+25 & date & Thời gian đánh giá & O & Dùng để dò mật độ khách đến lưu trú theo các mốc thời gian. \\ \hline
+26 & comments & Nội dung Text & C & Đọc, dò mẫu từ khoá cảm xúc, hỗ trợ đánh giá chất lượng. \\ 
+\hline
+
+% --- Phần 4: GeoJSON ---
+\multicolumn{5}{l}{\textbf{Dataset: GeoJSON}} \\ 
+\hline
+27 & neighbourhood & Không gian vùng & C & Key không gian để nối màu mức giá/số nhà vào bản đồ Choropleth. \\ \hline
+28 & \seqsplit{neighbourhood\_group} & Nhóm vùng rộng & C & Cung cấp ranh giới cấp Borough to nhất cho tổng quan bản đồ. \\ 
+\end{longtable}

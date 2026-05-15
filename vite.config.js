@@ -76,4 +76,7 @@ function dataFolderPlugin() {
 
 export default defineConfig({
   plugins: [react(), dataFolderPlugin()],
+  server: {
+    allowedHosts: ["782d-125-235-237-167.ngrok-free.app"],
+  },
 });

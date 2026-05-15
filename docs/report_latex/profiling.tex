@@ -1,0 +1,168 @@
+﻿\section{Data Profiling}
+
+\subsection{Mục tiêu và phạm vi}
+
+\begin{itemize}
+    \item \textbf{Dữ liệu đầu vào gồm 4 nguồn:} listings, calendar, reviews, neighbourhoods.geojson.
+    \item \textbf{Mục tiêu nghiệp vụ:}
+    \begin{itemize}
+        \item Task 1: Phân tích tổng quan thị trường và không gian (Market Overview \& Spatial Distribution).
+        \item Task 2: Phân tích xu hướng theo thời gian (Temporal Trends).
+    \end{itemize}
+    \item \textbf{Trọng tâm báo cáo:} Nêu rõ logic đánh giá dữ liệu (profiling) $\rightarrow$ định hướng làm sạch $\rightarrow$ cấu trúc dữ liệu để vẽ biểu đồ.
+\end{itemize}
+
+\subsubsection*{1.1 Quy ước chung}
+
+Để bài toán dễ theo dõi, thay vì dùng toàn bộ hàng chục cột dữ liệu gốc, chúng ta chỉ lấy ra các cột thật sự mang ý nghĩa:
+
+\begin{itemize}
+    \item \textbf{Với Task 1 (Thị trường \& Không gian):} Cần trả lời câu hỏi ``Bán loại phòng gì, ở đâu, giá bao nhiêu?''. Do đó, \texttt{price} (giá) là thước đo chính, \texttt{room\_type} (loại phòng) để phân nhóm, còn \texttt{neighbourhood} (khu vực) và \texttt{latitude/longitude} (tọa độ) dùng để chấm lên bản đồ.
+    \item \textbf{Với Task 2 (Xu hướng thời gian):} Lẽ ra ta sẽ xem giá thay đổi thế nào qua các tháng. Tuy nhiên, vì phát hiện cột giá theo ngày (\texttt{calendar.price}) bị bỏ trống 100\%, nên ta đổi sang quan sát tỷ lệ cư trú. Hai cột \texttt{date} và \texttt{available} (trạng thái phòng) trở thành cốt lõi để vẽ nên biểu đồ mùa vụ.
+\end{itemize}
+
+\subsection{Phiên bản dữ liệu (raw $\rightarrow$ selected $\rightarrow$ clean)}
+
+\begin{table}[H]
+\centering
+\caption{Các phiên bản dữ liệu trong quy trình xử lý}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+\toprule
+\textbf{Phiên bản} & \textbf{Ý nghĩa} & \textbf{Dùng cho bước nào} \\
+\midrule
+raw      & Dữ liệu gốc sau khi nạp file & Kiểm tra hiện trạng và phát hiện lỗi chính \\
+selected & Tập con thuộc tính phục vụ profiling theo task & Đo lường chất lượng trên biến trọng yếu \\
+clean    & Dữ liệu sau pipeline làm sạch và kiểm tra toàn vẹn & Phân tích, tổng hợp KPI, thiết kế biểu đồ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Quy ước sử dụng trong báo cáo: profiling chủ yếu đọc trên raw/selected để nhận diện vấn đề (đọc ở phần phụ lục); phân tích và dashboard dùng \texttt{*\_clean} để đảm bảo nhất quán và khả năng tái lập.
+
+\subsection{Profiling và chất lượng dữ liệu (tổng quan)}
+
+\subsubsection*{3.1 Quy mô dữ liệu ban đầu}
+
+\begin{table}[H]
+\centering
+\caption{Quy mô dữ liệu ban đầu}
+\begin{tabular}{@{} l r l @{}}
+\toprule
+\textbf{Dataset} & \textbf{Rows (raw)} & \textbf{Cột profiling chính} \\
+\midrule
+Listings                    & 36,353         & 13 \\
+Calendar                    & 13,268,858     & 10 \\
+Reviews                     & 1,000,870      & 3  \\
+GeoJSON (neighbourhoods)    & 233 features   & 2 thuộc tính vùng chính \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{3.2 Vấn đề chất lượng quan trọng và tác động phân tích}
+
+Chú thích tra cứu bảng chi tiết (Phụ lục):
+
+\begin{itemize}
+    \item \textbf{Kiểm tra tính hợp lệ}: xem Bảng~\ref{tab:A1}.
+    \item \textbf{Thống kê mô tả số}: xem Bảng~\ref{tab:A2}.
+    \item \textbf{Cấu trúc dữ liệu theo thuộc tính}: xem Bảng~\ref{tab:A3}.
+    \item \textbf{Mẫu định dạng}: xem Bảng~\ref{tab:A4}.
+    \item \textbf{Hồ sơ ngoại lệ (IQR)}: xem Bảng~\ref{tab:A5}.
+    \item \textbf{Bảng giá trị thiếu}: xem Bảng~\ref{tab:A6}.
+    \item \textbf{Ví dụ bản ghi lỗi \texttt{minimum\_nights} $>$ \texttt{maximum\_nights}}: xem Bảng~\ref{tab:A7}.
+    \item \textbf{\texttt{calendar.price} thiếu 100\% (source-missing):} không thể triển khai xu hướng giá theo thời gian.
+    \item \textbf{\texttt{listings.reviews\_per\_month} và \texttt{listings.review\_scores\_rating} thiếu theo ngữ nghĩa (MAR):} gắn với listing chưa có review, không nội suy cưỡng bức.
+    \item \textbf{Tồn tại mâu thuẫn logic \texttt{minimum\_nights} $>$ \texttt{maximum\_nights} trong calendar raw:} cần xử lý trước khi tổng hợp theo thời gian.
+    \item \textbf{\texttt{maximum\_nights} có giá trị cực đại bất thường (2,147,483,647):} cần kiểm soát khi tóm tắt ràng buộc đặt phòng.
+\end{itemize}
+
+Ví dụ lỗi dữ liệu tiêu biểu:
+
+\begin{enumerate}
+    \item \textbf{\texttt{calendar.price}}: thiếu toàn bộ $\rightarrow$ loại khỏi mọi phân tích giá theo ngày/tháng.
+    \item \textbf{\texttt{minimum\_nights} $>$ \texttt{maximum\_nights}}: biểu hiện mâu thuẫn nghiệp vụ $\rightarrow$ vô hiệu cặp trường nights ở bản ghi lỗi.
+\end{enumerate}
+
+\subsubsection*{3.3 Mức sẵn sàng của dữ liệu không gian (GeoJSON)}
+
+Chú thích tra cứu bảng chi tiết (Phụ lục):
+
+\begin{itemize}
+    \item \textbf{Tổng quan chỉ số của file GeoJSON}: xem Bảng~\ref{tab:A9}.
+    \item \textbf{Kiểm tra tọa độ/bbox}: xem Bảng~\ref{tab:A10}.
+    \item \textbf{Coverage join theo neighbourhood}: xem Bảng~\ref{tab:A11}.
+\end{itemize}
+
+\begin{itemize}
+    \item \texttt{n\_features = 233}, \texttt{n\_neighbourhood = 230}, \texttt{n\_neighbourhood\_group = 5}.
+    \item Coverage join dựa theo neighbourhood: match 222, listing-only 0, GeoJSON-only 8.
+    \item Ý nghĩa: đủ điều kiện cho point map hoặc choropleth.
+\end{itemize}
+
+\subsection{Quy trình làm sạch dữ liệu}
+
+\begin{enumerate}
+    \item \textbf{Standardize}: chuẩn hóa kiểu dữ liệu (giá, ngày, nhãn availability) và tạo biến thời gian mới (ngày, tháng).
+    \item \textbf{Deduplicate}: loại trùng theo mức độ chi tiết của từng bảng (\texttt{id}, \texttt{listing\_id-date}, review event).
+    \item \textbf{Handle missing}: giữ missing có ý nghĩa nghiệp vụ (các trường về reviews), loại hoặc bỏ biến thiếu hoàn toàn (\texttt{calendar.price} với missing 100\%).
+    \item \textbf{Remove invalid/inconsistent}: loại bản ghi không hợp lệ, xử lý mâu thuẫn min $>$ max, lọc orphan để đảm bảo 2 bảng hợp lại là 1-n.
+    \item \textbf{Outlier policy}: không xóa outlier giá, gắn cờ để phân tích thêm theo bối cảnh thị trường.
+\end{enumerate}
+
+Chú thích tra cứu bảng quyết định làm sạch chi tiết: xem Bảng~\ref{tab:A8} (Phụ lục).
+
+\subsection{Tóm tắt dữ liệu sau làm sạch}
+
+\subsubsection*{5.1 Quy mô sau làm sạch}
+
+\begin{table}[H]
+\centering
+\caption{Quy mô dữ liệu sau làm sạch}
+\begin{tabularx}{\textwidth}{@{} l r r X @{}}
+\toprule
+\textbf{Dataset} & \textbf{Clean rows} & \textbf{Clean cols} & \textbf{Vai trò phân tích} \\
+\midrule
+listings\_clean  & 21,415    & 14 & Bảng số liệu chính dạng cho thị trường/không gian \\
+calendar\_clean  & 7,816,487 & 11 & Bảng số liệu chính theo thời gian cho tỷ lệ lấp đầy (occupancy) hoặc khả dụng \\
+reviews\_clean   & 787,325   & 3  & Tín hiệu bổ trợ chất lượng/hoạt động \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Chú thích tra cứu bảng hậu làm sạch chi tiết (Phụ lục): \textbf{Quy mô giảm theo pipeline} xem Bảng~\ref{tab:A12}; \textbf{Toàn vẹn khóa sau làm sạch} xem Bảng~\ref{tab:A13}.
+
+\subsubsection*{5.2 Thuộc tính trọng yếu được giữ}
+
+\begin{itemize}
+    \item \textbf{Không gian:} \texttt{neighbourhood\_group\_cleansed}, \texttt{neighbourhood\_cleansed}, \texttt{latitude}, \texttt{longitude}.
+    \item \textbf{Thời gian:} \texttt{date}, \texttt{year}, \texttt{month}.
+    \item \textbf{Measure chính:} \texttt{price} (listings), \texttt{is\_available}, \texttt{is\_booked}, \texttt{review\_scores\_rating}, \texttt{reviews\_per\_month}, \texttt{number\_of\_reviews}.
+    \item \textbf{Khóa:} \texttt{listings.id}, \texttt{calendar.listing\_id}, \texttt{reviews.listing\_id}.
+\end{itemize}
+
+\subsection{Kết luận profiling}
+
+\subsubsection*{6.1 Dữ liệu khả dụng cho phân tích}
+
+\begin{itemize}
+    \item \textbf{Khả dụng:} \texttt{listings\_clean}, \texttt{calendar\_clean}, \texttt{reviews\_clean}, \texttt{neighbourhoods.geojson}.
+    \item \textbf{Không khả dụng theo mục tiêu ban đầu:} temporal price từ \texttt{calendar.price} do thiếu 100\%.
+\end{itemize}
+
+\subsubsection*{6.2 Liên kết chất lượng dữ liệu $\rightarrow$ quyết định phân tích}
+
+\begin{itemize}
+    \item Vì \texttt{calendar.price} không dùng được, Task 2 chuyển từ xu hướng giá theo thời gian sang xu hướng lấp đầy/khả dụng (xem Bảng~\ref{tab:A6} và A.8).
+    \item Vì missing review fields mang ý nghĩa nghiệp vụ, giữ missing để tránh làm méo diễn giải chất lượng listing (xem Bảng~\ref{tab:A6}, A.8).
+    \item Vì có mâu thuẫn và outlier nghiệp vụ, pipeline làm sạch áp dụng nguyên tắc sửa bằng cách đánh dấu thay vì xóa (xem Bảng~\ref{tab:A5}, A.7, A.8).
+\end{itemize}
+
+\subsubsection*{6.3 Kết luận phạm vi bài toán}
+
+\begin{itemize}
+    \item Giữ Task 1 (market + spatial) trên dữ liệu clean.
+    \item Giữ Task 2 theo lấp đầy/khả dụng.
+    \item Loại xu hướng giá theo thời gian trên dữ liệu hiện có.
+\end{itemize}
+
+Phần tiếp theo chuyển từ bằng chứng chất lượng dữ liệu sang đặc tả mô hình dữ liệu và quy tắc tổng hợp dùng cho dashboard.

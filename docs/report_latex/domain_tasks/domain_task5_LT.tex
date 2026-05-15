@@ -1,0 +1,107 @@
+\section{Domain Task 5: Phân bố mức giá theo khu vực}
+
+Câu hỏi: Giá niêm yết phân bổ như thế nào theo từng borough? Loại phòng
+ảnh hưởng thế nào đến phân phối giá?
+
+\subsection{Biểu đồ 2 -- Bar Chart: Median giá niêm yết theo borough}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
+\toprule
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\midrule
+\endhead
+
+\bottomrule
+\endfoot
+
+\textbf{Idiom} & Bar Chart \\
+\addlinespace[0.2cm]
+
+\textbf{What} & Borough: Categorical \newline
+Median Price: Quantitative (aggregate: MEDIAN) \\
+\addlinespace[0.2cm]
+
+\textbf{How} & \textbf{Encode:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Mark: Bar
+    \item Channel:
+    \begin{itemize}[nosep, leftmargin=0.5cm]
+        \item Pos X: Borough (Categorical)
+        \item Pos Y: MEDIAN(Price) (Quantitative -- length từ gốc 0)
+        \item Hue Color: Borough (Categorical -- redundant encoding)
+        \item Label: giá trị MEDIAN trên đầu cột
+        \item Order: sort descending theo median price
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Manipulate:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Selection: Hover để xem median price chính xác theo từng borough
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Reduce:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Filter: price\_is\_outlier = False
+    \item Aggregate: MEDIAN(price) theo borough
+\end{itemize} \\
+\addlinespace[0.2cm]
+
+\textbf{Why} & produce $\rightarrow$ compare $\rightarrow$ summarize \newline
+Tóm tắt median giá thành 1 số đại diện dễ so sánh. Sort descending giúp nhận diện borough đắt/rẻ nhất ngay lập tức. Bar chart phù hợp khi task là Compare giá trị tuyệt đối. \\
+\addlinespace[0.2cm]
+
+\textbf{Scale} &
+\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
+    \item Main key: 5 (borough)
+    \item Items: $\sim$21,000 listing (sau lọc)
+\end{itemize} \\
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task5_chart2.png}
+    \caption{Hình 5.2. Bar chart median giá niêm yết theo borough tại NYC}
+    \label{fig:domain-task5-chart2}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Tính biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Quận / Borough -- neighbourhood\_group\_cleansed (C), Giá trung vị / Median Price (Q -- MEDIAN aggregate), price\_is\_outlier (C -- filter).
+    \item Channel:
+    \begin{itemize}
+        \item PosX: phân biệt borough (C) $\rightarrow$ đúng.
+        \item PosY (Length từ gốc 0): thể hiện MEDIAN Price (Q) $\rightarrow$ đúng. Baseline = 0 bắt buộc để length channel có ý nghĩa chính xác.
+        \item Hue Color: phân biệt borough (C) $\rightarrow$ đúng. Redundant encoding (cả PosX lẫn Color encode Borough) gửi thông điệp mạnh hơn.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Chiều dài cột (Length / PosY): Length là kênh quan trọng nhất trong bar chart. Kênh này mã hóa MEDIAN Price (Quantitative) từ baseline = 0, phản ánh trực tiếp độ lớn tuyệt đối của giá trung vị tại từng borough. Theo Mackinlay, Length xếp hạng thứ ba cho dữ liệu định lượng (sau Position on common scale và Position on unaligned scale), nhưng trong bar chart với baseline cố định bằng 0, Length và Position thực chất tương đương về mặt nhận thức --- người xem có thể so sánh giá trị một cách nhanh chóng và chính xác. Label số trên đầu cột tiếp tục loại bỏ hoàn toàn sai số cảm nhận thị giác.
+        \item Ưu tiên 2 -- Vị trí ngang (PosX): PosX phân biệt 5 borough dọc theo trục ngang, mã hóa thuộc tính Borough (Categorical/Nominal) theo không gian. Đây là kênh quan trọng thứ hai vì nó thiết lập cấu trúc so sánh chính của biểu đồ: người xem định vị từng borough theo vị trí ngang trước khi đọc độ cao cột. Thứ tự cột được sắp xếp giảm dần theo giá median giúp việc so sánh diễn ra tức thì và trực quan hơn.
+        \item Ưu tiên 3 -- Màu sắc (Color Hue --- redundant encoding): Color Hue mã hóa Borough (Categorical) --- cùng thuộc tính đã được mã hóa bởi PosX. Đây là redundant encoding có chủ ý: mặc dù không bổ sung thêm thông tin mới, kỹ thuật này tăng cường tính nhận diện trực quan, giúp người xem liên kết màu sắc với borough ngay cả khi nhìn vào legend hoặc kết hợp với các chart khác trong dashboard. Theo Mackinlay, Color Hue phù hợp cho dữ liệu danh mục và không gây hiểu nhầm về thứ tự hay mức độ.
+    \end{itemize}
+    \item Kết luận: Mọi channel phù hợp và đúng với bản chất dữ liệu.
+\end{itemize}
+
+\textbf{2. Tính hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Kênh Length xếp hạng thứ 3 trong channel effectiveness ranking (sau Position on common scale và Position on unaligned scale). Label số ở đầu cột loại bỏ hoàn toàn sai số cảm nhận thị giác.
+    \item Khả năng phân biệt (Discriminability): 5 cột màu khác nhau, phân cách rõ ràng, sort descending giúp so sánh nhanh từ đắt đến rẻ.
+    \item Khả năng tách biệt (Separability): PosX, PosY và Color tách biệt hoàn toàn.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Manhattan (\$200) đắt hơn gấp đôi so với Bronx (\$93) --- mức chênh lệch rất lớn, cho thấy sự phân cực giá rõ rệt theo vị trí địa lý tại NYC.
+    \item Brooklyn (\$129) đứng thứ hai --- lựa chọn cân bằng giữa vị trí và chi phí, rẻ hơn Manhattan \$71/đêm.
+    \item Queens (\$100), Staten Island (\$99) và Bronx (\$93) có median tương đương nhau --- phù hợp cho du khách ngân sách thấp.
+    \item Khuyến nghị: Với nhóm du khách muốn cân bằng tiện lợi và tiết kiệm, Brooklyn là lựa chọn tối ưu; với ngân sách tối thiểu, Queens hoặc Bronx phù hợp nhất.
+\end{itemize}

@@ -1,0 +1,109 @@
+\section{Domain Task 6: Phân tích bản đồ giá bất thường và giá trị thực}
+
+Câu hỏi: Listing nào có giá bất thường (outlier)? Listing nào có giá
+thấp nhưng đánh giá cao (good deal)?
+
+\subsection{Biểu đồ 1 -- Point Map: Phân bố listing theo giá bất thường}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
+\toprule
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\midrule
+\endhead
+
+\bottomrule
+\endfoot
+
+\textbf{Idiom} & Point Map (Geographic Scatter Map) \\
+\addlinespace[0.2cm]
+
+\textbf{What} & Longitude: Quantitative/Geographic (Key) \newline
+Latitude: Quantitative/Geographic (Key) \newline
+price\_is\_outlier (derived): Categorical (True/False) \newline
+Price: Quantitative \newline
+Room Type: Categorical \\
+\addlinespace[0.2cm]
+
+\textbf{How} & \textbf{Encode:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Mark: Point (Circle)
+    \item Channel:
+    \begin{itemize}[nosep, leftmargin=0.5cm]
+        \item Pos X: Longitude (Geographic)
+        \item Pos Y: Latitude (Geographic)
+        \item Hue Color: price\_is\_outlier (Categorical -- đỏ=True, xanh=False)
+        \item Size: Price (Quantitative -- điểm lớn = giá cao)
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Manipulate:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Selection: Hover để xem id, price, room\_type, neighbourhood, price\_is\_outlier
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Reduce:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Giải pháp overplotting: giảm opacity điểm False (xanh) để outlier (đỏ) nổi bật; hoặc filter theo borough để zoom vào từng khu vực
+\end{itemize} \\
+\addlinespace[0.2cm]
+
+\textbf{Why} & produce $\rightarrow$ locate $\rightarrow$ explore \newline
+Point Map là idiom duy nhất trả lời câu hỏi `ở đâu' --- không thể thay thế bằng bar chart hay Glyph cho phân tích spatial distribution. \\
+\addlinespace[0.2cm]
+
+\textbf{Scale} &
+\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
+    \item Main key: $\sim$21,000 listings
+    \item Color: 2 (True/False outlier)
+    \item Value range (Price): 9 $\rightarrow$ 50138
+\end{itemize} \\
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task6_chart1.png}
+    \caption{Hình 6.1. Bản đồ phân bố listing theo giá bất thường tại NYC}
+    \label{fig:domain-task6-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Tính biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Kinh độ / Longitude (Q -- spatial), Vĩ độ / Latitude (Q -- spatial), Cờ giá bất thường / price\_is\_outlier (C), Giá niêm yết / Price (Q -- Size), Loại phòng / Room Type (C -- filter/Tooltip), Khu vực / Neighbourhood Cleansed (C -- Tooltip).
+    \item Channel:
+    \begin{itemize}
+        \item PosX (Longitude), PosY (Latitude): vị trí địa lý thực tế $\rightarrow$ phù hợp Quantitative/Geographic. Geographic position là cách duy nhất đúng để encode tọa độ không gian.
+        \item Hue Color: phân biệt nhị phân True/False outlier (C) $\rightarrow$ phù hợp. Chỉ 2 màu $\rightarrow$ discriminability tuyệt đối.
+        \item Size: thể hiện mức giá (Q) $\rightarrow$ phù hợp --- điểm lớn hơn = giá cao hơn, nhất quán với convention.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Vị trí không gian địa lý (PosX/PosY --- Longitude/Latitude): Geographic Position là kênh cốt lõi và quan trọng nhất trong bản đồ điểm. PosX/PosY mã hóa tọa độ địa lý thực tế (Quantitative/Geographic) của từng listing, đặt mỗi điểm vào đúng vị trí tương ứng trên bản đồ NYC. Theo Mackinlay, Geographic Position là ứng dụng đặc biệt của kênh Position --- vừa chính xác tuyệt đối về mặt không gian, vừa truyền tải ngữ cảnh địa lý mà không có kênh nào khác có thể thay thế được. Task chính của biểu đồ là locate (xác định vị trí), nên Geographic Position phải là kênh được ưu tiên số một.
+        \item Ưu tiên 2 -- Màu sắc (Color Hue): Color Hue mã hóa Price Is Outlier (Categorical --- True/False) bằng hai màu tương phản (đỏ/xanh). Đây là kênh phù hợp nhất cho thuộc tính danh mục nhị phân theo lý thuyết Mackinlay. Chỉ cần 2 màu giúp discriminability đạt mức tuyệt đối --- người xem phân biệt outlier và non-outlier ngay tức thì mà không cần đọc legend. Màu đỏ nổi bật trên nền bản đồ trắng xám, tăng cường khả năng phát hiện nhanh các vùng tập trung listing bất thường theo không gian địa lý.
+        \item Ưu tiên 3 -- Kích thước điểm (Size / Area): Size mã hóa Price (Quantitative) theo diện tích điểm tròn --- điểm lớn hơn tương ứng với giá cao hơn. Theo Mackinlay, Area là kênh kém chính xác hơn cho dữ liệu định lượng so với Position hay Length (hệ số Stevens $n \approx 0.7$, Log\_error cao hơn), nhưng phù hợp với mục tiêu của biểu đồ này: task là locate, không phải so sánh chính xác giá trị. Thêm vào đó, outlier thường có giá cao nên đồng thời có Size lớn --- hiệu ứng kép giúp listing bất thường nổi bật gấp đôi so với phần còn lại ngay cả trong vùng dày đặc điểm như Manhattan.
+    \end{itemize}
+    \item Kết luận: Point Map là idiom tối ưu để phân tích dữ liệu có thành phần địa lý.
+\end{itemize}
+
+\textbf{2. Tính hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): PosX, PosY (geographic position) có độ chính xác tuyệt đối về không gian. Kênh Size (Area) xếp thấp trong channel effectiveness ranking --- khó ước lượng chênh lệch giá chính xác. Trade-off chấp nhận được vì mục tiêu là Locate, không phải Compare.
+    \item Khả năng phân biệt (Discriminability): 2 màu nhị phân (đỏ/xanh) rất dễ phân biệt. Với $\sim$21k điểm, các vùng dày đặc bị overlap nghiêm trọng. Giải pháp: giảm opacity điểm False (xanh), hoặc áp dụng filter theo borough.
+    \item Khả năng tách biệt (Separability): PosX/PosY và Color tách biệt tốt. Size và Color có thể tương tác nhẹ khi điểm lớn che điểm nhỏ.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Outlier giá cao (điểm đỏ lớn) tập trung dày đặc ở Manhattan --- đặc biệt Midtown và Upper East Side, khẳng định Manhattan là thị trường giá cao và biến động nhất.
+    \item Bronx và Staten Island hầu như không có điểm đỏ --- thị trường giá bình ổn, an toàn hơn cho du khách về khả năng dự đoán giá.
+    \item Brooklyn có một số outlier tập trung ở Brooklyn Heights, DUMBO --- nơi host định giá cao hơn mức phổ thông do view đẹp và gần Manhattan.
+    \item Khuyến nghị: Du khách nên kết hợp với Task 5 để chọn borough; tránh listing Manhattan không có nhiều reviews và có giá bất thường cao.
+\end{itemize}

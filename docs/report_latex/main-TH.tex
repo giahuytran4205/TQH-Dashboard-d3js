@@ -3,6 +3,7 @@
 % Vietnamese support (XeLaTeX)
 \usepackage{fontspec}
 \usepackage{polyglossia}
+\usepackage{seqsplit}
 \setmainlanguage{vietnamese}
 \setotherlanguage{english}
 \setmainfont{Times New Roman}
@@ -60,7 +61,7 @@
 % ============ THÔNG TIN ĐỒ ÁN ============
 \newcommand{\coursename}{Trực quan hóa dữ liệu}
 \newcommand{\classname}{23HTTT2}
-\newcommand{\reporttitle}{Báo cáo Đồ án Lý thuyết}
+\newcommand{\reporttitle}{Báo cáo Đồ án Thực hành}
 \newcommand{\reportname}{Data Profiling \& Data Abstraction \& Task Abstraction}
 
 \newcommand{\studentname}{%
@@ -135,33 +136,42 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-\input{domain_tasks/domain_task1}
+\input{profiling}
 \newpage
 
-\input{domain_tasks/domain_task2}
+\input{domain-task-abstraction}
 \newpage
 
-\input{domain_tasks/domain_task3}
+\input{domain_tasks/domain_task1_TH}
 \newpage
 
-\input{domain_tasks/domain_task4}
+\input{domain_tasks/domain_task2_TH}
 \newpage
 
-\input{domain_tasks/domain_task5}
+\input{domain_tasks/domain_task3_TH}
 \newpage
 
-\input{domain_tasks/domain_task6}
+\input{domain_tasks/domain_task4_TH}
 \newpage
 
-\input{domain_tasks/domain_task7}
+\input{domain_tasks/domain_task5_TH}
 \newpage
 
-\input{domain_tasks/domain_task8}
+\input{domain_tasks/domain_task6_TH}
 \newpage
 
-\input{domain_tasks/domain_task9}
+\input{domain_tasks/domain_task7_TH}
 \newpage
 
-\input{domain_tasks/domain_task10}
+\input{domain_tasks/domain_task8_TH}
+\newpage
+
+\input{domain_tasks/domain_task9_TH}
+\newpage
+
+\input{domain_tasks/domain_task10_TH}
+
+\appendix
+\input{appendix}
 
 \end{document}

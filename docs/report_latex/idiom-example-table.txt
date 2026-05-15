@@ -1,0 +1,39 @@
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Density Map (Bản đồ Nhiệt Không gian)}} \\ \hline
+
+\textbf{What} 
+& \multicolumn{2}{X|}{listing: spatial items} \\ \cline{2-3}
+& \multicolumn{2}{X|}{latitude, longitude: Quantitative, Spatial} \\ \cline{2-3}
+& \multicolumn{2}{X|}{count(id): Quantitative, Continuous} \\ \hline
+
+\textbf{How}
+& \textbf{Encode} & 
+\textbf{Mark:} Areas \newline
+\textbf{Channel:} \newline 
+\hspace*{1em} PosX/PosY: longitude / latitude \newline 
+\hspace*{1em} Hue/Luminance: Thermal Colormap (Xanh $\rightarrow$ Vàng $\rightarrow$ Đỏ) \\ \cline{2-3}
+
+& \textbf{Manipulate} & 
+Navigate: Pan \& Zoom. \\ \cline{2-3}
+
+& \textbf{Facet} & 
+Superimpose: Chồng lớp biểu diễn mật độ nhiệt (Density layer) lên trên lớp bản đồ địa lý tĩnh (Static map layer). \\ \cline{2-3}
+
+& \textbf{Reduce} & 
+Visual Reduction: Chuyển vạn điểm tọa độ đè lên nhau thành vùng nhiệt. \\ \hline
+
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{explore $\rightarrow$ discover $\rightarrow$ locate} \newline
+Khám phá sự phân bố không gian của toàn bộ nguồn cung phòng trên bề mặt địa lý. Tìm ra các khu vực tụ tập đông đúc nhất và quan sát sự lan tỏa của listings từ vùng trung tâm ra ngoại ô.
+} \\ \hline
+
+\textbf{Scale} & \multicolumn{2}{X|}{
+Spatial bounds: Đại đô thị New York.
+} \\ \hline
+
+\end{tabularx}
+\end{table}

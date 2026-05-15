@@ -1,0 +1,108 @@
+\section{Domain Task 7: Phân tích hiệu quả chi phí lưu trú}
+
+Câu hỏi: Borough và loại phòng nào có chi phí mỗi người thấp nhất? Sức
+chứa tác động thế nào đến giá/người?
+
+\subsection{Biểu đồ 1 -- Grouped Bar Chart: Median chi phí mỗi người theo borough và loại phòng}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
+\toprule
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\midrule
+\endhead
+
+\bottomrule
+\endfoot
+
+\textbf{Idiom} & Grouped Bar Chart \\
+\addlinespace[0.2cm]
+
+\textbf{What} & Borough: Categorical (Key nhóm chính) \newline
+Room Type: Categorical (Key nhóm phụ) \newline
+price\_per\_person (derived): Quantitative (price / accommodates) \\
+\addlinespace[0.2cm]
+
+\textbf{How} & \textbf{Encode:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Mark: Bar (grouped -- Stack Marks OFF)
+    \item Channel:
+    \begin{itemize}[nosep, leftmargin=0.5cm]
+        \item Pos X: Borough $\times$ Room Type (Categorical -- tạo cụm cột cạnh nhau)
+        \item Pos Y: MEDIAN(price\_per\_person) (Quantitative -- length)
+        \item Hue Color: Room Type (Categorical -- 4 màu)
+        \item Label: giá trị median ở đầu mỗi cột
+        \item Note: Analysis $\rightarrow$ Stack Marks $\rightarrow$ Off (bắt buộc để tạo Grouped, không phải Stacked)
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Selection:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Hover để xem median price/person theo từng borough $\times$ room type
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Reduce:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Filter: price\_is\_outlier = False
+    \item Aggregate: MEDIAN(price\_per\_person) theo borough $\times$ room type
+\end{itemize} \\
+\addlinespace[0.2cm]
+
+\textbf{Why} & compare $\rightarrow$ summarize \newline
+So sánh chi phí/người theo 2 chiều categorical đồng thời (borough $\times$ room type). Grouped bar (không phải Stacked) vì task là Compare giá trị tuyệt đối, không phải part-to-whole. \\
+\addlinespace[0.2cm]
+
+\textbf{Scale} &
+\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
+    \item Main key: 5 borough $\times$ 4 room type = 20 cột
+    \item Items: $\sim$21,000 listing (sau lọc)
+\end{itemize} \\
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task7_chart1.png}
+    \caption{Hình 7.1. Grouped bar chart median giá/người theo borough và loại phòng}
+    \label{fig:domain-task7-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Quận / Borough -- neighbourhood\_group\_cleansed (C -- Panel Facet), Loại phòng / Room Type (C), Chi phí mỗi người / Price Per Person -- price\_per\_person (Q -- MEDIAN aggregate), price\_is\_outlier (C -- filter).
+    \item Channel:
+    \begin{itemize}
+        \item PosX: phân biệt borough (C) $\rightarrow$ đúng.
+        \item PosY (Length từ 0): thể hiện MEDIAN price/person (Q) $\rightarrow$ đúng. Length là channel chính xác nhất cho Q.
+        \item Hue Color: phân biệt room type (C) trong grouped bar $\rightarrow$ đúng.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Chiều dài cột (Length / PosY): Length là kênh quan trọng nhất trong grouped bar chart. Kênh này mã hóa MEDIAN price\_per\_person (Quantitative) từ baseline = 0, phản ánh hiệu quả chi phí thực tế của từng tổ hợp borough $\times$ room type. Theo Mackinlay, Length là kênh hiệu quả cao cho dữ liệu định lượng với baseline cố định, cho phép so sánh độ lớn tương đối giữa các cột nhanh chóng và trực quan. Label số trên đầu cột loại bỏ hoàn toàn sai số cảm nhận thị giác, tăng độ chính xác lên mức tuyệt đối --- quan trọng vì task của biểu đồ là compare (so sánh chi phí theo đầu người giữa nhiều nhóm cùng lúc).
+        \item Ưu tiên 2 -- Vị trí ngang (PosX): PosX phân tách 5 borough theo chiều ngang, mã hóa thuộc tính Borough (Categorical/Nominal) theo không gian. Đây là kênh quan trọng thứ hai vì nó tạo ra cấu trúc nhóm chính của biểu đồ: người xem điều hướng theo borough (vị trí ngang) trước, sau đó so sánh room type trong nội bộ borough (màu sắc). Thứ tự borough theo vị trí ngang giúp định vị dễ dàng và phản ánh cấu trúc thị trường NYC quen thuộc.
+        \item Ưu tiên 3 -- Màu sắc (Color Hue): Color Hue mã hóa Room Type (Categorical/Nominal), xác định cấu trúc grouped bên trong mỗi borough. Theo Mackinlay, Color Hue phù hợp cho dữ liệu danh mục, đặc biệt khi cần phân biệt các nhóm nhỏ trong cùng một vị trí ngang. Kênh này cho phép biểu đồ truyền tải đồng thời hai chiều so sánh: liên borough (theo PosX) và liên room type (theo Color Hue) trong một view duy nhất --- đây là lợi thế đặc trưng của grouped bar chart so với faceting riêng biệt.
+    \end{itemize}
+    \item Kết luận: Grouped Bar Chart là lựa chọn đúng đắn khi cần so sánh đồng thời theo 2 chiều categorical.
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Length (từ gốc 0) --- channel có độ chính xác cao. Label số trên đầu cột loại bỏ sai số cảm nhận hoàn toàn.
+    \item Khả năng phân biệt (Discriminability): 4 màu trong phạm vi $\leq$ 7 $\rightarrow$ phân biệt tốt. Grouped layout rõ ràng hơn stacked bar.
+    \item Khả năng tách biệt (Separability): PosX, PosY và Color hoạt động độc lập tốt.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Entire home/apt có price/person cao nhất nhìn chung --- nhưng khi chia theo nhiều người (4--6 người), đây vẫn cạnh tranh với Private room ở Manhattan.
+    \item Bronx và Staten Island có price/person thấp nhất trong mọi room type --- lựa chọn tối ưu cho nhóm khách ngân sách thấp.
+    \item Private room và Shared room luôn có price/person thấp hơn Entire home --- phù hợp cho khách solo hoặc đôi.
+    \item Khuyến nghị: Nhóm 4--6 người nên so sánh Entire home/apt ở Queens/Bronx với Private room ở Brooklyn --- kết hợp với Task 7.2 để xác định crossover point.
+\end{itemize}

@@ -3,6 +3,7 @@
 % Vietnamese support (XeLaTeX)
 \usepackage{fontspec}
 \usepackage{polyglossia}
+\usepackage{seqsplit}
 \setmainlanguage{vietnamese}
 \setotherlanguage{english}
 \setmainfont{Times New Roman}
@@ -135,33 +136,36 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-\input{domain_tasks/domain_task1}
+\input{profiling}
 \newpage
 
-\input{domain_tasks/domain_task2}
+\input{domain-task-abstraction}
 \newpage
 
-\input{domain_tasks/domain_task3}
+\input{domain_tasks/domain_task1_LT}
 \newpage
 
-\input{domain_tasks/domain_task4}
+\input{domain_tasks/domain_task2_LT}
 \newpage
 
-\input{domain_tasks/domain_task5}
+\input{domain_tasks/domain_task5_LT}
 \newpage
 
-\input{domain_tasks/domain_task6}
+\input{domain_tasks/domain_task6_LT}
 \newpage
 
-\input{domain_tasks/domain_task7}
+\input{domain_tasks/domain_task7_LT}
 \newpage
 
-\input{domain_tasks/domain_task8}
+\input{domain_tasks/domain_task8_LT}
 \newpage
 
-\input{domain_tasks/domain_task9}
+\input{domain_tasks/domain_task9_LT}
 \newpage
 
-\input{domain_tasks/domain_task10}
+\input{domain_tasks/domain_task10_LT}
+
+\appendix
+\input{appendix}
 
 \end{document}

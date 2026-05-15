@@ -1,0 +1,33 @@
+ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH
+TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN
+
+KHOA CÔNG NGHỆ THÔNG TIN
+
+
+Môn học: Trực quan hóa dữ liệu
+Lớp: 23HTTT2
+
+
+BÁO CÁO ĐỒ ÁN LÝ THUYẾT
+Data Profiling & Data Abstraction & Task Abstraction
+
+Giáo viên hướng dẫn
+Tiết Gia Hồng
+Nguyễn Trường Sơn
+Phạm Minh Tú
+
+
+—o0o—
+
+
+
+Sinh viên
+                                                23127001 - Nguyễn Lê Quan Anh
+                                                23127006 - Trần Nguyễn Khải Luân
+                                                23127011 - Lê Anh Duy
+                                                23127179 - Nguyễn Bảo Duy
+                                                23127199 - Trần Gia Huy
+
+
+
+Thành phố Hồ Chí Minh, tháng 5 năm 2026

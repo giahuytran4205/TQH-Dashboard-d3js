@@ -1,4 +1,4 @@
-﻿\section{Domain Task 9: Phân tích danh mục chủ nhà (Host Portfolio Analysis)}
+\section{Domain Task 9: Phân tích danh mục chủ nhà (Host Portfolio Analysis)}
 
 Câu hỏi nghiệp vụ: Nhóm chủ nhà cá nhân và chủ nhà chuyên nghiệp có cơ
 cấu phân bố như thế nào, và có sự chênh lệch ra sao về hiệu suất kinh
@@ -7,102 +7,6 @@ doanh (điểm đánh giá, tỷ lệ lấp đầy)?
 Mục đích: Đánh giá mức độ thương mại hóa của thị trường Airbnb NYC và so
 sánh lợi thế cạnh tranh giữa mô hình kinh doanh cá thể so với tổ
 chức/chuỗi phòng.
-
-\subsection{Biểu đồ 1: Tỉ trọng cơ cấu loại chủ nhà (Pie Chart)}
-
-\subsubsection*{A. Thiết kế Idiom}
-
-\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Pie Chart (Biểu đồ tròn) \\
-\addlinespace[0.2cm]
-
-\textbf{What} & Loại chủ nhà (Host Type): C, Tỷ trọng đóng góp (\% of count): Q \\
-\addlinespace[0.2cm]
-
-\textbf{Why} & produce (derive) $\rightarrow$ explore $\rightarrow$ summarize
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Derive: phân loại chủ nhà dựa trên số lượng listing sở hữu (1 phòng = Cá nhân, $>$ 1 phòng = Chuyên nghiệp)
-    \item Explore và Summarize: xem nhóm nào đang chiếm ưu thế kiểm soát nguồn cung trên thị trường
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Mark: Area (vùng góc quạt)
-    \item Channel:
-    \begin{itemize}[nosep, leftmargin=0.5cm]
-        \item Angle: Độ lớn của tỷ trọng phần trăm (0\%--100\%)
-        \item Color: Phân biệt 2 nhóm chủ nhà
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Hover + Tooltip: Rê chuột vào từng phần quạt để xem chi tiết tên nhóm và tỷ lệ \% chính xác
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
-    \item Không áp dụng
-\end{itemize} \\
-\addlinespace[0.2cm]
-
-\textbf{Scale} &
-\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
-    \item Main key: 2 (Cá nhân, Chuyên nghiệp)
-    \item Value range: 0\%--100\%
-\end{itemize} \\
-\end{longtable}
-
-\begin{figure}[H]
-    \centering
-    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task9_chart1.png}
-    \caption{Hình 9.1. Biểu đồ tỉ trọng cơ cấu loại chủ nhà}
-    \label{fig:domain-task9-chart1}
-\end{figure}
-
-\subsubsection*{B. Đánh giá biểu đồ}
-
-\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
-
-\begin{itemize}
-    \item Thuộc tính: Loại chủ nhà (C), Tỷ trọng (Q).
-    \item Channel:
-    \begin{itemize}
-        \item Angle: Thể hiện tỉ lệ phần trăm $\rightarrow$ dùng cho thuộc tính Q mang tính part-to-whole.
-        \item Color (Hue): Phân loại chủ nhà $\rightarrow$ dùng cho thuộc tính Categorical (C).
-    \end{itemize}
-    \item Đánh giá mức độ quan trọng:
-    \begin{itemize}
-        \item Ưu tiên 1 -- Góc (Angle): Trong biểu đồ tròn, thuộc tính định lượng (Tỷ trọng \%) được ưu tiên hàng đầu để thấy được độ lớn thị phần. Theo Mackinlay, kênh Angle nằm ở mức khá cho dữ liệu (Q) và là chuẩn mực cho cấu trúc part-to-whole (thành phần trên tổng thể).
-        \item Ưu tiên 2 -- Màu sắc (Hue Color): Thuộc tính phân loại (Loại chủ nhà -- C) được gán vào kênh Hue. Theo Mackinlay, Hue là kênh mạnh nhất để biểu diễn dữ liệu Categorical, giúp mắt người phân định ngay lập tức 2 nhóm mà không cần đọc text.
-    \end{itemize}
-\end{itemize}
-
-\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
-
-\begin{itemize}
-    \item Độ chính xác (Accuracy): Kênh Area/Angle có độ chính xác không cao. Việc ước lượng định lượng thông qua Góc/Diện tích có $n \approx 0.7$, độ lỗi Log\_error khá lớn. Mắt người khó so sánh chuẩn xác nếu 2 phần quạt có kích thường gần bằng nhau. Tuy nhiên, ở đây mức chênh lệch khá rõ (62.69\% và 37.31\%), kết hợp thao tác Manipulate (Hover xem Tooltip) đã bù đắp hoàn toàn nhược điểm này.
-    \item Khả năng phân biệt (Discriminability): Biểu đồ sử dụng 2 màu tương phản (Xanh/Cam). Số lượng phần loại $< 7$ nên nhận thức màu hoàn toàn không bị ảnh hưởng, rất dễ phân biệt bằng mắt thường.
-    \item Khả năng tách biệt (Separability): Kênh góc (Angle) và kênh màu sắc (Color) tách biệt hoàn toàn, không gây nhiễu cho nhau trong quá trình cảm nhận.
-\end{itemize}
-
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
-
-\begin{itemize}
-    \item Thị trường Airbnb NYC mang tính thương mại hóa cao khi các chủ nhà ``Chuyên nghiệp'' (sở hữu $>$1 phòng) áp đảo nguồn cung với 62.69\% thị phần.
-    \item Chủ nhà ``Cá nhân'' (Kinh doanh phòng lẻ) chỉ chiếm phần nhỏ với 37.31\%.
-\end{itemize}
 
 \subsection{Biểu đồ 2: So sánh hiệu suất kinh doanh theo loại chủ nhà (Bar Chart)}
 

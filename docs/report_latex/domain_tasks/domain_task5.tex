@@ -1,4 +1,4 @@
-\section{Domain Task 5: Phân bố mức giá theo khu vực}
+﻿\section{Domain Task 5: Phân bố mức giá theo khu vực}
 
 Câu hỏi: Giá niêm yết phân bổ như thế nào theo từng borough? Loại phòng
 ảnh hưởng thế nào đến phân phối giá?
@@ -7,53 +7,65 @@ Câu hỏi: Giá niêm yết phân bổ như thế nào theo từng borough? Lo�
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
-\hline
+\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
+\toprule
 \textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\hline
+\midrule
 \endhead
-\hline
+
+\bottomrule
 \endfoot
-Idiom & Box-and-Whisker Plot \\
-\hline
-What & Borough (neighbourhood\_group\_cleansed): Categorical \newline
+
+\textbf{Idiom} & Box-and-Whisker Plot \\
+\addlinespace[0.2cm]
+
+\textbf{What} & Borough (neighbourhood\_group\_cleansed): Categorical \newline
 Price: Quantitative \newline
 Room Type: Categorical \\
-\hline
-How & \textbf{Encode:} \newline
-\newline
-- Mark: \newline
-\newline
-\hspace{0.3cm} + Glyph (Mark phức hợp bao gồm Area cho thân hộp, Line cho râu/trung vị, và Point cho ngoại lệ). \newline
-\newline
-\textbf{Channel:} \newline
-\newline
-\hspace{0.3cm} + Pos X: Borough (Categorical -- phân biệt 5 borough) \newline
-\newline
-\hspace{0.3cm} + Pos Y: Price (Quantitative -- IQR, median, whiskers) \newline
-\newline
-\hspace{0.3cm} + Hue Color: Room Type (Categorical -- 4 loại phòng) \newline
-\newline
-\textbf{Manipulate:} \newline
-\newline
-\hspace{0.3cm} + Selection: hover để xem chi tiết (median, Q1, Q3, min, max, count) \newline
-\newline
-\textbf{Reduce:} \newline
-\newline
-\hspace{0.3cm} + Filter: price\_is\_outlier = False (loại extreme outliers bằng IQR method) \\
-\hline
-Why & produce $\rightarrow$ compare $\rightarrow$ discover \newline
+\addlinespace[0.2cm]
+
+\textbf{How} & \textbf{Encode:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Mark:
+    \begin{itemize}[nosep, leftmargin=0.5cm]
+        \item Glyph (Mark phức hợp bao gồm Area cho thân hộp, Line cho râu/trung vị, và Point cho ngoại lệ).
+    \end{itemize}
+    \item Channel:
+    \begin{itemize}[nosep, leftmargin=0.5cm]
+        \item Pos X: Borough (Categorical -- phân biệt 5 borough)
+        \item Pos Y: Price (Quantitative -- IQR, median, whiskers)
+        \item Hue Color: Room Type (Categorical -- 4 loại phòng)
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Manipulate:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Selection: hover để xem chi tiết (median, Q1, Q3, min, max, count)
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Reduce:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Filter: price\_is\_outlier = False (loại extreme outliers bằng IQR method)
+\end{itemize} \\
+\addlinespace[0.2cm]
+
+\textbf{Why} & produce $\rightarrow$ compare $\rightarrow$ discover \newline
 So sánh phân phối giá đầy đủ giữa 5 borough. Glyph là idiom duy nhất hiển thị Q1, median, Q3, whiskers đồng thời --- bar chart chỉ cho median, histogram chỉ cho 1 nhóm. \\
-\hline
-Scale & Main key: 5 (borough) \newline
-Color key: 4 (room type) \newline
-Items: $\sim$21,000 listing (sau lọc) \\
-\hline
+\addlinespace[0.2cm]
+
+\textbf{Scale} &
+\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
+    \item Main key: 5 (borough)
+    \item Color key: 4 (room type)
+    \item Items: $\sim$21,000 listing (sau lọc)
+\end{itemize} \\
 \end{longtable}
 
 \begin{figure}[H]
     \centering
-    \safeincludegraphics[width=0.9\linewidth]{images/domain_task5_chart1.png}
+    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task5_chart1.png}
     \caption{Hình 5.1. Glyph phân phối giá niêm yết theo borough tại NYC}
     \label{fig:domain-task5-chart1}
 \end{figure}
@@ -100,48 +112,63 @@ Items: $\sim$21,000 listing (sau lọc) \\
 
 \subsubsection*{A. Thiết kế Idiom}
 
-\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
-\hline
+\begin{longtable}{@{} p{2.8cm} p{12cm} @{}}
+\toprule
 \textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\hline
+\midrule
 \endhead
-\hline
+
+\bottomrule
 \endfoot
-Idiom & Bar Chart \\
-\hline
-What & Borough: Categorical \newline
+
+\textbf{Idiom} & Bar Chart \\
+\addlinespace[0.2cm]
+
+\textbf{What} & Borough: Categorical \newline
 Median Price: Quantitative (aggregate: MEDIAN) \\
-\hline
-How & \textbf{Encode:} \newline
-\newline
-- Mark: Bar \newline
-- Channel: \newline
-\hspace{0.3cm} + Pos X: Borough (Categorical) \newline
-\hspace{0.3cm} + Pos Y: MEDIAN(Price) (Quantitative -- length từ gốc 0) \newline
-\hspace{0.3cm} + Hue Color: Borough (Categorical -- redundant encoding) \newline
-\hspace{0.3cm} + Label: giá trị MEDIAN trên đầu cột \newline
-\hspace{0.3cm} + Order: sort descending theo median price \newline
-\newline
-\textbf{Manipulate:} \newline
-\newline
-Selection: Hover để xem median price chính xác theo từng borough \newline
-\newline
-\textbf{Reduce:} \newline
-\newline
-Filter: price\_is\_outlier = False \newline
-Aggregate: MEDIAN(price) theo borough \\
-\hline
-Why & produce $\rightarrow$ compare $\rightarrow$ summarize \newline
+\addlinespace[0.2cm]
+
+\textbf{How} & \textbf{Encode:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Mark: Bar
+    \item Channel:
+    \begin{itemize}[nosep, leftmargin=0.5cm]
+        \item Pos X: Borough (Categorical)
+        \item Pos Y: MEDIAN(Price) (Quantitative -- length từ gốc 0)
+        \item Hue Color: Borough (Categorical -- redundant encoding)
+        \item Label: giá trị MEDIAN trên đầu cột
+        \item Order: sort descending theo median price
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Manipulate:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Selection: Hover để xem median price chính xác theo từng borough
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Reduce:}
+\begin{itemize}[nosep, leftmargin=*, topsep=0.1cm]
+    \item Filter: price\_is\_outlier = False
+    \item Aggregate: MEDIAN(price) theo borough
+\end{itemize} \\
+\addlinespace[0.2cm]
+
+\textbf{Why} & produce $\rightarrow$ compare $\rightarrow$ summarize \newline
 Tóm tắt median giá thành 1 số đại diện dễ so sánh. Sort descending giúp nhận diện borough đắt/rẻ nhất ngay lập tức. Bar chart phù hợp khi task là Compare giá trị tuyệt đối. \\
-\hline
-Scale & Main key: 5 (borough) \newline
-Items: $\sim$21,000 listing (sau lọc) \\
-\hline
+\addlinespace[0.2cm]
+
+\textbf{Scale} &
+\begin{itemize}[nosep, leftmargin=*, topsep=0pt]
+    \item Main key: 5 (borough)
+    \item Items: $\sim$21,000 listing (sau lọc)
+\end{itemize} \\
 \end{longtable}
 
 \begin{figure}[H]
     \centering
-    \safeincludegraphics[width=0.9\linewidth]{images/domain_task5_chart2.png}
+    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task5_chart2.png}
     \caption{Hình 5.2. Bar chart median giá niêm yết theo borough tại NYC}
     \label{fig:domain-task5-chart2}
 \end{figure}
