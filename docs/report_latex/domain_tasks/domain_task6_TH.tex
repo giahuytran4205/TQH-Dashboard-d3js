@@ -1,11 +1,6 @@
-\section{Domain Task 6: Phân tích bản đồ giá bất thường và giá trị thực}
+\subsection{Biểu đồ 2: Giá vs Rating --- Phát hiện Good Deal}
 
-Câu hỏi: Listing nào có giá bất thường (outlier)? Listing nào có giá
-thấp nhưng đánh giá cao (good deal)?
-
-\subsection{Biểu đồ 2 -- Scatter Plot: Giá vs Rating --- Phát hiện Good Deal}
-
-\subsubsection*{A. Thiết kế Idiom}
+\subsubsection{Thiết kế Idiom}
 
 \begin{table}[H]
 \centering
@@ -51,7 +46,7 @@ Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False.
     \label{fig:domain-task6-chart2}
 \end{figure}
 
-\subsubsection*{B. Đánh giá biểu đồ}
+\subsubsection{Đánh giá biểu đồ}
 
 \textbf{1. Tính biểu đạt (Expressiveness):}
 
@@ -81,7 +76,7 @@ Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False.
     \item Khả năng tách biệt (Separability): PosX, PosY, Color và Size tách biệt tốt.
 \end{itemize}
 
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
+\subsubsection{Phân tích biểu đồ (Insight)}
 
 \begin{itemize}
     \item Vùng góc trên-trái (price $<$ median, rating $\geq$ 4.8) là vùng `Good Deal' --- tập trung nhiều điểm xanh, chủ yếu thuộc Brooklyn và Queens.

@@ -1,11 +1,6 @@
-\section{Domain Task 5: Phân bố mức giá theo khu vực}
+\subsection{Biểu đồ 1: Phân phối giá niêm yết theo borough}
 
-Câu hỏi: Giá niêm yết phân bổ như thế nào theo từng borough? Loại phòng
-ảnh hưởng thế nào đến phân phối giá?
-
-\subsection{Biểu đồ 1 -- Box-and-Whisker Plot: Phân phối giá niêm yết theo borough}
-
-\subsubsection*{A. Thiết kế Idiom}
+\subsubsection{Thiết kế Idiom}
 
 \begin{table}[H]
 \centering
@@ -47,7 +42,7 @@ Items: $\sim$21,000 listing (sau lọc).
     \label{fig:domain-task5-chart1}
 \end{figure}
 
-\subsubsection*{B. Đánh giá biểu đồ}
+\subsubsection{Đánh giá biểu đồ}
 
 \textbf{1. Nguyên lý biểu đạt (Expressiveness):}
 
@@ -76,7 +71,7 @@ Items: $\sim$21,000 listing (sau lọc).
     \item Khả năng tách biệt (Separability): PosX, PosY và Color tách biệt hoàn toàn. Filter price\_is\_outlier = False loại bỏ extreme outliers giúp chart dễ đọc hơn.
 \end{itemize}
 
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
+\subsubsection{Phân tích biểu đồ (Insight)}
 
 \begin{itemize}
     \item Manhattan có median price cao nhất ($\sim$\$150--200) và IQR rộng nhất --- tồn tại cả phân khúc bình dân lẫn cao cấp trong cùng một borough.

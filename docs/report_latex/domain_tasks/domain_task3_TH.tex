@@ -1,14 +1,6 @@
-\section{Domain Task 3: Phân tích Cơ cấu Nguồn cung theo Khu vực}
-
-Câu hỏi nghiệp vụ: ``Cơ cấu loại phòng theo từng quận phân bố như thế nào,
-và khu vực nào phù hợp với từng quy mô nhóm khách?''
-
-Mục đích: Giúp hiểu rõ đặc trưng phân khúc thị trường của từng khu vực và
-nhu cầu sức chứa để định vị sản phẩm phù hợp.
-
 \subsection{Biểu đồ 1: Cơ cấu loại phòng theo quận (Stacked Bar Chart)}
 
-\subsubsection*{A. Thiết kế Idiom}
+\subsubsection{Thiết kế Idiom}
 
 \begin{table}[H]
 \centering
@@ -51,7 +43,7 @@ Main key: khu vực.
     \label{fig:domain-task3-chart1}
 \end{figure}
 
-\subsubsection*{B. Đánh giá biểu đồ}
+\subsubsection{Đánh giá biểu đồ}
 
 \textbf{1. Nguyên lý biểu đạt (Expressiveness):}
 
@@ -84,97 +76,11 @@ Main key: khu vực.
     \item Khả năng tách biệt (Separability): Kênh vị trí (Pos) và kênh màu sắc (Color) tách biệt hoàn toàn (Fully separable) và không gây nhiễu chéo. Việc cột cao hay thấp không làm thay đổi cảm nhận về sắc độ màu, và ngược lại. Thao tác Reduce (sắp xếp khu vực theo tổng số listing giảm dần từ trái sang phải) dẫn dắt luồng mắt logic, giúp não bộ so sánh (Compare) trơn tru và giảm tải nhận thức (cognitive load) đáng kể.
 \end{itemize}
 
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
+\subsubsection{Phân tích biểu đồ (Insight)}
 
 \begin{itemize}
     \item Manhattan và Brooklyn thống trị hoàn toàn nguồn cung Airbnb, phản ánh sự tập trung nhu cầu lưu trú khổng lồ tại vùng lõi trung tâm New York.
     \item Thị trường Manhattan bị áp đảo tuyệt đối bởi ``Entire home/apt'', phục vụ tệp khách có ngân sách cao và cho thấy mức độ chuyên nghiệp hóa bất động sản lớn tại đây.
     \item Tại Brooklyn và Queens, loại hình ``Private room'' tăng vọt, chứng tỏ xu hướng người dân địa phương cho thuê không gian thừa để san sẻ gánh nặng chi phí sinh hoạt.
     \item Mô hình ``Shared room'' và ``Hotel room'' gần như vắng bóng, cho thấy xu hướng ở ghép đã thoái trào và khách sạn truyền thống chưa thực sự thâm nhập sâu vào nền tảng này.
-\end{itemize}
-
-\subsection{Biểu đồ 2: Sức chứa theo quận (Heat Map)}
-
-\subsubsection*{A. Thiết kế Idiom}
-
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.1}
-\begin{tabularx}{\textwidth}{|l|l|X|}
-\hline
-\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Heat Map (Bản đồ nhiệt)}} \\ \hline
-\textbf{What}
-& \multicolumn{2}{X|}{Khu vực: Categorical} \\ \cline{2-3}
-& \multicolumn{2}{X|}{Nhóm sức chứa: Ordinal} \\ \cline{2-3}
-& \multicolumn{2}{X|}{Số lượng listing: Quantitative} \\ \hline
-\textbf{How}
-& \textbf{Encode} &
-\textbf{Mark:} Area \newline
-\textbf{Channel:} \newline
-\hspace*{1em} PosX: Nhóm sức chứa \newline
-\hspace*{1em} PosY: Khu vực \newline
-\hspace*{1em} Hue Color: Số lượng listing \\ \cline{2-3}
-& \textbf{Manipulate} &
-Selection: Chọn một ô để highlight tổ hợp khu vực và nhóm sức chứa. \newline
-Hover để xem số lượng listing chi tiết. \\ \cline{2-3}
-& \textbf{Facet} &
-Có thể facet theo loại phòng. \\ \cline{2-3}
-& \textbf{Reduce} &
-Chuẩn hóa sức chứa thành các nhóm: 1--2 khách, 3--4 khách, 5--6 khách, 7+ khách. \\ \hline
-\textbf{Why} & \multicolumn{2}{X|}{
-\textbf{produce $\rightarrow$ browse, lookup $\rightarrow$ summarize} \newline
-Biểu đồ giúp xác định khu vực nào phù hợp với từng quy mô khách, ví dụ khu vực nào có nhiều listing cho cặp đôi, nhóm nhỏ, gia đình hoặc nhóm đông người.
-} \\ \hline
-\textbf{Scale} & \multicolumn{2}{X|}{
-Main key: khu vực $\times$ nhóm sức chứa.
-} \\ \hline
-\end{tabularx}
-\end{table}
-
-\begin{figure}[H]
-    \centering
-    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task3_chart2.png}
-    \caption{Hình 3.2. Biểu đồ sức chứa theo quận (Heat Map)}
-    \label{fig:domain-task3-chart2}
-\end{figure}
-
-\subsubsection*{B. Đánh giá biểu đồ}
-
-\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
-
-\begin{itemize}
-    \item Thuộc tính: Khu vực (Categorical -- C), Nhóm sức chứa (Ordinal -- O), Số lượng listing (Quantitative -- Q).
-    \item Channel:
-    \begin{itemize}
-        \item PosX: Nhóm sức chứa (Ordinal).
-        \item PosY: Khu vực (Categorical).
-        \item Color (Saturation -- Độ bão hòa màu): Thể hiện độ lớn của giá trị định lượng (Số lượng listing).
-    \end{itemize}
-    \item Đánh giá mức độ quan trọng và phân bổ kênh theo Mackinlay:
-    \begin{itemize}
-        \item Ưu tiên 1 -- Vị trí không gian (PosX, PosY): Sử dụng hai trục tọa độ để tạo thành lưới ma trận (Matrix) là phương án tối ưu để biểu đạt mối quan hệ giữa hai thuộc tính định danh/thứ tự. Theo Mackinlay, kênh Vị trí là kênh mạnh nhất cho mọi loại dữ liệu, giúp người xem dễ dàng tra cứu (Lookup) tổ hợp giữa Quận và Sức chứa.
-        \item Ưu tiên 2 -- Màu sắc (Color Saturation/Luminance): Do hai kênh Vị trí đã bị chiếm dụng cho các chiều phân loại, giá trị định lượng (Q) phải sử dụng kênh màu sắc. Theo thang đo Mackinlay cho dữ liệu định lượng, kênh này xếp hạng thấp hơn Vị trí/Chiều dài nhưng lại cực kỳ hiệu quả trong việc nhận diện các ``điểm nóng'' (Hotspots) hoặc quy luật mật độ trên diện rộng.
-    \end{itemize}
-    \item Kết luận: Biểu đồ sử dụng chuẩn xác các kênh biểu đạt. Việc phân nhóm (Binning) sức chứa thành 4 cấp độ (1-2, 3-4, 5-6, 7+) giúp tinh gọn dữ liệu và tăng tính biểu đạt cho các User Story về quy mô khách.
-\end{itemize}
-
-\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
-
-\begin{itemize}
-    \item Độ chính xác (Accuracy):
-    \begin{itemize}
-        \item Kênh vị trí (PosX, PosY) đảm bảo việc phân loại các nhóm sức chứa và quận huyện đạt độ chính xác tuyệt đối.
-        \item Kênh màu sắc (Color Saturation) tuân theo định luật Stevens' Psychophysical law với hàm mũ cảm nhận thấp ($p < 1.0$), dẫn đến sai lệch cảm nhận về lượng (ví dụ: khó phân biệt một ô đậm hơn 10\% có thực sự nhiều hơn 10\% số lượng hay không). Độ lỗi Log\_error ước tính rơi vào khoảng $\approx 2.5$. Tuy nhiên, thiết kế đã khắc phục hoàn toàn nhược điểm này bằng cách hiển thị trực tiếp nhãn số (Labels) bên trong các ô vuông (Mark Area).
-    \end{itemize}
-    \item Khả năng phân biệt (Discriminability): Dải màu chuyển sắc (Sequential) giúp phân biệt rõ các vùng có mật độ cao (Manhattan 1-2 khách: 5,541) so với các vùng khan hiếm (Staten Island 7+ khách: 16). Khoảng cách giữa các ô (Grid) giúp tách biệt rõ ràng các đơn vị dữ liệu, tránh hiện tượng hòa lẫn màu sắc.
-    \item Khả năng tách biệt (Separability): Các kênh vị trí và màu sắc tách biệt tốt. Thao tác Reduce (Chuẩn hóa sức chứa thành các nhóm Ordinal) giúp loại bỏ sự nhiễu loạn của hàng chục giá trị số lẻ, tập trung sự chú ý của người xem vào các phân khúc thị trường chính.
-\end{itemize}
-
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
-
-\begin{itemize}
-    \item Phân khúc phòng dành cho 1-2 khách (khách lẻ hoặc cặp đôi) chiếm đa số tuyệt đối tại mọi khu vực, đặc biệt bùng nổ tại Manhattan và Brooklyn.
-    \item Nguồn cung tỷ lệ nghịch với sức chứa: số lượng listing giảm mạnh khi quy mô nhóm khách tăng lên, cho thấy Airbnb NYC chủ yếu phục vụ tệp khách nhỏ.
-    \item Manhattan và Brooklyn là hai ``điểm nóng'' cung cấp giải pháp lưu trú cho mọi quy mô nhóm khách, trong khi Staten Island gần như đứng ngoài phân khúc nhóm đông người (7+ khách).
-    \item Sự tập trung mật độ cao tại ô ``Manhattan / 1-2 khách'' (5,541) xác nhận đây là phân khúc cạnh tranh khốc liệt nhất nhưng cũng có nhu cầu cao nhất toàn thị trường.
 \end{itemize}
