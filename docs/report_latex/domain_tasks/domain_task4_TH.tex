@@ -1,14 +1,6 @@
-\section{Domain Task 4: Phân tích Chất lượng Dịch vụ}
+\subsection{Task 4: Phân phối điểm đánh giá theo quận}
 
-Câu hỏi nghiệp vụ: ``Chất lượng dịch vụ (Rating) phân phối như thế nào giữa
-các khu vực, và listing nào có cả rating cao lẫn mức độ tương tác lớn?''
-
-Mục đích: Nhận diện các khu vực có trải nghiệm ổn định và các listing đáng
-tin cậy, từ đó hỗ trợ quyết định đặt phòng và cải thiện chất lượng dịch vụ.
-
-\subsection{Biểu đồ 1: Phân phối Rating theo quận (Box Plot)}
-
-\subsubsection*{A. Thiết kế Idiom}
+\subsubsection{Thiết kế Idiom}
 
 \begin{table}[H]
 \centering
@@ -46,11 +38,11 @@ Main key: khu vực.
 \begin{figure}[H]
     \centering
     \safeincludegraphics[width=0.9\linewidth]{charts/domain_task4_chart1.png}
-    \caption{Hình 4.1. Biểu đồ phân phối Rating theo quận (Box Plot)}
+    \caption{Hình 4.1. Biểu đồ phân phối điểm đánh giá theo quận}
     \label{fig:domain-task4-chart1}
 \end{figure}
 
-\subsubsection*{B. Đánh giá biểu đồ}
+\subsubsection{Đánh giá biểu đồ}
 
 \textbf{1. Nguyên lý biểu đạt (Expressiveness):}
 
@@ -87,102 +79,10 @@ Main key: khu vực.
     \item Khả năng tách biệt (Separability): Kênh Vị trí và Hình khối tách biệt hoàn toàn. Thao tác Reduce (Loại bỏ listing không có rating, chỉ xét các khu vực có đủ số lượng listing) là một quyết định xử lý dữ liệu tinh tế, giúp làm sạch phân phối, đảm bảo các Boxplot hiển thị không bị bóp méo bởi các mẫu quá nhỏ hoặc dữ liệu rác.
 \end{itemize}
 
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
+\subsubsection{Phân tích biểu đồ}
 
 \begin{itemize}
     \item Chất lượng dịch vụ (Rating) trên toàn thị trường nhìn chung rất cao, với phần lớn dữ liệu (khoảng liên phân vị) bị nén chặt ở dải điểm xuất sắc từ 4.5 đến 5.0.
     \item Manhattan và Brooklyn xuất hiện chùm điểm ngoại lệ (Outliers) kéo dài và đặc dày xuống tận mức 1.0. Điều này cho thấy sự phân hóa chất lượng khốc liệt và rủi ro trải nghiệm dịch vụ tồi tệ (bad experiences) tập trung lớn tại hai thị trường đông đúc này.
     \item Staten Island có dải phân phối cực kỳ hẹp với số lượng điểm ngoại lệ lác đác, phản ánh chất lượng dịch vụ ổn định, đồng thời là hệ quả thống kê tất yếu của một thị trường có quy mô nguồn cung rất nhỏ.
-\end{itemize}
-
-\subsection{Biểu đồ 2: Rating và Mức độ tương tác (Bubble Scatter Plot)}
-
-\subsubsection*{A. Thiết kế Idiom}
-
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.1}
-\begin{tabularx}{\textwidth}{|l|l|X|}
-\hline
-\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Bubble Scatter Plot}} \\ \hline
-\textbf{What}
-& \multicolumn{2}{X|}{Số lượng review: Quantitative} \\ \cline{2-3}
-& \multicolumn{2}{X|}{Rating: Quantitative} \\ \cline{2-3}
-& \multicolumn{2}{X|}{Reviews per month: Quantitative} \\ \cline{2-3}
-& \multicolumn{2}{X|}{Loại phòng hoặc khu vực: Categorical} \\ \hline
-\textbf{How}
-& \textbf{Encode} &
-\textbf{Mark:} Point / Circle \newline
-\textbf{Channel:} \newline
-\hspace*{1em} PosX: Số lượng review (Log scale) \newline
-\hspace*{1em} PosY: Rating \newline
-\hspace*{1em} Size: Reviews per month \newline
-\hspace*{1em} Hue Color: Loại phòng hoặc khu vực \\ \cline{2-3}
-& \textbf{Manipulate} &
-Hover để xem listing id, rating, số lượng review, reviews per month và khu vực. \newline
-Selection: Chọn một loại phòng hoặc khu vực để highlight. \\ \cline{2-3}
-& \textbf{Facet} &
-Có thể facet theo borough để giảm nhiễu và dễ so sánh hơn. \\ \cline{2-3}
-& \textbf{Reduce} &
-Có thể dùng log scale cho số lượng review nếu dữ liệu bị lệch mạnh. \newline
-Lọc bỏ listing thiếu rating hoặc không có review. \\ \hline
-\textbf{Why} & \multicolumn{2}{X|}{
-\textbf{produce $\rightarrow$ discover, compare $\rightarrow$ summarize} \newline
-Biểu đồ giúp nhận diện listing vừa có rating cao, vừa có nhiều review và vẫn được khách đánh giá thường xuyên. Đây là nhóm listing có chất lượng tốt và độ tin cậy cao.
-} \\ \hline
-\textbf{Scale} & \multicolumn{2}{X|}{
-Main key: listing.
-} \\ \hline
-\end{tabularx}
-\end{table}
-
-\begin{figure}[H]
-    \centering
-    \safeincludegraphics[width=0.9\linewidth]{charts/domain_task4_chart2.png}
-    \caption{Hình 4.2. Biểu đồ Rating và mức độ tương tác (Bubble Scatter Plot)}
-    \label{fig:domain-task4-chart2}
-\end{figure}
-
-\subsubsection*{B. Đánh giá biểu đồ}
-
-\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
-
-\begin{itemize}
-    \item Thuộc tính: Log(Số lượng review) (Quantitative -- Q), Rating (Quantitative -- Q), Reviews per month (Quantitative -- Q), Loại phòng (Categorical -- C).
-    \item Channel:
-    \begin{itemize}
-        \item PosX: Định vị trên thang đo Log $\rightarrow$ dùng cho log(Number of Reviews) (Q).
-        \item PosY: Định vị trên thang đo tuyến tính $\rightarrow$ dùng cho Review Scores Rating (Q).
-        \item Size (Kích thước điểm/Diện tích 2D): Thể hiện độ lớn $\rightarrow$ dùng cho Reviews per month (Q).
-        \item Color (Hue -- Sắc độ màu): Thể hiện sự phân loại $\rightarrow$ dùng cho Room Type (C).
-    \end{itemize}
-    \item Đánh giá mức độ quan trọng và phân bổ kênh theo Mackinlay:
-    \begin{itemize}
-        \item Ưu tiên 1 -- Vị trí 2D (PosX, PosY): Tọa độ không gian 2D là kênh biểu đạt mạnh nhất cho phép phân tích tương quan (Dependency/Correlation). Việc gán hai biến định lượng cốt lõi nhất (Rating và Lượng review) vào hệ tọa độ Descartes là chuẩn xác. Thao tác Reduce (dùng thang đo Logarit cho trục X) là một quyết định biểu đạt xuất sắc, giúp kéo giãn các điểm dữ liệu bị dồn cục ở mức review thấp (1-10) và hiển thị trọn vẹn dải dữ liệu trải dài đến hàng ngàn review.
-        \item Ưu tiên 2 -- Màu sắc (Color Hue): Kênh tối ưu nhất để phân loại 4 nhóm phòng (Entire home, Private room...).
-        \item Ưu tiên 3 -- Kích thước (Size): Sử dụng diện tích (2D area) để biểu diễn cường độ hoạt động (Reviews per month). Đây là kênh phù hợp cho một biến định lượng phụ trợ, không làm lấn át hai biến chính.
-    \end{itemize}
-    \item Kết luận: Biểu đồ tận dụng rất tốt 4 kênh biểu đạt để hiển thị đồng thời 4 chiều dữ liệu (Multidimensional) trên không gian 2D mà vẫn giữ được logic ngữ nghĩa.
-\end{itemize}
-
-\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
-
-\begin{itemize}
-    \item Độ chính xác (Accuracy):
-    \begin{itemize}
-        \item Kênh vị trí (PosX, PosY) cung cấp độ chính xác cao nhất (Log\_error $\approx 0$), người dùng đối chiếu rất dễ dàng các mốc điểm Rating và Lượng Review. Tuy nhiên, kênh Kích thước (Size) biểu diễn Reviews per month tuân theo định luật Stevens với hàm mũ cảm nhận $p \approx 0.7$. Mắt người ước lượng diện tích hình tròn kém chính xác hơn chiều dài, khó nhận ra sự chênh lệch nhỏ giữa hai bong bóng. Thiết lập Hover (xem Tooltip) là bắt buộc để khắc phục sự thiếu chính xác này.
-    \end{itemize}
-    \item Khả năng phân biệt (Discriminability):
-    \begin{itemize}
-        \item Bảng 4 màu Hue dễ phân biệt. Nhược điểm lớn nhất là hiện tượng chồng lấp dữ liệu (Overplotting) cực kỳ nghiêm trọng ở góc trên cùng (dải Rating 4.5 -- 5.0) do mật độ điểm quá đặc. Thao tác Manipulate (Selection -- Chọn một loại phòng để highlight) và Facet (tách theo borough) là các biện pháp cực kỳ cần thiết để bóc tách từng lớp điểm, giúp não bộ phân biệt rõ ràng hơn.
-    \end{itemize}
-    \item Khả năng tách biệt (Separability): Kích thước quá lớn của một số bong bóng cộng với overplotting gây nhiễu kênh vị trí và màu sắc của các bong bóng nhỏ nằm phía sau (Interference). Để khắc phục, điểm Scatter cần được tinh chỉnh Opacity (độ trong suốt) xuống thấp và thêm viền (Stroke) mỏng. Việc áp dụng Log scale (PosX) đã giúp tách biệt các điểm dính chùm ở góc trái cực kỳ hiệu quả.
-\end{itemize}
-
-\subsubsection*{C. Phân tích biểu đồ (Insight)}
-
-\begin{itemize}
-    \item \textbf{Quy luật ``Sàng lọc tự nhiên'':} Các listing sống sót lâu năm, thu hút lượng đánh giá khổng lồ (vượt mốc 100 đến 2,000 review ở bên phải trục X) đều tập trung ở dải điểm chất lượng cực cao (vượt đường Average 4.7). Điều này cho thấy khách hàng đánh giá rất công tâm, và chỉ những host cung cấp dịch vụ tốt, ổn định mới có thể tồn tại và tích lũy được lượng review lớn như vậy.
-    \item \textbf{Cạm bẫy ở ``vùng nước cạn'':} Các điểm có rating rớt thê thảm (từ 1.0 đến dưới 4.0) tập trung dày đặc ở khu vực bên trái trục X (có dưới 10 review). Đây thường là những listing mới mở, chất lượng chưa được kiểm chứng, chỉ cần 1-2 trải nghiệm tồi tệ của khách hàng đầu tiên là điểm trung bình sẽ sụp đổ.
-    \item \textbf{Sức sống của loại hình nguyên căn và phòng riêng:} Hai màu Xanh dương (Entire home/apt) và Đỏ (Private room) áp đảo hoàn toàn các bong bóng có kích thước lớn (Reviews/month cao). Điều này khẳng định đây là hai sản phẩm có tính thanh khoản cao nhất, liên tục có khách thuê mới mỗi tháng, trong khi Shared room (Xanh lá) chìm nghỉm trong thị trường.
 \end{itemize}
