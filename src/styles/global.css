@@ -366,6 +366,14 @@ textarea {
   pointer-events: none;
 }
 
+.map-zoom-surface {
+  cursor: grab;
+}
+
+.map-zoom-surface:active {
+  cursor: grabbing;
+}
+
 .selection-strip {
   display: grid;
   gap: 14px;

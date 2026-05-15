@@ -75,6 +75,7 @@ function InteractiveChart({
   onRoomTypeToggle,
 }) {
   const ref = useRef(null);
+  const mapZoomRef = useRef(d3.zoomIdentity);
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -96,7 +97,7 @@ function InteractiveChart({
 
       switch (chart.kind) {
         case "choropleth":
-          drawChoropleth(svg, data, geoData, selection, onRegionToggle);
+          drawChoropleth(svg, data, geoData, selection, onRegionToggle, mapZoomRef);
           break;
         case "occupancyLines":
           drawOccupancyLines(svg, metrics, selection, onRegionToggle);
@@ -161,7 +162,7 @@ function drawFrame(svg) {
     .attr("rx", 8);
 }
 
-function drawChoropleth(svg, data, geoData, selection, onRegionToggle) {
+function drawChoropleth(svg, data, geoData, selection, onRegionToggle, zoomRef) {
   if (!geoData?.features?.length) {
     drawEmptyState(svg, "Map unavailable", "Place neighbourhoods.geojson in data/.");
     return;
@@ -183,10 +184,11 @@ function drawChoropleth(svg, data, geoData, selection, onRegionToggle) {
   }
 
   drawFrame(svg);
+  const mapBounds = { left: 24, top: 22, right: SIZE.width - 24, bottom: SIZE.height - 58 };
   const projection = d3.geoMercator().fitExtent(
     [
-      [24, 22],
-      [SIZE.width - 24, SIZE.height - 58],
+      [mapBounds.left, mapBounds.top],
+      [mapBounds.right, mapBounds.bottom],
     ],
     geoData
   );
@@ -194,12 +196,35 @@ function drawChoropleth(svg, data, geoData, selection, onRegionToggle) {
   const domain = d3.extent(values);
   const color = d3.scaleSequential(d3.interpolateBlues).domain(domain);
 
-  const features = svg.append("g").attr("class", "map-features");
+  const defs = svg.append("defs");
+  const clipId = "task1-map-clip";
+  defs
+    .append("clipPath")
+    .attr("id", clipId)
+    .append("rect")
+    .attr("x", mapBounds.left)
+    .attr("y", mapBounds.top)
+    .attr("width", mapBounds.right - mapBounds.left)
+    .attr("height", mapBounds.bottom - mapBounds.top);
+
+  const mapViewport = svg.append("g").attr("class", "map-viewport");
+  const zoomLayer = mapViewport.append("g").attr("clip-path", `url(#${clipId})`);
+  zoomLayer
+    .append("rect")
+    .attr("class", "map-zoom-surface")
+    .attr("x", mapBounds.left)
+    .attr("y", mapBounds.top)
+    .attr("width", mapBounds.right - mapBounds.left)
+    .attr("height", mapBounds.bottom - mapBounds.top)
+    .attr("fill", "transparent");
+
+  const features = zoomLayer.append("g").attr("class", "map-features");
   const paths = features
     .selectAll("path")
     .data(geoData.features)
     .join("path")
     .attr("d", path)
+    .attr("vector-effect", "non-scaling-stroke")
     .attr("fill", (feature) => {
       const stats = priceByNeighbourhood.get(feature.properties.neighbourhood);
       return stats ? color(stats.avgPrice) : "#e2e8f0";
@@ -225,6 +250,24 @@ function drawChoropleth(svg, data, geoData, selection, onRegionToggle) {
     };
   });
 
+  const zoom = d3
+    .zoom()
+    .scaleExtent([1, 8])
+    .translateExtent([
+      [mapBounds.left, mapBounds.top],
+      [mapBounds.right, mapBounds.bottom],
+    ])
+    .extent([
+      [mapBounds.left, mapBounds.top],
+      [mapBounds.right, mapBounds.bottom],
+    ])
+    .filter((event) => Boolean(event.target?.closest?.(".map-viewport")) && event.type !== "contextmenu")
+    .on("zoom", (event) => {
+      zoomRef.current = event.transform;
+      zoomLayer.attr("transform", event.transform);
+    });
+
+  svg.call(zoom).call(zoom.transform, zoomRef.current ?? d3.zoomIdentity);
   drawSequentialLegend(svg, color, domain, "Avg price", SIZE.width - 230, SIZE.height - 38);
 }
 
@@ -257,33 +300,95 @@ function drawOccupancyLines(svg, metrics, selection, onRegionToggle) {
     .x((row) => x(row.month))
     .y((row) => y(row.occupancyRate))
     .curve(d3.curveMonotoneX);
+  const regionsData = Array.from(byRegion, ([region, values]) => ({ region, values }));
 
   const lineGroups = svg
     .append("g")
     .selectAll("g")
-    .data(Array.from(byRegion, ([region, values]) => ({ region, values })))
+    .data(regionsData)
     .join("g")
-    .style("opacity", (d) => (!selection.region || selection.region === d.region ? 1 : 0.18));
+    .style("cursor", "pointer");
+
+  function updateFocus(focusedRegion = null) {
+    const activeRegion = focusedRegion ?? selection.region ?? null;
+
+    lineGroups.style("opacity", (d) => {
+      if (!activeRegion) {
+        return 1;
+      }
+
+      return d.region === activeRegion ? 1 : 0.08;
+    });
+
+    lineGroups
+      .select("path.line-path")
+      .attr("stroke-width", (d) => {
+        if (activeRegion && d.region === activeRegion) {
+          return 4.2;
+        }
+
+        return selection.region === d.region ? 3.4 : 2.4;
+      })
+      .attr("stroke-opacity", (d) => {
+        if (!activeRegion) {
+          return 1;
+        }
+
+        return d.region === activeRegion ? 1 : 0.3;
+      });
+
+    lineGroups
+      .select("path.line-hit")
+      .attr("stroke-width", (d) => (activeRegion && d.region === activeRegion ? 20 : 14));
+
+    lineGroups
+      .selectAll("circle.line-point")
+      .attr("r", (d) => {
+        if (activeRegion && d.region === activeRegion) {
+          return 4.7;
+        }
+
+        return 3.8;
+      })
+      .attr("opacity", (d) => {
+        if (!activeRegion) {
+          return 1;
+        }
+
+        return d.region === activeRegion ? 1 : 0.22;
+      });
+  }
 
   lineGroups
     .append("path")
+    .attr("class", "line-path")
     .attr("fill", "none")
     .attr("stroke", (d) => REGION_COLORS(d.region))
     .attr("stroke-width", (d) => (selection.region === d.region ? 3.8 : 2.4))
     .attr("d", (d) => line(d.values))
-    .style("cursor", "pointer")
-    .on("click", (_, d) => onRegionToggle?.(d.region));
+    .style("pointer-events", "none");
+
+  lineGroups
+    .append("path")
+    .attr("class", "line-hit")
+    .attr("fill", "none")
+    .attr("stroke", "transparent")
+    .attr("stroke-width", 14)
+    .attr("d", (d) => line(d.values))
+    .style("pointer-events", "stroke");
 
   const points = lineGroups
     .selectAll("circle")
     .data((d) => d.values.map((row) => ({ ...row, region: d.region })))
     .join("circle")
+    .attr("class", "line-point")
     .attr("cx", (d) => x(d.month))
     .attr("cy", (d) => y(d.occupancyRate))
     .attr("r", 3.8)
     .attr("fill", (d) => REGION_COLORS(d.region))
-    .style("cursor", "pointer")
-    .on("click", (_, d) => onRegionToggle?.(d.region));
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 0.8)
+    .style("cursor", "pointer");
 
   bindTooltip(points, (d) => ({
     title: `${d.region} - Month ${d.month}`,
@@ -293,6 +398,25 @@ function drawOccupancyLines(svg, metrics, selection, onRegionToggle) {
       { label: "Total days", value: formatCount(d.totalDays) },
     ],
   }));
+
+  lineGroups
+    .on("click", (_, d) => onRegionToggle?.(d.region))
+    .on("mouseover", function (event, d) {
+      if (event.currentTarget.contains(event.relatedTarget)) {
+        return;
+      }
+
+      updateFocus(d.region);
+    })
+    .on("mouseout", function (event) {
+      if (event.currentTarget.contains(event.relatedTarget)) {
+        return;
+      }
+
+      updateFocus(null);
+    });
+
+  updateFocus(null);
 
   drawColorLegend(svg, Array.from(byRegion.keys()), REGION_COLORS, SIZE.width - 118, 42, onRegionToggle);
 }
@@ -405,6 +529,15 @@ function drawRatingBoxplot(svg, data, selection, onRegionToggle) {
       ...computeBoxStats(rows.filter((row) => row.neighbourhood_group_cleansed === region).map((row) => row.review_scores_rating)),
     }))
     .filter((item) => item.count > 0);
+  const statsByRegion = new Map(stats.map((item) => [item.region, item]));
+  const displayRows = rows.map((row) => {
+    const boxStats = statsByRegion.get(row.neighbourhood_group_cleansed);
+    const value = row.review_scores_rating;
+    return {
+      ...row,
+      isOutlier: Boolean(boxStats && Number.isFinite(value) && (value < boxStats.lower || value > boxStats.upper)),
+    };
+  });
 
   drawFrame(svg);
   const margin = { top: 30, right: 34, bottom: 58, left: 64 };
@@ -416,30 +549,6 @@ function drawRatingBoxplot(svg, data, selection, onRegionToggle) {
     tickLabelLimit: 12,
   });
 
-  const points = svg
-    .append("g")
-    .selectAll("circle")
-    .data(rows)
-    .join("circle")
-    .attr("cx", (d) => x(d.neighbourhood_group_cleansed) + x.bandwidth() / 2)
-    .attr("cy", (d) => y(d.review_scores_rating))
-    .attr("r", 3.4)
-    .attr("fill", COLORS.blue)
-    .attr("fill-opacity", 0.6)
-    .attr("stroke", "#ffffff")
-    .attr("stroke-width", 0.5)
-    .style("opacity", (d) => (!selection.region || selection.region === d.neighbourhood_group_cleansed ? 1 : 0.18));
-
-  bindTooltip(points, (d) => ({
-    title: d.neighbourhood_cleansed || d.neighbourhood_group_cleansed,
-    lines: [
-      { label: "Borough", value: d.neighbourhood_group_cleansed ?? "Unknown" },
-      { label: "Rating", value: formatNumber(d.review_scores_rating, 2) },
-      { label: "Room type", value: d.room_type ?? "Unknown" },
-      { label: "Reviews", value: formatCount(d.number_of_reviews) },
-    ],
-  }));
-
   const boxGroups = svg
     .append("g")
     .selectAll("g")
@@ -450,17 +559,32 @@ function drawRatingBoxplot(svg, data, selection, onRegionToggle) {
     .style("opacity", (d) => (!selection.region || selection.region === d.region ? 1 : 0.25))
     .on("click", (_, d) => onRegionToggle?.(d.region));
 
+  bindTooltip(boxGroups, (d) => ({
+    title: d.region,
+    lines: [
+      { label: "Median", value: formatNumber(d.median, 2) },
+      { label: "Q1", value: formatNumber(d.q1, 2) },
+      { label: "Q3", value: formatNumber(d.q3, 2) },
+      { label: "Min", value: formatNumber(d.min, 2) },
+      { label: "Max", value: formatNumber(d.max, 2) },
+      { label: "Outliers", value: formatCount(d.outlierCount ?? 0) },
+      { label: "Listings", value: formatCount(d.count) },
+    ],
+  }));
+
   boxGroups
     .append("line")
+    .attr("class", "box-whisker")
     .attr("x1", x.bandwidth() / 2)
     .attr("x2", x.bandwidth() / 2)
     .attr("y1", (d) => y(d.lower))
     .attr("y2", (d) => y(d.upper))
-    .attr("stroke", COLORS.slate)
-    .attr("stroke-width", 1.2);
+    .attr("stroke", (d) => (selection.region === d.region ? COLORS.blue : COLORS.slate))
+    .attr("stroke-width", (d) => (selection.region === d.region ? 1.6 : 1.2));
 
   boxGroups
     .append("rect")
+    .attr("class", "box-iqr")
     .attr("x", x.bandwidth() * 0.24)
     .attr("y", (d) => y(d.q3))
     .attr("width", x.bandwidth() * 0.52)
@@ -468,17 +592,41 @@ function drawRatingBoxplot(svg, data, selection, onRegionToggle) {
     .attr("rx", 4)
     .attr("fill", "#94a3b8")
     .attr("fill-opacity", 0.35)
-    .attr("stroke", "#64748b")
-    .attr("stroke-width", 1);
+    .attr("stroke", (d) => (selection.region === d.region ? COLORS.blue : "#64748b"))
+    .attr("stroke-width", (d) => (selection.region === d.region ? 1.4 : 1));
 
   boxGroups
     .append("line")
+    .attr("class", "box-median")
     .attr("x1", x.bandwidth() * 0.24)
     .attr("x2", x.bandwidth() * 0.76)
     .attr("y1", (d) => y(d.median))
     .attr("y2", (d) => y(d.median))
-    .attr("stroke", COLORS.text)
-    .attr("stroke-width", 1.6);
+    .attr("stroke", (d) => (selection.region === d.region ? COLORS.blue : COLORS.text))
+    .attr("stroke-width", (d) => (selection.region === d.region ? 2 : 1.6));
+
+  const points = svg
+    .append("g")
+    .selectAll("circle")
+    .data(displayRows)
+    .join("circle")
+    .attr("cx", (d) => x(d.neighbourhood_group_cleansed) + x.bandwidth() / 2)
+    .attr("cy", (d) => y(d.review_scores_rating))
+    .attr("r", (d) => (d.isOutlier ? 4.2 : 3.2))
+    .attr("fill", (d) => (d.isOutlier ? COLORS.red : COLORS.blue))
+    .attr("fill-opacity", (d) => (d.isOutlier ? 0.9 : 0.45))
+    .attr("stroke", (d) => (d.isOutlier ? COLORS.red : "#ffffff"))
+    .attr("stroke-width", (d) => (d.isOutlier ? 0.8 : 0.5))
+    .style("opacity", (d) => (!selection.region || selection.region === d.neighbourhood_group_cleansed ? 1 : 0.18))
+    .style("pointer-events", "none");
+
+  bindTooltip(points, (d) => ({
+    title: d.neighbourhood_cleansed || d.neighbourhood_group_cleansed,
+    lines: [
+      { label: "Rating", value: formatNumber(d.review_scores_rating, 2) },
+      { label: "Outlier", value: d.isOutlier ? "Yes" : "No" },
+    ],
+  }));
 }
 
 function drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle) {
@@ -496,6 +644,15 @@ function drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle) {
       ...computeBoxStats(rows.filter((row) => row.neighbourhood_group_cleansed === region).map((row) => row.price)),
     }))
     .filter((item) => item.count > 0);
+  const statsByRegion = new Map(stats.map((item) => [item.region, item]));
+  const displayRows = rows.map((row) => {
+    const boxStats = statsByRegion.get(row.neighbourhood_group_cleansed);
+    const value = row.price;
+    return {
+      ...row,
+      isOutlier: Boolean(boxStats && Number.isFinite(value) && (value < boxStats.lower || value > boxStats.upper)),
+    };
+  });
 
   drawFrame(svg);
   const margin = { top: 30, right: 128, bottom: 58, left: 64 };
@@ -507,30 +664,6 @@ function drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle) {
     tickLabelLimit: 12,
   });
 
-  const points = svg
-    .append("g")
-    .selectAll("circle")
-    .data(rows)
-    .join("circle")
-    .attr("cx", (d) => x(d.neighbourhood_group_cleansed) + x.bandwidth() / 2 + (ROOM_TYPE_OFFSETS.get(d.room_type) ?? 0))
-    .attr("cy", (d) => y(d.price))
-    .attr("r", 3.6)
-    .attr("fill", (d) => ROOM_COLORS(d.room_type))
-    .attr("fill-opacity", 0.85)
-    .attr("stroke", "#ffffff")
-    .attr("stroke-width", 0.5)
-    .style("opacity", (d) => (!selection.region || selection.region === d.neighbourhood_group_cleansed ? 0.85 : 0.16));
-
-  bindTooltip(points, (d) => ({
-    title: d.neighbourhood_cleansed || d.neighbourhood_group_cleansed,
-    lines: [
-      { label: "Borough", value: d.neighbourhood_group_cleansed ?? "Unknown" },
-      { label: "Room type", value: d.room_type ?? "Unknown" },
-      { label: "Price", value: formatCurrency(d.price, 0) },
-      { label: "Reviews", value: formatCount(d.number_of_reviews) },
-    ],
-  }));
-
   const boxGroups = svg
     .append("g")
     .selectAll("g")
@@ -541,17 +674,32 @@ function drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle) {
     .style("opacity", (d) => (!selection.region || selection.region === d.region ? 1 : 0.25))
     .on("click", (_, d) => onRegionToggle?.(d.region));
 
+  bindTooltip(boxGroups, (d) => ({
+    title: d.region,
+    lines: [
+      { label: "Median", value: formatCurrency(d.median, 0) },
+      { label: "Q1", value: formatCurrency(d.q1, 0) },
+      { label: "Q3", value: formatCurrency(d.q3, 0) },
+      { label: "Min", value: formatCurrency(d.min, 0) },
+      { label: "Max", value: formatCurrency(d.max, 0) },
+      { label: "Outliers", value: formatCount(d.outlierCount ?? 0) },
+      { label: "Listings", value: formatCount(d.count) },
+    ],
+  }));
+
   boxGroups
     .append("line")
+    .attr("class", "box-whisker")
     .attr("x1", x.bandwidth() / 2)
     .attr("x2", x.bandwidth() / 2)
     .attr("y1", (d) => y(d.lower))
     .attr("y2", (d) => y(d.upper))
-    .attr("stroke", COLORS.slate)
-    .attr("stroke-width", 1.2);
+    .attr("stroke", (d) => (selection.region === d.region ? COLORS.blue : COLORS.slate))
+    .attr("stroke-width", (d) => (selection.region === d.region ? 1.6 : 1.2));
 
   boxGroups
     .append("rect")
+    .attr("class", "box-iqr")
     .attr("x", x.bandwidth() * 0.24)
     .attr("y", (d) => y(d.q3))
     .attr("width", x.bandwidth() * 0.52)
@@ -559,17 +707,41 @@ function drawPriceDistributionBoxplot(svg, data, selection, onRegionToggle) {
     .attr("rx", 4)
     .attr("fill", "#94a3b8")
     .attr("fill-opacity", 0.35)
-    .attr("stroke", "#64748b")
-    .attr("stroke-width", 1);
+    .attr("stroke", (d) => (selection.region === d.region ? COLORS.blue : "#64748b"))
+    .attr("stroke-width", (d) => (selection.region === d.region ? 1.4 : 1));
 
   boxGroups
     .append("line")
+    .attr("class", "box-median")
     .attr("x1", x.bandwidth() * 0.24)
     .attr("x2", x.bandwidth() * 0.76)
     .attr("y1", (d) => y(d.median))
     .attr("y2", (d) => y(d.median))
-    .attr("stroke", COLORS.text)
-    .attr("stroke-width", 1.6);
+    .attr("stroke", (d) => (selection.region === d.region ? COLORS.blue : COLORS.text))
+    .attr("stroke-width", (d) => (selection.region === d.region ? 2 : 1.6));
+
+  const points = svg
+    .append("g")
+    .selectAll("circle")
+    .data(displayRows)
+    .join("circle")
+    .attr("cx", (d) => x(d.neighbourhood_group_cleansed) + x.bandwidth() / 2 + (ROOM_TYPE_OFFSETS.get(d.room_type) ?? 0))
+    .attr("cy", (d) => y(d.price))
+    .attr("r", (d) => (d.isOutlier ? 4.2 : 3.2))
+    .attr("fill", (d) => (d.isOutlier ? COLORS.red : ROOM_COLORS(d.room_type)))
+    .attr("fill-opacity", (d) => (d.isOutlier ? 0.9 : 0.8))
+    .attr("stroke", (d) => (d.isOutlier ? COLORS.red : "#ffffff"))
+    .attr("stroke-width", (d) => (d.isOutlier ? 0.8 : 0.5))
+    .style("opacity", (d) => (!selection.region || selection.region === d.neighbourhood_group_cleansed ? 0.85 : 0.16))
+    .style("pointer-events", "none");
+
+  bindTooltip(points, (d) => ({
+    title: d.neighbourhood_cleansed || d.neighbourhood_group_cleansed,
+    lines: [
+      { label: "Price", value: formatCurrency(d.price, 0) },
+      { label: "Outlier", value: d.isOutlier ? "Yes" : "No" },
+    ],
+  }));
 
   drawColorLegend(svg, ROOM_COLORS.domain(), ROOM_COLORS, SIZE.width - 116, 34);
 }
@@ -686,6 +858,7 @@ function drawHostPerformanceBars(svg, metrics) {
     {
       key: "avgRating",
       label: "Avg. Review Scores Rating",
+      axisLabel: "Avg. Rating",
       yMax: 5,
       yFormat: (d) => formatNumber(d, 1),
       accessor: (row) => row.avgRating,
@@ -693,6 +866,7 @@ function drawHostPerformanceBars(svg, metrics) {
     {
       key: "occupancyShare",
       label: "Avg. Is Booked",
+      axisLabel: "Booked Share",
       yMax: d3.max(displayRows, (row) => row.occupancyShare) ?? 0.4,
       yFormat: (d) => formatNumber(d, 2),
       accessor: (row) => row.occupancyShare,
@@ -718,7 +892,7 @@ function drawHostPerformanceBars(svg, metrics) {
       .attr("text-anchor", "middle")
       .attr("fill", COLORS.muted)
       .attr("font-size", 10)
-      .text(panel.label);
+      .text(panel.axisLabel);
 
     const bars = svg
       .append("g")
@@ -1091,7 +1265,10 @@ function drawPolicyHeatmap(svg, metrics) {
   const y = d3.scaleBand().domain(groups).range([margin.top, SIZE.height - margin.bottom]).padding(0.08);
   const extent = d3.extent(rows, (row) => row.occupancyRate);
   const color = d3.scaleSequential(d3.interpolateYlGnBu).domain(extent);
-  drawHeatmapAxes(svg, x, y, margin, "Month", "Minimum nights", { xFormat: monthName });
+  drawHeatmapAxes(svg, x, y, margin, "Month", "Minimum nights", {
+    xFormat: monthName,
+    yLabelX: 24,
+  });
 
   const cells = svg
     .append("g")
@@ -1317,6 +1494,7 @@ function computeBoxStats(values) {
   const iqr = q3 - q1;
   const lower = d3.max([d3.min(sorted), q1 - 1.5 * iqr]);
   const upper = d3.min([d3.max(sorted), q3 + 1.5 * iqr]);
+  const outlierCount = sorted.filter((value) => value < lower || value > upper).length;
   return {
     count: sorted.length,
     q1,
@@ -1326,6 +1504,7 @@ function computeBoxStats(values) {
     upper,
     min: d3.min(sorted),
     max: d3.max(sorted),
+    outlierCount,
   };
 }
 
@@ -1436,10 +1615,27 @@ function drawXYAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = {}) {
     yAxis.tickFormat(options.yFormat);
   }
 
+  const plotMiddleX = margin.left + (SIZE.width - margin.left - margin.right) / 2;
+  const plotMiddleY = margin.top + (SIZE.height - margin.top - margin.bottom) / 2;
+  const yLabelX = Math.max(24, margin.left - 46);
+
   svg.append("g").attr("transform", `translate(0, ${SIZE.height - margin.bottom})`).call(xAxis).call(styleAxisText);
   svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(yAxis).call(styleAxisText);
-  svg.append("text").attr("x", SIZE.width - margin.right).attr("y", SIZE.height - 18).attr("text-anchor", "end").attr("fill", COLORS.muted).attr("font-size", 10).text(xLabel);
-  svg.append("text").attr("transform", `translate(20, ${margin.top + 8}) rotate(-90)`).attr("fill", COLORS.muted).attr("font-size", 10).text(yLabel);
+  svg
+    .append("text")
+    .attr("x", plotMiddleX)
+    .attr("y", SIZE.height - 18)
+    .attr("text-anchor", "middle")
+    .attr("fill", COLORS.muted)
+    .attr("font-size", 10)
+    .text(xLabel);
+  svg
+    .append("text")
+    .attr("transform", `translate(${yLabelX}, ${plotMiddleY}) rotate(-90)`)
+    .attr("text-anchor", "middle")
+    .attr("fill", COLORS.muted)
+    .attr("font-size", 10)
+    .text(yLabel);
 }
 
 function drawHeatmapAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = {}) {
@@ -1448,10 +1644,27 @@ function drawHeatmapAxes(svg, xScale, yScale, margin, xLabel, yLabel, options = 
     xAxis.tickFormat(options.xFormat);
   }
 
+  const plotMiddleX = margin.left + (SIZE.width - margin.left - margin.right) / 2;
+  const plotMiddleY = margin.top + (SIZE.height - margin.top - margin.bottom) / 2;
+  const yLabelX = options.yLabelX ?? 24;
+
   svg.append("g").attr("transform", `translate(0, ${SIZE.height - margin.bottom})`).call(xAxis).call(styleAxisText);
   svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(d3.axisLeft(yScale).tickSizeOuter(0)).call(styleAxisText);
-  svg.append("text").attr("x", SIZE.width - margin.right).attr("y", SIZE.height - 18).attr("text-anchor", "end").attr("fill", COLORS.muted).attr("font-size", 10).text(xLabel);
-  svg.append("text").attr("transform", `translate(20, ${margin.top + 8}) rotate(-90)`).attr("fill", COLORS.muted).attr("font-size", 10).text(yLabel);
+  svg
+    .append("text")
+    .attr("x", plotMiddleX)
+    .attr("y", SIZE.height - 18)
+    .attr("text-anchor", "middle")
+    .attr("fill", COLORS.muted)
+    .attr("font-size", 10)
+    .text(xLabel);
+  svg
+    .append("text")
+    .attr("transform", `translate(${yLabelX}, ${plotMiddleY}) rotate(-90)`)
+    .attr("text-anchor", "middle")
+    .attr("fill", COLORS.muted)
+    .attr("font-size", 10)
+    .text(yLabel);
 }
 
 function styleAxisText(group) {
