@@ -1,0 +1,165 @@
+\section{Domain Task 10: Trải nghiệm khách hàng thông qua Khai phá văn bản}
+
+Câu hỏi nghiệp vụ: Khách hàng thường đề cập đến những từ khóa nào nhất?
+Những yếu tố cốt lõi nào tạo nên sự hài lòng (Điểm cao) và yếu tố nào dẫn
+đến sự phàn nàn (Điểm thấp)?
+
+Mục đích: Ứng dụng Khai phá văn bản (NLP) để lượng hóa cảm xúc từ bình
+luận, giúp chủ nhà / nền tảng biết chính xác các điểm cần tối ưu.
+
+\subsection{Biểu đồ 1: Đám mây từ vựng trải nghiệm (Word Cloud)}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Word Cloud (Đám mây từ vựng) \\
+\hline
+What & Từ khóa (Keyword): C, Tần suất xuất hiện (Count): Q \\
+\hline
+Why & produce (derive) $\rightarrow$ explore $\rightarrow$ summarize \newline
+\newline
+- Dẫn xuất (derive): bóc tách văn bản loại bỏ stopwords để lấy ra các unigram/bigram (1--2 từ) có ý nghĩa. \newline
+\newline
+- Explore: Khám phá nhanh và tóm tắt (summarize) các chủ đề / ngữ cảnh lưu trú được thảo luận nhiều nhất. \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+- Mark: Text (Chữ viết) \newline
+\newline
+- Channel: \newline
+\newline
+\hspace{0.3cm} + Size (Kích thước chữ): Tỷ lệ thuận với tần suất đếm được. \newline
+\newline
+\hspace{0.3cm} + Color: Biểu diễn độ lớn của Tần suất (Q) (chữ càng đậm = xuất hiện càng nhiều). \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+- Filter: Áp dụng tập stopwords mở rộng để loại bỏ các từ vô nghĩa. \\
+\hline
+Scale & - Main key: Top các từ khóa xuất hiện nhiều nhất \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task10_chart1.png}
+    \caption{Hình 10.1. Biểu đồ đám mây từ vựng trải nghiệm của khách hàng}
+    \label{fig:domain-task10-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Keyword (C), Count (Q).
+    \item Channel: Sử dụng Mark là Text để trực tiếp hiển thị thuộc tính Keyword (C). Sử dụng Channel Kích thước (Size) và Channel Độ đậm nhạt (Color Luminance) để cùng biểu diễn độ lớn định lượng (Q).
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Kích thước (Size/Area): Thuộc tính định lượng (Tần suất xuất hiện -- Q) được gán vào Size. Theo Mackinlay, Area/Size là kênh yếu đối với dữ liệu (Q), nhưng trong đặc thù của Word Cloud, nó là yếu tố duy nhất tạo ra hiệu ứng nổi bật cho các từ khóa chính.
+        \item Ưu tiên 2 -- Độ đậm nhạt màu (Color Luminance): Vì kênh Size bị ảnh hưởng bởi độ dài của text (chữ dài trông to hơn chữ ngắn dù cùng tần suất), kênh Color Luminance được bổ sung để biểu diễn Tần suất (Q). Theo Mackinlay, Luminance tuy xếp hạng thấp cho (Q) nhưng ở đây nó hỗ trợ đắc lực cho kênh Size: Từ nào vừa to vừa đậm (như stay, clean, great) chắc chắn là từ phổ biến nhất.
+    \end{itemize}
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Kênh Area/Size có độ chính xác rất thấp. Mắt người có xu hướng ước lượng sai lệch diện tích của chữ cái, bị nhiễu bởi độ dài của từ (ví dụ chữ ``recommendation'' tự nhiên trông to hơn chữ ``nice'' dù cùng count). Log\_error rất lớn, không phù hợp để so sánh định lượng khắt khe.
+    \item Khả năng phân biệt (Discriminability): Biểu đồ có hiện tượng lộn xộn (clutter). Chỉ nổi bật được vài từ vựng lớn nhất ở trung tâm, các từ nhỏ xung quanh rất khó đọc và khó phân biệt cấp độ.
+    \item Khả năng tách biệt (Separability): Kênh vị trí (Pos) và kênh màu sắc (Color) tách biệt hoàn toàn. Việc các điểm nằm ở vị trí cao/thấp không làm ảnh hưởng đến khả năng nhận diện màu sắc của quận đó.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Nhìn tổng quan, trải nghiệm của khách hàng xoay quanh 3 trụ cột chính: Vị trí (location, subway, close), Không gian (clean, comfortable, apartment) và Chủ nhà (host, responsive, helpful).
+\end{itemize}
+
+\subsection{Biểu đồ 2: Yếu tố thúc đẩy sự hài lòng và phàn nàn (Diverging Bar Chart)}
+
+\subsubsection*{A. Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Diverging Bar Chart (Biểu đồ thanh phân kỳ) \\
+\hline
+What & Từ khóa thuộc Whitelist (Keyword): C, Nhóm đánh giá (Dominant Group): C, Độ lệch đặc trưng (Strength / Log-Odds Ratio): Q \\
+\hline
+Why & produce (derive) $\rightarrow$ locate $\rightarrow$ compare \newline
+\newline
+Derive: Tính toán chỉ số toán học Strength (Log-Odds Ratio) để đo lường mức độ đặc trưng của cụm từ thuộc về nhóm Điểm Cao hay Điểm Thấp (loại bỏ nhiễu do mất cân bằng dữ liệu lượng review). \newline
+\newline
+Xác định (locate) chính xác các yếu tố khiến khách ghét và yếu tố khiến khách khen để so sánh (compare) mức độ nghiêm trọng. \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+Mark: Line (bar mark) \newline
+\newline
+Channel: \newline
+\newline
+- PosX: Trục X phân kỳ ở giữa (0). Đâm sang phải (Dương) thể hiện sự Hài lòng. Đâm sang trái (Âm) thể hiện sự Phàn nàn. \newline
+\newline
+- PosY: Danh sách từ khóa. \newline
+\newline
+- Color: Phân biệt Nhóm Đánh giá (Xanh = Hài lòng, Cam = Phàn nàn). \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+- Filter: Áp dụng Whitelist để chỉ giữ lại các n-grams thực sự mang ý nghĩa Insight (loại bỏ tên riêng, địa danh). \newline
+\newline
+- Sort: Sắp xếp giảm dần theo chỉ số Strength trên trục Y. \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task10_chart2.png}
+    \caption{Hình 10.2. Biểu đồ yếu tố thúc đẩy sự hài lòng và phàn nàn}
+    \label{fig:domain-task10-chart2}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt:}
+
+\begin{itemize}
+    \item Thuộc tính: Keyword (C), Nhóm (C), Strength (Q).
+    \item Channel:
+    \begin{itemize}
+        \item PosX: Đâm về 2 hướng $\rightarrow$ Biểu đạt tính chất đối lập (Dương/Âm) của chỉ số Log-Odds.
+        \item PosY: Danh sách từ khóa.
+        \item Color: Xanh/Cam $\rightarrow$ Mang tính ngữ nghĩa cảm xúc rất chuẩn xác.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Chiều dài và Hướng (PosX / Length): Trọng tâm của biểu đồ là độ lệch Strength (Q). Theo Mackinlay, việc gán (Q) vào kênh Position/Length trên thang đo chung là lựa chọn số 1 về độ chính xác. Trục giữa (0) phân kỳ ra 2 bên làm tăng khả năng biểu đạt tính đối lập.
+        \item Ưu tiên 2 -- Màu sắc (Hue Color): Thuộc tính nhóm đánh giá (Hài lòng/Phàn nàn -- C) được gán cho kênh Hue. Phù hợp hoàn hảo với định luật Mackinlay cho dữ liệu Categorical, đồng thời mang ý nghĩa cảnh báo về mặt cảm xúc.
+        \item Ưu tiên 3 -- Vị trí dọc (PosY): Dùng để xếp hạng các từ khóa Keyword (C).
+    \end{itemize}
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả:}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Việc áp dụng thuật toán NLP (Log-Odds cơ số 2) thay vì đếm Count thông thường đã giải quyết triệt để sự chênh lệch giữa lượng review tốt và xấu. Chiều dài cột (Length) tuân thủ định luật Stevens ($n = 1.0$), cung cấp độ chính xác, Log\_error vô cùng thấp.
+    \item Khả năng phân biệt (Discriminability): Cực kỳ cao. Trục Diverging chẻ làm 2 phía trái/phải kết hợp màu Xanh (an toàn) và Cam (cảnh báo) giúp não bộ người xem phân loại rạch ròi vùng Khen và vùng Chê ngay lập tức mà không gặp trở ngại nào.
+    \item Khả năng tách biệt (Separability): Kênh PosX, PosY và Hue Color kết hợp đồng nhất, tách biệt hoàn hảo, tối ưu hóa quá trình nhận thức thị giác.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Yếu tố tạo sự Hài lòng (màu Xanh): Khách hàng bị chinh phục hoàn toàn bởi tính thẩm mỹ và vệ sinh tuyệt đối (các từ khóa đứng đầu là ``beautifully decorated'', ``immaculate'', ``gorgeous''). Các dịch vụ gia tăng như ``stocked kitchen'' hay ``warm welcome'' là chìa khóa giúp chủ nhà đạt điểm tuyệt đối.
+    \item Yếu tố gây Phàn nàn (màu Cam): Biểu đồ phơi bày các yếu tố khiến điểm số sụt giảm. Tiêu biểu nhất là các vấn đề chi phí ẩn (``hidden fees'', ``security deposit''). Kế đến là thái độ dịch vụ (``terrible experience'', ``unresponsive'', ``scam'', ``refused'') và tệ nhất là vấn đề môi trường phòng (``infestation'', ``smelly'', ``cigarette''). Khuyến nghị chủ nhà cần minh bạch về giá cả và khử mùi/côn trùng lập tức.
+\end{itemize}

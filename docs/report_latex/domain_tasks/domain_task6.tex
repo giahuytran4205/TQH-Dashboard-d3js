@@ -1,0 +1,191 @@
+\section{Domain Task 6: Phân tích bản đồ giá bất thường và giá trị thực}
+
+Câu hỏi: Listing nào có giá bất thường (outlier)? Listing nào có giá
+thấp nhưng đánh giá cao (good deal)?
+
+\subsection{Biểu đồ 1 -- Point Map: Phân bố listing theo giá bất thường}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Point Map (Geographic Scatter Map) \\
+\hline
+What & Longitude: Quantitative/Geographic (Key) \newline
+Latitude: Quantitative/Geographic (Key) \newline
+price\_is\_outlier (derived): Categorical (True/False) \newline
+Price: Quantitative \newline
+Room Type: Categorical \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+Mark: Point (Circle) \newline
+Channel: \newline
+\hspace{0.3cm} Pos X: Longitude (Geographic) \newline
+\hspace{0.3cm} Pos Y: Latitude (Geographic) \newline
+\hspace{0.3cm} Hue Color: price\_is\_outlier (Categorical -- đỏ=True, xanh=False) \newline
+\hspace{0.3cm} Size: Price (Quantitative -- điểm lớn = giá cao) \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+Selection: Hover để xem id, price, room\_type, neighbourhood, price\_is\_outlier \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+Giải pháp overplotting: giảm opacity điểm False (xanh) để outlier (đỏ) nổi bật; hoặc filter theo borough để zoom vào từng khu vực \\
+\hline
+Why & produce $\rightarrow$ locate $\rightarrow$ explore \newline
+Point Map là idiom duy nhất trả lời câu hỏi `ở đâu' --- không thể thay thế bằng bar chart hay Glyph cho phân tích spatial distribution. \\
+\hline
+Scale & Main key: $\sim$21,000 listings \newline
+Color: 2 (True/False outlier) \newline
+Value range (Price): 9 $\rightarrow$ 50138 \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task6_chart1.png}
+    \caption{Hình 6.1. Bản đồ phân bố listing theo giá bất thường tại NYC}
+    \label{fig:domain-task6-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Tính biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Kinh độ / Longitude (Q -- spatial), Vĩ độ / Latitude (Q -- spatial), Cờ giá bất thường / price\_is\_outlier (C), Giá niêm yết / Price (Q -- Size), Loại phòng / Room Type (C -- filter/Tooltip), Khu vực / Neighbourhood Cleansed (C -- Tooltip).
+    \item Channel:
+    \begin{itemize}
+        \item PosX (Longitude), PosY (Latitude): vị trí địa lý thực tế $\rightarrow$ phù hợp Quantitative/Geographic. Geographic position là cách duy nhất đúng để encode tọa độ không gian.
+        \item Hue Color: phân biệt nhị phân True/False outlier (C) $\rightarrow$ phù hợp. Chỉ 2 màu $\rightarrow$ discriminability tuyệt đối.
+        \item Size: thể hiện mức giá (Q) $\rightarrow$ phù hợp --- điểm lớn hơn = giá cao hơn, nhất quán với convention.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Vị trí không gian địa lý (PosX/PosY --- Longitude/Latitude): Geographic Position là kênh cốt lõi và quan trọng nhất trong bản đồ điểm. PosX/PosY mã hóa tọa độ địa lý thực tế (Quantitative/Geographic) của từng listing, đặt mỗi điểm vào đúng vị trí tương ứng trên bản đồ NYC. Theo Mackinlay, Geographic Position là ứng dụng đặc biệt của kênh Position --- vừa chính xác tuyệt đối về mặt không gian, vừa truyền tải ngữ cảnh địa lý mà không có kênh nào khác có thể thay thế được. Task chính của biểu đồ là locate (xác định vị trí), nên Geographic Position phải là kênh được ưu tiên số một.
+        \item Ưu tiên 2 -- Màu sắc (Color Hue): Color Hue mã hóa Price Is Outlier (Categorical --- True/False) bằng hai màu tương phản (đỏ/xanh). Đây là kênh phù hợp nhất cho thuộc tính danh mục nhị phân theo lý thuyết Mackinlay. Chỉ cần 2 màu giúp discriminability đạt mức tuyệt đối --- người xem phân biệt outlier và non-outlier ngay tức thì mà không cần đọc legend. Màu đỏ nổi bật trên nền bản đồ trắng xám, tăng cường khả năng phát hiện nhanh các vùng tập trung listing bất thường theo không gian địa lý.
+        \item Ưu tiên 3 -- Kích thước điểm (Size / Area): Size mã hóa Price (Quantitative) theo diện tích điểm tròn --- điểm lớn hơn tương ứng với giá cao hơn. Theo Mackinlay, Area là kênh kém chính xác hơn cho dữ liệu định lượng so với Position hay Length (hệ số Stevens $n \approx 0.7$, Log\_error cao hơn), nhưng phù hợp với mục tiêu của biểu đồ này: task là locate, không phải so sánh chính xác giá trị. Thêm vào đó, outlier thường có giá cao nên đồng thời có Size lớn --- hiệu ứng kép giúp listing bất thường nổi bật gấp đôi so với phần còn lại ngay cả trong vùng dày đặc điểm như Manhattan.
+    \end{itemize}
+    \item Kết luận: Point Map là idiom tối ưu để phân tích dữ liệu có thành phần địa lý.
+\end{itemize}
+
+\textbf{2. Tính hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): PosX, PosY (geographic position) có độ chính xác tuyệt đối về không gian. Kênh Size (Area) xếp thấp trong channel effectiveness ranking --- khó ước lượng chênh lệch giá chính xác. Trade-off chấp nhận được vì mục tiêu là Locate, không phải Compare.
+    \item Khả năng phân biệt (Discriminability): 2 màu nhị phân (đỏ/xanh) rất dễ phân biệt. Với $\sim$21k điểm, các vùng dày đặc bị overlap nghiêm trọng. Giải pháp: giảm opacity điểm False (xanh), hoặc áp dụng filter theo borough.
+    \item Khả năng tách biệt (Separability): PosX/PosY và Color tách biệt tốt. Size và Color có thể tương tác nhẹ khi điểm lớn che điểm nhỏ.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Outlier giá cao (điểm đỏ lớn) tập trung dày đặc ở Manhattan --- đặc biệt Midtown và Upper East Side, khẳng định Manhattan là thị trường giá cao và biến động nhất.
+    \item Bronx và Staten Island hầu như không có điểm đỏ --- thị trường giá bình ổn, an toàn hơn cho du khách về khả năng dự đoán giá.
+    \item Brooklyn có một số outlier tập trung ở Brooklyn Heights, DUMBO --- nơi host định giá cao hơn mức phổ thông do view đẹp và gần Manhattan.
+    \item Khuyến nghị: Du khách nên kết hợp với Task 5 để chọn borough; tránh listing Manhattan không có nhiều reviews và có giá bất thường cao.
+\end{itemize}
+
+\subsection{Biểu đồ 2 -- Scatter Plot: Giá vs Rating --- Phát hiện Good Deal}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Scatter Plot \\
+\hline
+What & Price: Quantitative (Key trục X) \newline
+review\_scores\_rating: Quantitative (Key trục Y) \newline
+good\_deal\_flag (derived): Categorical (Good Deal / Normal) \newline
+number\_of\_reviews: Quantitative (Size -- proxy độ tin cậy) \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+Mark: Point (Circle) \newline
+Channel: \newline
+\hspace{0.3cm} Pos X: Price (Quantitative) \newline
+\hspace{0.3cm} Pos Y: review\_scores\_rating (Quantitative) \newline
+\hspace{0.3cm} Hue Color: good\_deal\_flag (Categorical -- xanh=Good Deal, xám=Normal) \newline
+\hspace{0.3cm} Size: number\_of\_reviews (Quantitative) \newline
+Reference Lines: \newline
+\hspace{0.3cm} Dọc (trục X): MEDIAN(price) -- phân cách giá cao/thấp \newline
+\hspace{0.3cm} Ngang (trục Y): Constant = 4.8 -- ngưỡng Good Deal Flag \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+Hover để xem giá, rating, room\_type, neighbourhood, number\_of\_reviews \newline
+\newline
+\textbf{Facet:} \newline
+\newline
+Superimpose: Reference Lines đặt lên scatter plot \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+Filter: number\_of\_reviews $\geq$ 5 (loại listing ít đánh giá, không đủ tin cậy) \\
+\hline
+Why & produce $\rightarrow$ discover $\rightarrow$ compare \newline
+Scatter plot tối ưu cho phân tích 2Q correlation. 4 góc phần tư từ reference lines giúp nhận diện Good Deal (góc trên trái: price $<$ median VÀ rating $\geq$ 4.8). \\
+\hline
+Scale & Color: 2 (Good Deal / Normal) \newline
+Items: listing với $\geq$ 5 reviews, price\_is\_outlier = False \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task6_chart2.png}
+    \caption{Hình 6.2. Scatter plot giá niêm yết vs. điểm đánh giá --- phát hiện Good Deal}
+    \label{fig:domain-task6-chart2}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Tính biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Giá niêm yết / Price (Q), Điểm đánh giá / Review Scores Rating (Q), Cờ ``Món hời'' / Good Deal Flag (C), Số lượng đánh giá / Number of Reviews (Q -- Size), Median Price (Q -- Reference Line dọc), Ngưỡng Rating 4.8 (Q -- Reference Line ngang), price\_is\_outlier (C -- filter), Number of Reviews $\geq$ 5 (Q -- filter).
+    \item Channel:
+    \begin{itemize}
+        \item PosX (Price -- Q): vị trí ngang thể hiện giá $\rightarrow$ đúng.
+        \item PosY (Rating -- Q): vị trí dọc thể hiện chất lượng $\rightarrow$ đúng. Rating cao hơn = vị trí cao hơn nhất quán với convention `up = good'.
+        \item Hue Color: phân biệt Good Deal / Normal (C) $\rightarrow$ đúng. Chỉ 2 giá trị, discriminability tuyệt đối.
+        \item Size: thể hiện Number of Reviews (Q) $\rightarrow$ đúng. Size phù hợp cho Q thứ cấp (proxy trust level).
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Vị trí hai trục (PosX và PosY): PosX/PosY là cặp kênh quan trọng nhất trong scatter plot. PosX mã hóa Price (Quantitative) và PosY mã hóa Review Scores Rating (Quantitative) --- cả hai đều là dữ liệu định lượng liên tục. Theo Mackinlay, Position on a common scale là kênh hiệu quả nhất cho dữ liệu định lượng, cho phép người xem nhận biết chính xác vị trí từng listing theo hai chiều, đồng thời suy luận về mối quan hệ (hoặc sự vắng mặt của tương quan) giữa giá và rating. Reference lines (median giá dọc, average rating ngang) được superimpose lên hai trục này để tạo framework bốn góc phần tư --- phục vụ trực tiếp task discover và compare của biểu đồ.
+        \item Ưu tiên 2 -- Màu sắc (Color Hue): Color Hue mã hóa Good Deal Flag (Categorical --- Good Deal / Normal) bằng hai màu tương phản (xanh lá / xám). Theo Mackinlay, Color Hue là kênh phù hợp nhất cho dữ liệu danh mục nhị phân. Màu xanh lá nổi bật trên nền xám giúp người xem lập tức xác định vùng ``Good Deal'' trong không gian scatter plot --- phục vụ trực tiếp task discover (phát hiện cơ hội). Kênh này hoạt động song song với reference lines: PosX/PosY xác định vị trí, Color Hue xác nhận nhãn --- cả hai cùng nhau tạo ra thông điệp rõ ràng mà không cần người xem tự tính toán.
+        \item Ưu tiên 3 -- Kích thước điểm (Size / Area): Size mã hóa Number of Reviews (Quantitative) --- listing có nhiều review tương ứng với điểm lớn hơn. Theo Mackinlay, Area không phải kênh mạnh nhất cho dữ liệu định lượng về độ chính xác, nhưng đây là kênh phụ với mục tiêu encode độ tin cậy (trust level) thay vì giá trị chính xác: người xem không cần biết số review cụ thể, chỉ cần nhận biết listing nào ``đã được nhiều người kiểm chứng'' để củng cố độ tin tưởng vào Good Deal được phát hiện.
+    \end{itemize}
+    \item Kết luận: Scatter plot là idiom tối ưu để phân tích mối quan hệ giữa 2 biến định lượng với phân nhóm categorical.
+\end{itemize}
+
+\textbf{2. Tính hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): PosX và PosY (position on common scale) --- channel chính xác nhất. Kênh Size (Area) --- accuracy thấp hơn, khó so sánh chính xác số reviews; đây là channel phụ nên chấp nhận được.
+    \item Khả năng phân biệt (Discriminability): 2 màu (xanh/xám) rất dễ phân biệt. Reference lines tạo 4 góc phần tư rõ ràng, giúp người xem định vị ngay vùng `good deal' (góc trên-trái). Overplotting tại rating 4.8--5.0 là hạn chế --- có thể cải thiện bằng jitter hoặc transparency.
+    \item Khả năng tách biệt (Separability): PosX, PosY, Color và Size tách biệt tốt.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Vùng góc trên-trái (price $<$ median, rating $\geq$ 4.8) là vùng `Good Deal' --- tập trung nhiều điểm xanh, chủ yếu thuộc Brooklyn và Queens.
+    \item Manhattan có nhiều listing ở phần bên phải chart (giá cao) với rating không tương xứng --- không phải lựa chọn tối ưu về cost-efficiency.
+    \item Listing `Good Deal' có Size lớn (nhiều reviews) là những nơi đã được kiểm chứng bởi nhiều khách --- độ tin cậy cao.
+    \item Quan trọng: Không có tương quan dương rõ ràng giữa giá cao và rating cao --- nhiều listing Brooklyn/Queens giá thấp vẫn đạt rating 4.7--5.0, chứng minh giá không phải là proxy của chất lượng trên Airbnb.
+    \item Khuyến nghị: Ưu tiên listing trong vùng `Good Deal' tại Brooklyn/Queens với number\_of\_reviews $\geq$ 20--30.
+\end{itemize}

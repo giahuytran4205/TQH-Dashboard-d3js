@@ -1,0 +1,94 @@
+\documentclass[12pt,a4paper]{article}
+
+% Font and Vietnamese language support
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setotherlanguage{english}
+\setmainfont{Times New Roman}
+
+% Page layout
+\usepackage{geometry}
+\geometry{a4paper, left=3cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% Graphics
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{images/}}
+
+% Tables
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% Captions
+\usepackage{caption}
+
+% Colors and hyperlinks
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% Lists
+\usepackage{enumitem}
+
+% Math
+\usepackage{amsmath}
+
+% Safe image inclusion — shows a placeholder box if the file does not exist
+\newcommand{\safeincludegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \fbox{\parbox{0.85\linewidth}{\centering\small Missing image: \nolinkurl{#2}}}%
+  }%
+}
+
+\title{\textbf{Báo cáo Phân tích Trực quan hóa Dữ liệu\\[6pt]Airbnb New York City}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\input{domain_tasks/domain_task1}
+\newpage
+
+\input{domain_tasks/domain_task2}
+\newpage
+
+\input{domain_tasks/domain_task3}
+\newpage
+
+\input{domain_tasks/domain_task4}
+\newpage
+
+\input{domain_tasks/domain_task5}
+\newpage
+
+\input{domain_tasks/domain_task6}
+\newpage
+
+\input{domain_tasks/domain_task7}
+\newpage
+
+\input{domain_tasks/domain_task8}
+\newpage
+
+\input{domain_tasks/domain_task9}
+\newpage
+
+\input{domain_tasks/domain_task10}
+
+\end{document}

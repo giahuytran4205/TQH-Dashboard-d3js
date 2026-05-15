@@ -1,0 +1,209 @@
+\section{Domain Task 1: Phân tích Thị trường và Phân bố không gian}
+
+Câu hỏi nghiệp vụ: ``Khu vực nào tại New York đang có mức giá cho thuê
+cao nhất/thấp nhất, và cơ cấu loại phòng ở từng quận phân bố như thế nào?''
+
+Mục đích: Giúp hiểu rõ bức tranh giá cả và cấu trúc nguồn cung theo từng
+vùng địa lý để định vị phân khúc thị trường.
+
+\subsection{Biểu đồ 1: Bản đồ phân bố giá trung bình theo khu vực (Choropleth Map)}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Choropleth Map (Bản đồ phân bố sắc độ) \\
+\hline
+What & Tọa độ (Longitude/Latitude): Q, Khu vực (Neighbourhood): C, Giá trung bình (AVG Price): Q, Nhãn ngoại lệ (Price Is Outlier): C \\
+\hline
+Why & produce (derive) $\rightarrow$ explore $\rightarrow$ locate $\rightarrow$ summarize, compare \newline
+\newline
+- Tạo ra (derive) giá trị trung bình của từng khu vực để so sánh. \newline
+\newline
+- Khám phá (Explore) bức tranh tổng quan về phân bố giá thuê trên toàn bộ không gian địa lý của 5 quận New York. \newline
+\newline
+- Xác định vị trí (Locate) các cụm khu vực đắt đỏ nhất hoặc bình dân nhất. \newline
+\newline
+- Tóm tắt (Summarize) và so sánh (Compare) mức chênh lệch giá trị bất động sản/lưu trú giữa vùng trung tâm và vùng lân cận. \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+- Mark: Area (vùng bản đồ) \newline
+\newline
+- Channel: \newline
+\newline
+\hspace{0.3cm} + PosX, PosY: Vị trí địa lý (Kinh độ, Vĩ độ) thực tế. \newline
+\newline
+\hspace{0.3cm} + Color (Luminance/Độ sáng tối -- Sequential Blue): Biểu diễn độ lớn của giá trung bình (đậm = giá cao, nhạt = giá thấp). \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+- Navigate: Tích hợp tính năng Zoom/Pan giúp người dùng tự do phóng to, và di chuyển trên bản đồ để quan sát vi mô các phường nhỏ nằm sát nhau. \newline
+\newline
+- Select: Cung cấp Tooltip để người dùng Hover chuột vào từng phân khu để xem chi tiết tên khu vực và con số AVG Price chính xác. \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+- Filter: Sử dụng bộ lọc Price Is Outlier (True/False/All) để kiểm soát việc hiển thị. Có thể chọn ``False'' để loại bỏ các căn siêu sang, giúp màu sắc bản đồ phản ánh đúng mức giá đại trà của thị trường. \\
+\hline
+Scale & - Main key: Tọa độ không gian giới hạn trong khu vực NYC (hàng trăm phường/neighbourhoods). \newline
+\newline
+- Color Range: Dải màu liên tục (Continuous) biểu diễn giá trị từ \$126.5 đến \$830.6. \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task1_chart1.png}
+    \caption{Hình 1.1. Biểu đồ phân bố giá trung bình theo khu vực}
+    \label{fig:domain-task1-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Vị trí địa lý (Q), Khu vực (C), Giá trung bình (Q).
+    \item Channel:
+    \begin{itemize}
+        \item PosX, PosY: định vị tọa độ địa lý $\rightarrow$ dùng cho thuộc tính không gian (Q).
+        \item Color (Luminance -- độ đậm nhạt): thể hiện độ lớn của giá trị định lượng $\rightarrow$ dùng cho thuộc tính AVG Price (Q).
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Vị trí không gian (PosX, PosY): Trong bản đồ, yếu tố cốt lõi nhất là định vị chính xác khu vực. Theo Mackinlay, kênh Vị trí (Position) là kênh mạnh nhất cho mọi loại dữ liệu. Việc gán tọa độ (Q) vào PosX/PosY đảm bảo tính chính xác tuyệt đối của ranh giới địa lý.
+        \item Ưu tiên 2 -- Màu sắc (Color Luminance): Giá trị trung bình (Q) là thuộc tính quan trọng thứ hai. Do kênh Vị trí đã bị chiếm dụng cho tọa độ, thuộc tính này buộc phải sử dụng kênh Color Luminance (Độ sáng tối). Theo thang đo Mackinlay cho dữ liệu định lượng (Q), Color Luminance xếp hạng khá thấp, nhưng nó lại cực kỳ phù hợp cho mục đích Discover (nhìn ra bức tranh vĩ mô, xu hướng) thay vì so sánh con số tuyệt đối.
+    \end{itemize}
+    \item Kết luận: Dùng hoàn toàn chuẩn xác các kênh biểu đạt. Cấu trúc bản đồ tôn trọng tuyệt đối tính không gian thực tế của dữ liệu.
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy):
+    \begin{itemize}
+        \item Kênh vị trí (PosX, PosY) có độ chính xác tuyệt đối theo dữ liệu địa lý.
+        \item Tuy nhiên, kênh độ sáng màu (Color Luminance) biểu diễn dữ liệu định lượng (AVG Price) tuân theo định luật Stevens' Psychophysical law có sự sai lệch cảm nhận khá lớn, độ lỗi Log\_error rơi vào khoảng T9 $\leq 2.5$. Mắt người chỉ nhận biết được vùng nào đắt hơn (đậm hơn) dưới dạng thứ tự (Ordinal), chứ khó cảm nhận được lượng chênh lệch cụ thể là bao nhiêu USD. Thao tác Manipulate (Hover xem Tooltip) đã được thiết lập để bù đắp hoàn toàn nhược điểm này.
+    \end{itemize}
+    \item Khả năng phân biệt (Discriminability):
+    \begin{itemize}
+        \item Các khu vực (mark area) được chia theo đường ranh giới rõ ràng. Dải màu chuyển sắc (Sequential Blue) từ nhạt sang đậm có thể phân biệt được khoảng 5--7 cấp độ màu. Với các vùng liền kề có mức giá xấp xỉ nhau, màu sắc sẽ có xu hướng hòa vào nhau tạo thành các ``cụm khu vực đắt đỏ'' (ví dụ: cụm Manhattan bôi đậm), giúp mắt người nhìn ra xu hướng thay vì bị phân tâm bởi từng điểm nhỏ.
+    \end{itemize}
+    \item Khả năng tách biệt (Separability):
+    \begin{itemize}
+        \item Kênh vị trí (Pos) và kênh màu sắc (Color) tách biệt tốt, không bị can thiệp lẫn nhau. Vùng diện tích địa lý lớn hay nhỏ không làm sai lệch quá nhiều màu sắc tổng thể của vùng đó. Thao tác Reduce (Filter Price Is Outlier) giúp loại bỏ các giá trị nhiễu, giữ cho dải màu không bị bóp méo bởi một vài căn hộ giá hàng chục ngàn đô.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Biểu đồ 2: Phân bố loại phòng cho thuê ở từng quận (100\% Stacked Bar Chart)}
+
+\subsubsection*{A. Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & 100\% Stacked Bar Chart \\
+\hline
+What & Quận (Neighbourhood Group): C, Loại phòng (Room Type): C, Tỷ trọng đóng góp (\% of count): Q \\
+\hline
+Why & Produce $\rightarrow$ Compare $\rightarrow$ Discover \newline
+\newline
+- Tính toán (produce) tỉ lệ phần trăm (\%) đóng góp của từng loại phòng theo từng quận. \newline
+\newline
+- So sánh cơ cấu nguồn cung giữa các quận, so sánh giữa các loại phòng và biết được mỗi loại phòng chiếm tỷ trọng bao nhiêu phần trăm trong tổng số listing của khu vực đó. \newline
+\newline
+- Khám phá (Discover) ra đặc trưng phân khúc thị trường của từng quận (ví dụ: khu vực nào chuyên phục vụ khách thuê nguyên căn, khu vực nào tập trung phòng chia sẻ giá rẻ). \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+- Mark: Area (Bar Chart) \newline
+\newline
+- Glyph: Sub-bars xếp chồng lên mức 100\% \newline
+\newline
+- Channel: \newline
+\newline
+\hspace{0.3cm} + PosX: Phân biệt các quận. \newline
+\newline
+\hspace{0.3cm} + PosY: So sánh tỷ trọng (0\% -- 100\%). \newline
+\newline
+\hspace{0.3cm} + Hue Color: Phân biệt 4 loại phòng. \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+- Change alignment + Selection: Chọn một loại phòng (thông qua Parameter) để đưa sub-bar tương ứng xuống dưới cùng (trục 0\%) giúp tạo đường cơ sở chung dễ so sánh. Hover để xem chi tiết \%. \newline
+\newline
+- Highlight: Chọn trên Legend để làm nổi bật một loại phòng cụ thể. \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+- Sort: Sắp xếp các quận trên trục X giảm dần theo tỷ trọng của loại phòng chiếm ưu thế (Entire home/apt). \\
+\hline
+Scale & - Main key: 5 (Năm quận của NYC) \newline
+\newline
+- Stacked key: 4 (Các loại phòng: Entire home, Private room, Shared room, Hotel room) \newline
+\newline
+- Y-axis range: 0\% $\rightarrow$ 100\% \newline
+\newline
+- Color scale: 4 màu sắc rời rạc \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task1_chart2.png}
+    \caption{Hình 1.2. Biểu đồ phân bố loại phòng theo từng quận}
+    \label{fig:domain-task1-chart2}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt:}
+
+\begin{itemize}
+    \item Thuộc tính: Quận (C), Loại phòng (C), Tỷ trọng (Q).
+    \item Channel:
+    \begin{itemize}
+        \item PosX: sắp xếp các quận $\rightarrow$ cho thuộc tính C.
+        \item PosY: thể hiện độ dài của tỷ lệ \% $\rightarrow$ cho thuộc tính Q.
+        \item Color (Hue): phân biệt các loại phòng $\rightarrow$ cho thuộc tính C.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng: PosY (1), PosX (2), Color (3). Dùng chuẩn xác các kênh biểu đạt.
+    \item Đánh giá mức độ quan trọng và phân bổ kênh theo Mackinlay:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Chiều dài (Length / PosY): Thuộc tính quan trọng nhất cần so sánh là Tỷ trọng phần trăm (Q). Theo thang đo của Mackinlay đối với dữ liệu Quantitative, Position/Length là kênh có độ chính xác cao nhất. Việc dùng PosY để mã hóa tỷ trọng giúp mắt người so sánh cực kỳ chuẩn xác.
+        \item Ưu tiên 2 -- Vị trí trục hoành (PosX): Thuộc tính phân rã chính là Quận (C). Kênh Vị trí (Position) cũng là kênh số 1 để phân tách các danh mục (Categorical), giúp tách biệt rõ ràng 5 cột của 5 quận.
+        \item Ưu tiên 3 -- Màu sắc (Color Hue): Thuộc tính phân rã phụ là Loại phòng (C). Theo Mackinlay, đối với dữ liệu Categorical, Color Hue (Sắc độ màu) là kênh hiệu quả thứ 2 ngay sau Position. Việc dùng 4 màu khác biệt mã hóa 4 loại phòng giúp nhận diện dễ dàng mà không làm rối cấu trúc cột.
+    \end{itemize}
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả:}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy):
+    \begin{itemize}
+        \item PosY biểu diễn thông qua chiều dài (Length) chung một trục chuẩn từ 0. Theo định luật Stevens, Length có $n = 1.0$, do đó mắt người cảm nhận cực kỳ chính xác. Độ lỗi Log\_error rất thấp.
+        \item Lưu ý: Các khối màu nằm ở giữa (không bám vào trục 0 hay 100\%) sẽ bị giảm đi sự chính xác một chút khi so sánh chéo giữa các quận (do không chung gốc).
+    \end{itemize}
+    \item Khả năng phân biệt (Discriminability): Biểu đồ sử dụng 4 màu (Categorical) cho 4 loại phòng. Nhận thức màu hoàn toàn không bị ảnh hưởng vì số lượng màu $< 7$. Rất dễ để nhìn ra 4 phần trong mỗi cột.
+    \item Khả năng tách biệt (Separability):
+    \begin{itemize}
+        \item Kênh chiều dài (Length) và kênh màu (Color) tách biệt hoàn toàn, có thể vừa nhìn độ dài vừa nhận diện màu mà không bị nhiễu.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Cấu trúc nguồn cung khác biệt rất lớn theo quận: Manhattan có tỷ trọng ``Entire home/apt'' cao nhất (vượt $60\%$), tập trung vào khách có nhu cầu thuê nguyên căn.
+    \item Trong khi đó, các quận như Queens, Bronx và Brooklyn có ``Private room'' chiếm tỷ trọng lớn nhất (từ $50\%$ trở lên), phù hợp với phân khúc phòng chia sẻ giá rẻ.
+\end{itemize}

@@ -1,0 +1,184 @@
+\section{Domain Task 7: Phân tích hiệu quả chi phí lưu trú}
+
+Câu hỏi: Borough và loại phòng nào có chi phí mỗi người thấp nhất? Sức
+chứa tác động thế nào đến giá/người?
+
+\subsection{Biểu đồ 1 -- Grouped Bar Chart: Median chi phí mỗi người theo borough và loại phòng}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Grouped Bar Chart \\
+\hline
+What & Borough: Categorical (Key nhóm chính) \newline
+Room Type: Categorical (Key nhóm phụ) \newline
+price\_per\_person (derived): Quantitative (price / accommodates) \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+Mark: Bar (grouped -- Stack Marks OFF) \newline
+Channel: \newline
+\hspace{0.3cm} Pos X: Borough $\times$ Room Type (Categorical -- tạo cụm cột cạnh nhau) \newline
+\hspace{0.3cm} Pos Y: MEDIAN(price\_per\_person) (Quantitative -- length) \newline
+\hspace{0.3cm} Hue Color: Room Type (Categorical -- 4 màu) \newline
+\hspace{0.3cm} Label: giá trị median ở đầu mỗi cột \newline
+Note: Analysis $\rightarrow$ Stack Marks $\rightarrow$ Off (bắt buộc để tạo Grouped, không phải Stacked) \newline
+\newline
+\textbf{Selection:} \newline
+\newline
+Hover để xem median price/person theo từng borough $\times$ room type \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+Filter: price\_is\_outlier = False \newline
+Aggregate: MEDIAN(price\_per\_person) theo borough $\times$ room type \\
+\hline
+Why & compare $\rightarrow$ summarize \newline
+So sánh chi phí/người theo 2 chiều categorical đồng thời (borough $\times$ room type). Grouped bar (không phải Stacked) vì task là Compare giá trị tuyệt đối, không phải part-to-whole. \\
+\hline
+Scale & Main key: 5 borough $\times$ 4 room type = 20 cột \newline
+Items: $\sim$21,000 listing (sau lọc) \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task7_chart1.png}
+    \caption{Hình 7.1. Grouped bar chart median giá/người theo borough và loại phòng}
+    \label{fig:domain-task7-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Quận / Borough -- neighbourhood\_group\_cleansed (C -- Panel Facet), Loại phòng / Room Type (C), Chi phí mỗi người / Price Per Person -- price\_per\_person (Q -- MEDIAN aggregate), price\_is\_outlier (C -- filter).
+    \item Channel:
+    \begin{itemize}
+        \item PosX: phân biệt borough (C) $\rightarrow$ đúng.
+        \item PosY (Length từ 0): thể hiện MEDIAN price/person (Q) $\rightarrow$ đúng. Length là channel chính xác nhất cho Q.
+        \item Hue Color: phân biệt room type (C) trong grouped bar $\rightarrow$ đúng.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Chiều dài cột (Length / PosY): Length là kênh quan trọng nhất trong grouped bar chart. Kênh này mã hóa MEDIAN price\_per\_person (Quantitative) từ baseline = 0, phản ánh hiệu quả chi phí thực tế của từng tổ hợp borough $\times$ room type. Theo Mackinlay, Length là kênh hiệu quả cao cho dữ liệu định lượng với baseline cố định, cho phép so sánh độ lớn tương đối giữa các cột nhanh chóng và trực quan. Label số trên đầu cột loại bỏ hoàn toàn sai số cảm nhận thị giác, tăng độ chính xác lên mức tuyệt đối --- quan trọng vì task của biểu đồ là compare (so sánh chi phí theo đầu người giữa nhiều nhóm cùng lúc).
+        \item Ưu tiên 2 -- Vị trí ngang (PosX): PosX phân tách 5 borough theo chiều ngang, mã hóa thuộc tính Borough (Categorical/Nominal) theo không gian. Đây là kênh quan trọng thứ hai vì nó tạo ra cấu trúc nhóm chính của biểu đồ: người xem điều hướng theo borough (vị trí ngang) trước, sau đó so sánh room type trong nội bộ borough (màu sắc). Thứ tự borough theo vị trí ngang giúp định vị dễ dàng và phản ánh cấu trúc thị trường NYC quen thuộc.
+        \item Ưu tiên 3 -- Màu sắc (Color Hue): Color Hue mã hóa Room Type (Categorical/Nominal), xác định cấu trúc grouped bên trong mỗi borough. Theo Mackinlay, Color Hue phù hợp cho dữ liệu danh mục, đặc biệt khi cần phân biệt các nhóm nhỏ trong cùng một vị trí ngang. Kênh này cho phép biểu đồ truyền tải đồng thời hai chiều so sánh: liên borough (theo PosX) và liên room type (theo Color Hue) trong một view duy nhất --- đây là lợi thế đặc trưng của grouped bar chart so với faceting riêng biệt.
+    \end{itemize}
+    \item Kết luận: Grouped Bar Chart là lựa chọn đúng đắn khi cần so sánh đồng thời theo 2 chiều categorical.
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Length (từ gốc 0) --- channel có độ chính xác cao. Label số trên đầu cột loại bỏ sai số cảm nhận hoàn toàn.
+    \item Khả năng phân biệt (Discriminability): 4 màu trong phạm vi $\leq$ 7 $\rightarrow$ phân biệt tốt. Grouped layout rõ ràng hơn stacked bar.
+    \item Khả năng tách biệt (Separability): PosX, PosY và Color hoạt động độc lập tốt.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Entire home/apt có price/person cao nhất nhìn chung --- nhưng khi chia theo nhiều người (4--6 người), đây vẫn cạnh tranh với Private room ở Manhattan.
+    \item Bronx và Staten Island có price/person thấp nhất trong mọi room type --- lựa chọn tối ưu cho nhóm khách ngân sách thấp.
+    \item Private room và Shared room luôn có price/person thấp hơn Entire home --- phù hợp cho khách solo hoặc đôi.
+    \item Khuyến nghị: Nhóm 4--6 người nên so sánh Entire home/apt ở Queens/Bronx với Private room ở Brooklyn --- kết hợp với Task 7.2 để xác định crossover point.
+\end{itemize}
+
+\subsection{Biểu đồ 2 -- Scatter Plot: Sức chứa vs Chi phí mỗi người}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Scatter Plot với Trend Line \\
+\hline
+What & accommodates: Quantitative (Key trục X -- sức chứa 1--16) \newline
+price\_per\_person (derived): Quantitative (Value trục Y) \newline
+Room Type: Categorical (Color) \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+Mark: Point (Circle) \newline
+Channel: \newline
+\hspace{0.3cm} Pos X: accommodates (Quantitative -- giữ từng giá trị riêng 1--16) \newline
+\hspace{0.3cm} Pos Y: MEDIAN(price\_per\_person) (Quantitative) \newline
+\hspace{0.3cm} Hue Color: Room Type (Categorical -- 4 màu) \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+Selection: Hover để xem accommodates, median price/person, room\_type, count \newline
+\newline
+\textbf{Facet:} \newline
+\newline
+Superimpose: Trend Line (Linear) cho từng room type \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+Filter: accommodates $\leq$ 16, price\_is\_outlier = False \\
+\hline
+Why & discover $\rightarrow$ explore \newline
+Phát hiện xu hướng giảm của price/person khi sức chứa tăng (economies of scale). Scatter + Trend Line là idiom chuẩn để phân tích relationship giữa 2 biến Q, đặc biệt để xác định crossover point giữa các room type. \\
+\hline
+Scale & Key: 16 (giá trị accommodates 1--16) \newline
+Color key: 4 room type \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task7_chart2.png}
+    \caption{Hình 7.2. Mối quan hệ giữa sức chứa và chi phí mỗi người}
+    \label{fig:domain-task7-chart2}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Sức chứa / Accommodates (Q), Chi phí mỗi người / Price Per Person -- price\_per\_person (Q -- MEDIAN aggregate), Loại phòng / Room Type (C), Đường xu hướng / Trend Line (Q -- linear regression), price\_is\_outlier (C -- filter), Accommodates 1--16 (Q -- filter).
+    \item Channel:
+    \begin{itemize}
+        \item PosX (Accommodates -- Q/Ordinal): position thích hợp.
+        \item PosY (MEDIAN price/person -- Q): position thích hợp.
+        \item Hue Color: Room Type (C) $\rightarrow$ đúng, phân biệt 3--4 loại phòng.
+        \item Trend Line: hiển thị xu hướng tổng thể $\rightarrow$ tăng thêm thông tin về dependency.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Vị trí hai trục (PosX và PosY): PosX/PosY là cặp kênh quan trọng nhất. PosX mã hóa Accommodates (Quantitative/Ordinal --- số người từ 1 đến 16) và PosY mã hóa MEDIAN price\_per\_person (Quantitative). Theo Mackinlay, Position là kênh hiệu quả nhất cho cả dữ liệu định lượng lẫn thứ tự. Accommodates được giữ nguyên thứ tự tăng dần trên trục X, cho phép người xem theo dõi xu hướng giảm của price/person khi sức chứa tăng --- insight cốt lõi về economies of scale. Đây là lý do scatter plot với 2 trục Position là idiom tối ưu để phân tích mối quan hệ giữa hai biến định lượng/thứ tự.
+        \item Ưu tiên 2 -- Màu sắc (Color Hue): Color Hue mã hóa Room Type (Categorical/Nominal), phân biệt các nhóm điểm và đường xu hướng theo loại phòng. Đây là kênh quan trọng thứ hai vì nó cho phép so sánh đồng thời xu hướng giữa các room type trên cùng một biểu đồ --- phát hiện crossover point (điểm giao nhau về chi phí) giữa Entire home và Private room. Theo Mackinlay, Color Hue phù hợp cho dữ liệu danh mục và đặc biệt hiệu quả khi cần phân biệt các nhóm trong scatter plot đa chiều. Màu trend line tương ứng với màu điểm duy trì tính nhất quán thị giác.
+        \item Ưu tiên 3 -- Đường xu hướng (Trend Line --- superimposed): Mặc dù Trend Line không phải một kênh thị giác theo định nghĩa Mackinlay, đây là lớp thông tin bổ sung (superimposed) quan trọng về mặt thiết kế. Trend Line mã hóa hướng và độ dốc của mối quan hệ giữa Accommodates và Price/person --- thuộc tính mà Position điểm rời rạc không thể truyền tải rõ ràng khi dữ liệu có noise. Đường xu hướng dốc xuống của Entire home/apt và đường gần phẳng của Private room trực tiếp minh họa insight economies of scale, phục vụ task discover (phát hiện xu hướng) mà không yêu cầu người xem tự suy diễn từ đám mây điểm.
+    \end{itemize}
+    \item Kết luận: Scatter plot với Trend Line là lựa chọn chuẩn mực để phân tích mối quan hệ giữa 2 biến Q và so sánh xu hướng giữa các nhóm.
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): PosX và PosY (position on common scale) --- rất chính xác. Trend Line thể hiện xu hướng dốc xuống rõ ràng. MEDIAN aggregation giúp giảm nhiễu so với raw data.
+    \item Khả năng phân biệt (Discriminability): 3--4 màu dễ phân biệt. Số lượng điểm vừa phải ($\sim$42--64 marks) không bị clutter.
+    \item Khả năng tách biệt (Separability): PosX, PosY và Color tách biệt hoàn toàn. Trend lines không làm rối các điểm dữ liệu thực.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Trend line của Entire home/apt dốc xuống mạnh nhất --- xác nhận `economies of scale': càng nhiều người chia phòng, giá mỗi người càng giảm. Sweet spot rõ ràng ở 4--6 người.
+    \item Private room gần như phẳng --- sức chứa không ảnh hưởng nhiều đến price/person.
+    \item Crossover point: Với 4+ người, Entire home trở nên rẻ hơn Private room tính theo đầu người --- insight quan trọng nhất của Task 7.
+    \item Khuyến nghị: Nhóm $\geq$ 4 người nên ưu tiên Entire home/apt, ưu tiên Queens/Brooklyn để tối ưu cả vị trí lẫn chi phí mỗi người.
+\end{itemize}

@@ -5,3 +5,196 @@ data/*
 .env
 .env.*
 *.local
+
+# =============================================================================
+# Python
+# =============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache/
+.pytest_cache/
+cover/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+pyrightconfig.json
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+__pypackages__/
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# Framework / tools
+instance/
+.webassets-cache/
+.scrapy/
+.pybuilder/
+target/
+.pdm.toml
+poetry.toml
+
+# Django / Flask / SQLite
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Sphinx / MkDocs
+docs/_build/
+/site
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+
+# =============================================================================
+# Personal / local data
+# =============================================================================
+
+personal_docs/
+training/results/
+
+
+# =============================================================================
+# Project document workflow
+# =============================================================================
+
+# Keep source documents and editable LaTeX files:
+# - docs/report_docx/report.docx
+# - docs/report_md/report.md
+# - docs/report_latex/main.tex
+# - docs/report_latex/domain_tasks/*.tex
+# - docs/report_latex/images/*
+
+# Ignore temporary Office lock files
+~$*.docx
+*.tmp
+
+
+# =============================================================================
+# LaTeX build artifacts
+# =============================================================================
+
+# Ignore LaTeX auxiliary files anywhere in the project
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.dvi
+*.ps
+
+# Ignore LaTeX intermediate files
+*.ilg
+*.ind
+*.idx
+*.ist
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+
+# Ignore latexmk generated files
+*.latexmain
+*.synctex\(busy\)
+
+# Ignore generated PDFs from LaTeX builds
+docs/report_latex/*.pdf
+docs/report_latex/domain_tasks/*.pdf
+
+# If you later generate compiled PDFs elsewhere under docs, uncomment:
+# docs/**/*.pdf
+
+
+# =============================================================================
+# Pandoc / conversion leftovers
+# =============================================================================
+
+# Pandoc sometimes creates extracted media folders.
+# Keep your intended images folder, but ignore accidental media folders.
+media/
+docs/report_md/media/
+docs/report_docx/media/
+
+# Temporary converted files
+*.bak
+*.backup
+*.old
