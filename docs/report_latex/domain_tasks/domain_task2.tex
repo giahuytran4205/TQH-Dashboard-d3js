@@ -1,0 +1,194 @@
+\section{Domain Task 2: Phân tích Tỷ lệ lấp đầy theo thời gian}
+
+Câu hỏi nghiệp vụ: ``Tỷ lệ lấp đầy phòng thay đổi như thế nào qua các
+tháng, và tính mùa vụ ảnh hưởng thế nào đến từng quận?''
+
+Mục đích: Xác định xu hướng mùa cao điểm, thấp điểm để từ đó có cái nhìn
+chi tiết về hiệu suất kinh doanh qua thời gian của từng khu vực.
+
+\subsection{Biểu đồ 1: Tỷ lệ lấp đầy theo tháng của các quận (Multi-line Chart)}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Multi-line Chart (Biểu đồ đa đường) \\
+\hline
+What & Tháng (Month): O, Quận (Neighbourhood Group): C, Tỷ lệ lấp đầy (Avg. is Booked): Q \\
+\hline
+Why & produce (derive) $\rightarrow$ browse, lookup $\rightarrow$ summarize, compare \newline
+\newline
+- Dẫn xuất (derive) dữ liệu tỷ lệ lấp đầy từ trạng thái đặt phòng theo ngày. \newline
+\newline
+- Duyệt (browse) và tìm kiếm (lookup) xu hướng biến động lấp đầy theo tiến trình thời gian 12 tháng. \newline
+\newline
+- Tóm tắt (summarize) và so sánh (compare) hiệu suất kinh doanh, tính mùa vụ giữa 5 quận để nhận diện sự khác biệt về nhu cầu thị trường. \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+- Mark: Point, Line (Đường nối các điểm dữ liệu). \newline
+\newline
+- Channel: \newline
+\newline
+\hspace{0.3cm} + PosX: Trục thời gian tiến lên (Tháng -- Ordinal). \newline
+\newline
+\hspace{0.3cm} + PosY: Mức độ lấp đầy (Tỷ lệ \% -- Quantitative). \newline
+\newline
+\hspace{0.3cm} + Hue Color: Phân biệt 5 quận (Categorical). \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+- Hover + Highlight: Rê chuột vào một đường để highlight xu hướng của riêng quận đó, giúp khắc phục hiện tượng rối mắt khi các đường cắt nhau (line crossing). \newline
+\newline
+- Selection: Chọn một quận trên Legend để quan sát riêng biệt dữ liệu của khu vực đó. \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+- Filter: Có thể lọc theo Năm (Year) để so sánh xu hướng lấp đầy giữa các giai đoạn khác nhau (ví dụ: trước và sau đại dịch). \\
+\hline
+Scale & - Main key: 12 (Tháng trong năm). \newline
+\newline
+- Categorical key: 5 (Nhóm các quận của NYC). \newline
+\newline
+- Y-axis range: 0.0 $\rightarrow$ 0.6 \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task2_chart1.png}
+    \caption{Hình 2.1. Biểu đồ phân tích sự lấp đầy theo tháng của các quận}
+    \label{fig:domain-task2-chart1}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Tháng (O), Quận (C), Tỷ lệ lấp đầy (Q).
+    \item Channel:
+    \begin{itemize}
+        \item PosX: tiến trình thời gian $\rightarrow$ dùng cho thuộc tính Ordinal (O).
+        \item PosY: định lượng tỷ lệ phần trăm $\rightarrow$ dùng cho thuộc tính Quantitative (Q).
+        \item Color (Hue): phân loại các quận $\rightarrow$ dùng cho thuộc tính Categorical (C).
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng và phân bổ kênh theo Mackinlay:
+    \begin{itemize}
+        \item Ưu tiên 1 -- Vị trí trục tung (PosY): Sự biến động của Tỷ lệ lấp đầy (Q) là mục tiêu quan sát chính. Việc gán vào trục PosY tuân thủ đúng nguyên tắc: dùng kênh biểu đạt mạnh nhất (Position) cho biến định lượng cốt lõi nhất.
+        \item Ưu tiên 2 -- Vị trí trục hoành (PosX): Thời gian/Tháng (O) là chiều quan trọng thứ hai để tạo thành chuỗi sự kiện. Dùng PosX tạo cảm giác tiến trình (sequential) là lựa chọn tối ưu theo quy luật nhận thức.
+        \item Ưu tiên 3 -- Màu sắc (Color Hue): Phân nhóm các quận (C) đóng vai trò đối chiếu. Dùng Color Hue là lựa chọn chuẩn xác nhất cho dữ liệu phân loại (Categorical) khi kênh vị trí đã được dùng để vẽ line.
+    \end{itemize}
+    \item Kết luận: Áp dụng hoàn toàn chính xác các kênh biểu đạt. Line chart kết hợp với Hue Color là quy chuẩn tối ưu nhất để phân tích chuỗi thời gian có phân rã theo nhóm.
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Trục PosY (vị trí điểm trên một thang đo chung) tuân theo Stevens' Psychophysical law với $n = 1.0$. Việc ước lượng độ lớn và so sánh khoảng cách giữa các điểm là cực kỳ chính xác, độ lỗi Log\_error là thấp nhất. Người xem dễ dàng nhận ra khoảng cách chênh lệch giữa các quận ở cùng một tháng.
+    \item Khả năng phân biệt (Discriminability): Biểu đồ sử dụng 5 màu (Hue Color) cho 5 quận. Số lượng phân loại $< 7$ nên nhận thức màu của mắt hoàn toàn không bị ảnh hưởng, rất dễ phân biệt. Tuy nhiên, ở các giai đoạn tháng 8 đến tháng 10, các đường (lines) có hiện tượng tiệm cận và cắt nhau (line crossing/clutter), gây đôi chút khó khăn cho mắt, nhưng thao tác Highlight khi hover đã giúp giải quyết vấn đề này.
+    \item Khả năng tách biệt (Separability): Kênh vị trí (Pos) và kênh màu sắc (Color) tách biệt hoàn toàn. Việc các điểm nằm ở vị trí cao/thấp không làm ảnh hưởng đến khả năng nhận diện màu sắc của quận đó.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Vì dữ liệu ban đầu được cào vào đầu tháng 11 năm 2025 nên ta thấy ở cả 3 quận tháng 11/2025 luôn là tháng có tỷ lệ đặt phòng cao nhất. Bên cạnh đó, khi nhìn vào giá trị đặt phòng trong tương lai thì ta cũng thấy sự vượt trội của tháng 11, người dân có vẻ chuẩn bị phòng kĩ càng cho tháng phục sinh vào cả năm sau.
+    \item Manhattan (đường màu đỏ) thể hiện sự bứt phá mạnh mẽ vào cuối năm, đạt đỉnh cao nhất toàn thị trường vào tháng 11 (gần 60\%).
+    \item Queens duy trì phong độ ổn định và dẫn đầu trong suốt giai đoạn giữa năm (tháng 5 -- tháng 10), trong khi Staten Island và Bronx luôn nằm ở nhóm dưới với tỷ lệ lấp đầy thấp.
+\end{itemize}
+
+\subsection{Biểu đồ 2: Tỷ lệ lấp đầy của các quận theo tháng (Heatmap)}
+
+\subsubsection*{A. Thiết kế Idiom}
+
+\begin{longtable}{|p{2.8cm}|p{11.5cm}|}
+\hline
+\textbf{Đặc điểm} & \textbf{Chi tiết} \\
+\hline
+\endhead
+\hline
+\endfoot
+Idiom & Heatmap (Bản đồ nhiệt) \\
+\hline
+What & Tháng (Month): O, Quận (Neighbourhood Group Cleansed): C, Tỷ lệ lấp đầy (Avg. Is Booked): Q \\
+\hline
+Why & produce (derive) $\rightarrow$ browse, lookup $\rightarrow$ summarize, compare \newline
+\newline
+- Dẫn xuất (derive) tỷ lệ lấp đầy từ trạng thái đặt phòng. \newline
+\newline
+- Quét mắt (browse) toàn cảnh ma trận để tìm ra các mảng màu đặc trưng và tra cứu (lookup) điểm giao cắt giữa một tháng và một quận cụ thể. \newline
+\newline
+- Tóm tắt (summarize) bức tranh mùa vụ và so sánh (compare) mức độ nhạy cảm/ổn định về hiệu suất kinh doanh giữa các quận. \\
+\hline
+How & \textbf{Encode:} \newline
+\newline
+- Mark: Point (Area/Square mark -- Các ô vuông ma trận). \newline
+\newline
+- Channel: \newline
+\newline
+\hspace{0.3cm} + PosX: Phân rã theo tiến trình thời gian (Tháng -- O). \newline
+\newline
+\hspace{0.3cm} + PosY: Phân rã theo không gian (Quận -- C). \newline
+\newline
+\hspace{0.3cm} + Color (Diverging Red -- Blue): Thể hiện độ lớn của tỷ lệ lấp đầy (Đỏ: thấp $\rightarrow$ Xanh: cao). \newline
+\newline
+\textbf{Manipulate:} \newline
+\newline
+- Hover + Tooltip: Rê chuột vào từng ô vuông để xem chính xác con số \% lấp đầy tại điểm giao cắt đó. \newline
+\newline
+\textbf{Reduce:} \newline
+\newline
+- (Gợi ý) Có thể sử dụng thao tác Sort trên trục Y để sắp xếp các quận theo tổng tỷ lệ lấp đầy giảm dần, giúp các cụm màu xanh/đỏ gom lại với nhau rõ ràng hơn. \\
+\hline
+Scale & - Main keys: 12 (Tháng) $\times$ 5 (Quận) = 60 bins (ô vuông). \newline
+\newline
+- Color Range: Dải màu phân kỳ từ 0.0980 (đỏ sẫm) đến 0.5857 (xanh sẫm). \\
+\hline
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics[width=0.9\linewidth]{images/domain_task2_chart2.png}
+    \caption{Hình 2.2. Biểu đồ phân tích sự lấp đầy của các quận theo tháng}
+    \label{fig:domain-task2-chart2}
+\end{figure}
+
+\subsubsection*{B. Đánh giá biểu đồ}
+
+\textbf{1. Nguyên lý biểu đạt (Expressiveness):}
+
+\begin{itemize}
+    \item Thuộc tính: Tháng (O), Quận (C), Tỷ lệ lấp đầy (Q).
+    \item Channel:
+    \begin{itemize}
+        \item Kênh vị trí (PosX, PosY): Tạo cấu trúc ma trận phân rã các nhóm $\rightarrow$ biểu diễn hoàn hảo cho thuộc tính Ordinal và Categorical.
+        \item Kênh màu sắc (Diverging Color): Thể hiện độ nóng/lạnh của mức độ lấp đầy $\rightarrow$ dùng cho thuộc tính Quantitative.
+    \end{itemize}
+    \item Đánh giá mức độ quan trọng và sự đánh đổi kênh theo Mackinlay:
+    \begin{itemize}
+        \item Ưu tiên định vị danh mục (PosX, PosY): Heatmap ưu tiên dùng kênh mạnh nhất (Position) để thiết lập cấu trúc lưới ma trận cho 2 thuộc tính phân rã: Tháng (O) ở PosX và Quận (C) ở PosY. Điều này giúp mắt người dễ dàng Lookup chính xác giao điểm.
+        \item Sự đánh đổi ở thuộc tính định lượng (Color): Khác với Line Chart, do kênh Vị trí đã gán cho danh mục, thuộc tính Tỷ lệ lấp đầy (Q) bắt buộc phải đẩy xuống dùng kênh Diverging Color. Theo Mackinlay, Color xếp hạng thấp trong việc biểu diễn độ lớn định lượng. Đây là một sự ``đánh đổi'' (trade-off) có chủ ý: chấp nhận giảm độ chính xác toán học (Accuracy) để đổi lấy khả năng nhận diện cụm nóng/lạnh (Macro pattern) một cách nhanh chóng.
+    \end{itemize}
+    \item Kết luận: Channel phù hợp hoàn toàn với cấu trúc dữ liệu 3 chiều (3D), không có sự sai lệch về mặt ngữ nghĩa.
+\end{itemize}
+
+\textbf{2. Nguyên lý hiệu quả (Effectiveness):}
+
+\begin{itemize}
+    \item Độ chính xác (Accuracy): Sử dụng Heatmap (dựa trên sự thay đổi Hue/Saturation của màu sắc) để diễn đạt độ lớn định lượng có sự hạn chế về độ chính xác nhận thức. Theo định luật Stevens' Psychophysical law, độ lỗi Log\_error khá cao ($T9 \pm 2.5$). Mắt người rất khó để nhẩm tính xem ô màu xanh này cao hơn ô màu xanh kia chính xác là bao nhiêu \%. Tuy nhiên, thao tác Manipulate (Tooltip) đã khắc phục điểm yếu này.
+    \item Khả năng phân biệt (Discriminability): Việc chia lưới thành 60 ô vuông (bins) giúp mắt đếm và phân biệt ranh giới cực kỳ rõ ràng. Đặc biệt, việc sử dụng dải màu phân kỳ (Red -- Blue) là một thiết kế xuất sắc, giúp mắt người lập tức phân tách dữ liệu thành 2 thái cực: ``nhóm hiệu suất kém'' (đỏ) và ``nhóm hiệu suất tốt'' (xanh), bù đắp lại khiếm khuyết về độ chính xác định lượng ở trên.
+    \item Khả năng tách biệt (Separability): Kênh vị trí (Pos) và kênh màu sắc (Color) kết hợp rất tốt. Kích thước các ô vuông luôn bằng nhau (Area không đổi) giúp loại bỏ hoàn toàn nhiễu tương tác thị giác giữa kích thước và màu sắc, người xem chỉ tập trung vào sắc độ màu.
+\end{itemize}
+
+\subsubsection*{C. Phân tích biểu đồ (Insight)}
+
+\begin{itemize}
+    \item Insight 1: Staten Island và Bronx chịu ảnh hưởng nặng nề nhất bởi tính mùa vụ và bộc lộ sức hút kém. Hai khu vực này chìm trong dải màu đỏ sẫm (tỷ lệ lấp đầy cực thấp, xấp xỉ $10\% - 20\%$) suốt từ đầu năm cho đến tháng 7, và chỉ hơi khởi sắc (chuyển sang màu xanh nhạt) vào giai đoạn cuối năm.
+    \item Insight 2: Ngược lại, Manhattan và Brooklyn chứng tỏ năng lực thu hút khách ổn định và mạnh mẽ hơn nhiều. Các quận này thoát khỏi vùng màu đỏ rất nhanh và duy trì tỷ lệ lấp đầy ở mức an toàn (hiện sắc xanh nhạt đến xanh đậm) xuyên suốt từ giữa năm đến cuối năm. Sự tương phản này cho thấy rủi ro trống phòng ở các quận vùng ven là rất cao so với vùng lõi trung tâm.
+\end{itemize}
