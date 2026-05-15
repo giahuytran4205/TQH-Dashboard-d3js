@@ -141,7 +141,7 @@ function InteractiveChart({
 }
 
 function drawEmptyState(svg, title, message) {
-  drawFrame(svg);
+  drawPlaceholderFrame(svg);
   const center = svg.append("g").attr("transform", `translate(${SIZE.width / 2}, ${SIZE.height / 2})`);
   center.append("text").attr("class", "placeholder-title").attr("y", -10).text(title);
   center.append("text").attr("class", "placeholder-subtitle").attr("y", 18).text(message);
@@ -154,11 +154,21 @@ function monthName(value) {
 function drawFrame(svg) {
   svg
     .append("rect")
+    .attr("class", "chart-frame")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", SIZE.width)
+    .attr("height", SIZE.height);
+}
+
+function drawPlaceholderFrame(svg) {
+  svg
+    .append("rect")
     .attr("class", "placeholder-frame")
-    .attr("x", 10)
-    .attr("y", 10)
-    .attr("width", SIZE.width - 20)
-    .attr("height", SIZE.height - 20)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", SIZE.width)
+    .attr("height", SIZE.height)
     .attr("rx", 8);
 }
 
