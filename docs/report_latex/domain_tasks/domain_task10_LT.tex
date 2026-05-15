@@ -20,11 +20,11 @@
 \hspace*{1em} PosY: Danh sách từ khóa \newline
 \hspace*{1em} Color: Phân biệt Nhóm Đánh giá (Xanh = Hài lòng, Cam = Phàn nàn) \\ \cline{2-3}
 & \textbf{Reduce} &
-Filter: Áp dụng Whitelist để chỉ giữ lại các n-grams thực sự mang ý nghĩa Insight (loại bỏ tên riêng, địa danh). \newline
+Filter: Áp dụng Whitelist để chỉ giữ lại các từ thực sự mang ý nghĩa Insight (loại bỏ tên riêng, địa danh). \newline
 Sort: Sắp xếp giảm dần theo chỉ số Strength trên trục Y. \\ \hline
 \textbf{Why} & \multicolumn{2}{X|}{
 \textbf{produce (derive) $\rightarrow$ locate $\rightarrow$ compare} \newline
-Derive: Tính toán chỉ số Log-Odds Ratio để đo lường mức độ đặc trưng của cụm từ thuộc nhóm Điểm Cao hay Điểm Thấp (loại bỏ nhiễu do mất cân bằng dữ liệu). Xác định (locate) các yếu tố khiến khách ghét và khách khen để so sánh (compare) mức độ nghiêm trọng.
+Derive: Tính toán tỷ số tần suất xuất hiện của các từ ở các nhóm listings có rating cao/thấp. Xác định (locate) các yếu tố khiến khách ghét và khách khen để so sánh (compare) mức độ nghiêm trọng.
 } \\ \hline
 \end{tabularx}
 \end{table}
@@ -69,6 +69,6 @@ Derive: Tính toán chỉ số Log-Odds Ratio để đo lường mức độ đ�
 \subsubsection{Phân tích biểu đồ}
 
 \begin{itemize}
-    \item Yếu tố tạo sự Hài lòng (màu Xanh): Khách hàng bị chinh phục hoàn toàn bởi tính thẩm mỹ và vệ sinh tuyệt đối (các từ khóa đứng đầu là ``beautifully decorated'', ``immaculate'', ``gorgeous''). Các dịch vụ gia tăng như ``stocked kitchen'' hay ``warm welcome'' là chìa khóa giúp chủ nhà đạt điểm tuyệt đối.
-    \item Yếu tố gây Phàn nàn (màu Cam): Biểu đồ phơi bày các yếu tố khiến điểm số sụt giảm. Tiêu biểu nhất là các vấn đề chi phí ẩn (``hidden fees'', ``security deposit''). Kế đến là thái độ dịch vụ (``terrible experience'', ``unresponsive'', ``scam'', ``refused'') và tệ nhất là vấn đề môi trường phòng (``infestation'', ``smelly'', ``cigarette''). Khuyến nghị chủ nhà cần minh bạch về giá cả và khử mùi/côn trùng lập tức.
+    \item Yếu tố tạo sự Hài lòng (màu Xanh): Khách hàng bị chinh phục hoàn toàn bởi tính thẩm mỹ và vệ sinh tuyệt đối (các từ khóa đứng đầu là ``beautifully decorated'', ``immaculate'', ``gorgeous''). Trong đó, chất lượng dịch vụ và thái độ của chủ nhà như ``stocked kitchen'' hay ``warm welcome'' là điểm cộng lớn đối với khách hàng.
+    \item Yếu tố gây Phàn nàn (màu Cam): Biểu đồ phơi bày các yếu tố khiến điểm số sụt giảm. Tiêu biểu nhất là các vấn đề chi phí ẩn thiếu minh bạch (``hidden fees'', ``security deposit''). Kế đến là thái độ dịch vụ (``terrible experience'', ``unresponsive'', ``scam'', ``refused'') và tệ nhất là vấn đề môi trường phòng (``infestation'', ``smelly'', ``cigarette''). Khuyến nghị chủ nhà cần minh bạch về giá cả và khử mùi/côn trùng lập tức.
 \end{itemize}

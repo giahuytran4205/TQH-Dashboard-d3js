@@ -2,63 +2,39 @@
 
 \subsubsection{Thiết kế Idiom}
 
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.74\textwidth}@{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Heat Map (Bản đồ nhiệt) \\
-\addlinespace[0.08cm]
-
-\textbf{What} & Khu vực: Categorical, Nhóm sức chứa: Ordinal, Số lượng listing: Quantitative \\
-\addlinespace[0.08cm]
-
-\textbf{Why} & produce $\rightarrow$ browse, lookup $\rightarrow$ summarize
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Biểu đồ giúp xác định khu vực nào phù hợp với từng quy mô khách, ví dụ khu vực nào có nhiều listing cho cặp đôi, nhóm nhỏ, gia đình hoặc nhóm đông người.
-\end{itemize} \\
-\addlinespace[0.08cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Mark: Area
-    \item Channel:
-    \begin{itemize}[leftmargin=1.4em, itemsep=0.08em]
-        \item PosX: Nhóm sức chứa
-        \item PosY: Khu vực
-        \item Hue Color: Số lượng listing
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Selection: Chọn một ô để highlight tổ hợp khu vực và nhóm sức chứa.
-    \item Hover để xem số lượng listing chi tiết.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Có thể facet theo loại phòng.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Chuẩn hóa sức chứa thành các nhóm: 1--2 khách, 3--4 khách, 5--6 khách, 7+ khách.
-\end{itemize} \\
-\addlinespace[0.08cm]
-
-\textbf{Scale} &
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0pt]
-    \item Main key: khu vực $\times$ nhóm sức chứa
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Heat Map (Bản đồ nhiệt)}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Khu vực: Categorical} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Nhóm sức chứa: Ordinal} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Số lượng listing: Quantitative} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Area \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Nhóm sức chứa \newline
+\hspace*{1em} PosY: Khu vực \newline
+\hspace*{1em} Hue Color: Số lượng listing \\ \cline{2-3}
+& \textbf{Manipulate} &
+Selection: Chọn một ô để highlight tổ hợp khu vực và nhóm sức chứa. \newline
+Hover để xem số lượng listing chi tiết. \\ \cline{2-3}
+& \textbf{Facet} &
+không có facet. \\ \cline{2-3}
+& \textbf{Reduce} &
+Chuẩn hóa sức chứa thành các nhóm: 1--2 khách, 3--4 khách, 5--6 khách, 7+ khách. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ browse, lookup $\rightarrow$ summarize} \newline
+Biểu đồ giúp xác định khu vực nào phù hợp với từng quy mô khách, ví dụ khu vực nào có nhiều listing cho cặp đôi, nhóm nhỏ, gia đình hoặc nhóm đông người.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: khu vực $\times$ nhóm sức chứa.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering

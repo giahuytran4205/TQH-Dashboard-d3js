@@ -2,65 +2,42 @@
 
 \subsubsection{Thiết kế Idiom}
 
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.74\textwidth}@{}}
-\toprule
-\textbf{Đặc điểm} & \textbf{Chi tiết} \\
-\midrule
-\endhead
-
-\bottomrule
-\endfoot
-
-\textbf{Idiom} & Bubble Scatter Plot \\
-\addlinespace[0.08cm]
-
-\textbf{What} & Số lượng review: Quantitative, Rating: Quantitative, Reviews per month: Quantitative, Loại phòng hoặc khu vực: Categorical \\
-\addlinespace[0.08cm]
-
-\textbf{Why} & produce $\rightarrow$ discover, compare $\rightarrow$ summarize
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Biểu đồ giúp nhận diện listing vừa có rating cao, vừa có nhiều review và vẫn được khách đánh giá thường xuyên. Đây là nhóm listing có chất lượng tốt và độ tin cậy cao.
-\end{itemize} \\
-\addlinespace[0.08cm]
-
-\textbf{How} & \textbf{Encode:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Mark: Point / Circle
-    \item Channel:
-    \begin{itemize}[leftmargin=1.4em, itemsep=0.08em]
-        \item PosX: Số lượng review (Log scale)
-        \item PosY: Rating
-        \item Size: Reviews per month
-        \item Hue Color: Loại phòng hoặc khu vực
-    \end{itemize}
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Manipulate:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Hover để xem listing id, rating, số lượng review, reviews per month và khu vực.
-    \item Selection: Chọn một loại phòng hoặc khu vực để highlight.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Facet:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Có thể facet theo borough để giảm nhiễu và dễ so sánh hơn.
-\end{itemize}
-
-\vspace{0.2cm}
-\textbf{Reduce:}
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0.1cm]
-    \item Có thể dùng log scale cho số lượng review nếu dữ liệu bị lệch mạnh.
-    \item Lọc bỏ listing thiếu rating hoặc không có review.
-\end{itemize} \\
-\addlinespace[0.08cm]
-
-\textbf{Scale} &
-\begin{itemize}[leftmargin=1.4em, itemsep=0.08em, topsep=0pt]
-    \item Main key: listing
-\end{itemize} \\
-\end{longtable}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Idiom} & \multicolumn{2}{l|}{\textbf{Bubble Scatter Plot}} \\ \hline
+\textbf{What}
+& \multicolumn{2}{X|}{Số lượng review: Quantitative} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Rating: Quantitative} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Reviews per month: Quantitative} \\ \cline{2-3}
+& \multicolumn{2}{X|}{Loại phòng hoặc khu vực: Categorical} \\ \hline
+\textbf{How}
+& \textbf{Encode} &
+\textbf{Mark:} Point / Circle \newline
+\textbf{Channel:} \newline
+\hspace*{1em} PosX: Số lượng review (Log scale) \newline
+\hspace*{1em} PosY: Rating \newline
+\hspace*{1em} Size: Reviews per month \newline
+\hspace*{1em} Hue Color: Loại phòng hoặc khu vực \\ \cline{2-3}
+& \textbf{Manipulate} &
+Hover để xem listing id, rating, số lượng review, reviews per month và khu vực. \newline
+Selection: Chọn một loại phòng hoặc khu vực để highlight. \\ \cline{2-3}
+& \textbf{Facet} &
+không có facet. \\ \cline{2-3}
+& \textbf{Reduce} &
+Có thể dùng log scale cho số lượng review nếu dữ liệu bị lệch mạnh. \newline
+Lọc bỏ listing thiếu rating hoặc không có review. \\ \hline
+\textbf{Why} & \multicolumn{2}{X|}{
+\textbf{produce $\rightarrow$ discover, compare $\rightarrow$ summarize} \newline
+Biểu đồ giúp nhận diện listing vừa có rating cao, vừa có nhiều review và vẫn được khách đánh giá thường xuyên. Đây là nhóm listing có chất lượng tốt và độ tin cậy cao.
+} \\ \hline
+\textbf{Scale} & \multicolumn{2}{X|}{
+Main key: listing.
+} \\ \hline
+\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
     \centering
